@@ -1,0 +1,172 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "npm: dev",
+      "detail": "npm run dev",
+      "type": "npm",
+      "script": "dev",
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^.*$"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^.*",
+          "endsPattern": "http://.*:5173"
+        }
+      }
+    },
+    {
+      "label": "Emulators export recover",
+      "detail": "Rename firebase-export-<Unique> to emulators-data",
+      "type": "process",
+      "command": "node",
+      "args": [
+        "-e",
+        "const fs=require('fs');const folders=fs.readdirSync('.').filter(e=>e.startsWith('firebase-export-'));if(folders.length>0){const newest=folders.sort().reverse()[0];if(fs.existsSync('emulators-data'))fs.rmSync('emulators-data',{recursive:true,force:true});fs.renameSync(newest,'emulators-data');console.log('Emulators export recovered: Renamed '+newest+' to emulators-data');}else{console.log('Emulators export recovered: No folders found.');}"
+      ],
+      "presentation": {
+        "echo": false
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^.*",
+          "endsPattern": "firebase-export recovery"
+        },
+        "pattern": {
+          "regexp": "^.*$"
+        },
+      },
+    },
+    {
+      "label": "Kill Emulators ports",
+      "detail": "npx kill-port <Firebase Emulators ports>",
+      "type": "shell",
+      "command": "npx kill-port 5000,5001,8080,9099,9199",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": {
+        "echo": false
+      }
+    },
+    {
+      "label": "Functions --watch",
+      "detail": "tsc --watch",
+      "type": "npm",
+      "script": "build:watch",
+      "options": {
+        "cwd": "${workspaceFolder}/functions"
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^.*$"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^.*",
+          "endsPattern": "Starting compilation in watch mode"
+        }
+      }
+    },
+    {
+      "label": "Firebase Emulators",
+      "detail": "firebase emulators:start --only <Emulators> --import ./emulators-data --export-on-exit",
+      "type": "npm",
+      "script": "emulators:start",
+      "dependsOn": [
+        // "Emulators export recover",
+        // "Kill Emulators ports",
+        "Functions --watch"
+      ],
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^.*$"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^.*",
+          "endsPattern": "All emulators ready!"
+        },
+      },
+      "isBackground": true,
+      "presentation": {
+        "echo": false,
+      }
+    },
+    {
+      "label": "Stripe Webhook",
+      "detail": "stripe listen --forward-to <Emulator URL found in Env files>",
+      "type": "process",
+      "command": "node",
+      "args": [
+        "-e",
+        "const fs=require('fs');const path=require('path');const envPath=['.env.development.local','.env.development','.env.local','.env'].map(f=>path.join(process.cwd(),f)).find(fs.existsSync);if(!envPath)process.exit(0);const key=fs.readFileSync(envPath,'utf8').split('\\n').find(line=>/^.*VITE_firebase_projectId.*=/.test(line))?.split('=')[1].trim().replace(/^['\"]|['\"]$/g,'').trim();if(!key)process.exit(0);const{execSync}=require('child_process');execSync('stripe listen --forward-to http://localhost:5001/'+key+'/europe-west1/webhook',{stdio:'inherit'});"
+      ],
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^.*$"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^.*",
+          "endsPattern": "Ready!"
+        }
+      },
+      "isBackground": true,
+      "presentation": {
+        "echo": false,
+      }
+    },
+    {
+      "label": "Open browser",
+      "detail": "http://localhost:5173",
+      "type": "shell",
+      "command": "${input:openBrowser}",
+      "problemMatcher": [],
+      "presentation": {
+        "echo": false,
+        "close": true,
+        "reveal": "silent"
+      }
+    },
+    {
+      "label": "Start all",
+      "detail": "npm run dev, Firebase Emulators, Stripe Webhook",
+      "type": "shell",
+      "command": [
+        // "${input:openBrowser} && ",
+        "echo Ready!"
+      ],
+      "dependsOn": [
+        "npm: dev",
+        "Stripe Webhook",
+        "Firebase Emulators",
+      ],
+      "problemMatcher": [],
+      "presentation": {
+        "panel": "dedicated",
+        "echo": false
+      },
+      "runOptions": {
+        // "runOn": "folderOpen"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true,
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "openBrowser",
+      "type": "command",
+      "command": "simpleBrowser.show",
+      "args": "http://localhost:5173/",
+    }
+  ]
+}

@@ -21,3 +21,11 @@ dist-ssr
 *.sln
 *.sw?
 ltex.*
+
+# Environment files
+.env\.*
+
+# Firebase
+.firebaserc
+emulators-data
+firebase-export*

@@ -1,0 +1,1 @@
+export type LoggerMessage = { message: string, type: "error" | "info", cb?: () => void };
