@@ -11,31 +11,31 @@
     let emailSource: "email" | "account" = $state("email");
 </script>
 
+<div class="inline-options" style:margin="0.5em 0">
+    <label>
+        <input
+            type="radio"
+            name="email-source"
+            value="email"
+            bind:group={emailSource}
+        />
+        Email
+    </label>
+    <label>
+        <input
+            type="radio"
+            name="email-source"
+            value="account"
+            bind:group={emailSource}
+        />
+        {#if $user?.email}
+            Account <DisplayName />
+        {:else}
+            Sign in
+        {/if}
+    </label>
+</div>
 <div>
-    <h4>
-        <label>
-            <input
-                type="radio"
-                name="email-source"
-                value="email"
-                bind:group={emailSource}
-            />
-            Email
-        </label>
-        <label>
-            <input
-                type="radio"
-                name="email-source"
-                value="account"
-                bind:group={emailSource}
-            />
-            {#if $user?.email}
-                Account <DisplayName />
-            {:else}
-                Sign in
-            {/if}
-        </label>
-    </h4>
     {#if emailSource === "email"}
         <Email bind:email />
     {:else if emailSource === "account"}

@@ -16,7 +16,7 @@
 
 <style>
   div {
-    margin-top: 0.25em;
+    margin-top: 0.5em;
   }
   input {
     width: 10ch;

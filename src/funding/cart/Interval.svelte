@@ -8,7 +8,7 @@
   } = $props();
 </script>
 
-<div>
+<div class="inline-options">
   {#each [{ value: "month", label: "Monthly" }, { value: "one-time", label: "One-time" }] as { value, label }}
     <label>
       <input

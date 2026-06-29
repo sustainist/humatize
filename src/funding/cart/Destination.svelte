@@ -6,4 +6,6 @@
     } = $props();
 </script>
 
-<textarea bind:value={purpose}></textarea>
+<div>
+    <textarea bind:value={purpose}></textarea>
+</div>

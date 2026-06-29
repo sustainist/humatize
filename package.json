@@ -15,6 +15,7 @@
     "@sveltejs/vite-plugin-svelte": "^7.1.2",
     "@tsconfig/svelte": "^5.0.8",
     "@types/node": "^26.0.1",
+    "add-to-calendar-button": "^2.14.0",
     "firebase": "^12.15.0",
     "mdsvex": "^0.12.7",
     "svelte": "^5.56.4",

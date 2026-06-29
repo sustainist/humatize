@@ -6,12 +6,14 @@
     } = $props();
 </script>
 
-<label>
-    <input
-        type="email"
-        title="Email for managing your contributions"
-        placeholder="Email for managing your contributions"
-        required
-        bind:value={email}
-    />
-</label>
+<div class="input-group">
+    <label>
+        <input
+            type="email"
+            title="Email for managing your investments"
+            placeholder="Email address"
+            required
+            bind:value={email}
+        />
+    </label>
+</div>

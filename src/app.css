@@ -2,7 +2,23 @@
     color-scheme: light dark;
 }
 
-fieldset {
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0b1a1a;
+      background-image: radial-gradient(circle at 20% 30%, #1d3b3b 0%, #0a1414 90%);
+      color: #d4e9e9;
+      line-height: 1.5;
+      min-height: 100vh;
+      padding: 2rem 1.5rem;
+    }
+
+/* fieldset {
   width: fit-content;
 
   &>div:not(:last-child) {
@@ -34,10 +50,10 @@ table {
     padding: 0.25em;
   }
 }
-
+*/
 .icon {
   width: 1em;
   height: 1em;
   vertical-align: middle;
   margin-top: -0.25em;
-}
+} 

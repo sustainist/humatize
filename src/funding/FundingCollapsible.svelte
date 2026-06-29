@@ -5,7 +5,7 @@
   import Customers from "./customers/Customers.svelte";
   import Checkout from "./checkout/Checkout.svelte";
 
-  const formId = "fund-" + makeId();
+  const formId = "funding-" + makeId();
 
   // open
   let open = $state(localStorage.getItem("funding open") === "true");
@@ -23,15 +23,12 @@
   // purpose
   let purpose = $derived(
     localStorage.getItem(`selected purpose for ${formId}`) ||
-      document.title ||
+      document.querySelector("header h1")?.textContent ||
       "",
   );
   $effect(() => {
     localStorage.setItem(`selected purpose for ${formId}`, purpose);
     $showFormCheckout = null;
-    if (!purpose) {
-      purpose = document.title;
-    }
   });
 
   // currency
@@ -73,18 +70,21 @@
   });
 </script>
 
-<Cart
-  {formId}
-  bind:amount
-  bind:currency
-  bind:interval
-  bind:email
-  bind:purpose
-/>
+<details bind:open id={formId} class="funding">
+  <summary>Crowdfunding</summary>
+  <Cart
+    {formId}
+    bind:amount
+    bind:currency
+    bind:interval
+    bind:email
+    bind:purpose
+  />
 
-<!-- <Checkout {formId} {interval} {currency} {amount} {email} {purpose} /> -->
+  <Checkout {formId} {interval} {currency} {amount} {email} {purpose} />
 
-<!-- <Customers /> -->
+  <Customers />
+</details>
 
 <style>
   :global .funding > * {

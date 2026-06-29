@@ -127,7 +127,7 @@
   });
 </script>
 
-<form onsubmit={handleSign}>
+<form onsubmit={handleSign} class="margin">
   <div>
     <select
       bind:value={sign}
@@ -144,14 +144,24 @@
     </select>
   </div>
 
-  <div>
+  <div class="margin">
     <label
-      ><input type="email" placeholder="Email" name="email" /> - email address</label
+      ><input
+        type="email"
+        placeholder="Email"
+        name="email"
+        title="Email"
+      /></label
     >
   </div>
-  <div>
+  <div class="margin">
     <label
-      ><input type="password" placeholder="Password" name="password" /> - password</label
+      ><input
+        type="password"
+        placeholder="Password"
+        name="password"
+        title="Password"
+      /></label
     >
   </div>
 
@@ -159,7 +169,7 @@
     <div id="recaptcha"></div>
   </div>
   <div>
-    <button type="submit" disabled={signLoading}
+    <button class="btn-primary" type="submit" disabled={signLoading}
       >{sign}{#if signLoading}<Loading text="" />{/if}</button
     >
   </div>
@@ -167,6 +177,7 @@
   {#if showResetPassword && sign === "Sign In"}
     <div>
       <button
+        class="btn-primary"
         type="button"
         onclick={handleResetPassword}
         disabled={resetPasswordLoading}
@@ -175,3 +186,9 @@
     </div>
   {/if}
 </form>
+
+<style>
+  .margin {
+    margin: 0.5em 0;
+  }
+</style>

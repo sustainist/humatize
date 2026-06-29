@@ -29,7 +29,7 @@
 
 <form>
   <div>
-    <button type="button" onpointerdown={handleSignInWithPopupGoogle}
+    <button class="btn-primary" type="button" onpointerdown={handleSignInWithPopupGoogle}
       >Sign in with Google</button
     >
   </div>

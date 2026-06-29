@@ -2,7 +2,7 @@
   import { signInWith } from "../../firebase";
 </script>
 
-<div class="providers">
+<div class="providers inline-options" style:margin="0.5em 0">
   {#each [{ value: "google", label: "Sign  in with Google" }, { value: "link", label: "Sign in with Email Link" }, { value: "email", label: "Sign in with Email & Password" }] as { value, label }}
     <label>
       <input
