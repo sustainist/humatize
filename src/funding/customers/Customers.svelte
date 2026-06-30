@@ -14,6 +14,7 @@
   import type { LoggerMessage } from "../../logger";
   import Logger from "../../logger/Logger.svelte";
   import { showYourContributions } from ".";
+    import Account from "./Account.svelte";
 
   const handleCancelSubscription = (id: string) => {
     loadingCancelSubscription = true;
@@ -98,6 +99,8 @@
     }
   });
 </script>
+
+<Account />
 
 {#snippet level(items: Heading[], selectedId: string)}
   {#each items as { id, text = '', index = [], children = [], line = 0 } (id)}

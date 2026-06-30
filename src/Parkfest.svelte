@@ -1,6 +1,7 @@
 <script>
   import Pay from "./funding/cart/Pay.svelte";
   import Checkout from "./funding/checkout/Checkout.svelte";
+    import Session from "./funding/checkout/Session.svelte";
   import Customers from "./funding/customers/Customers.svelte";
   import Funding from "./funding/Funding.svelte";
 </script>
@@ -146,6 +147,7 @@
         <Pay />
 
         <Checkout />
+
       </div>
 
       <div class="invest-note">
@@ -170,6 +172,8 @@
           transparent
         </span>
       </p>
+
+      <Session />
 
       <Customers />
 

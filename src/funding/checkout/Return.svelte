@@ -61,12 +61,14 @@
         })
         .finally(() => {
           setTimeout(() => {
-            document.getElementById($formId)?.scrollIntoView();
+            document
+              .getElementById("session-" + $formId)
+              ?.parentElement?.scrollIntoView();
           }, 1500);
         });
   });
 </script>
 
-<div transition:slide>
+<div transition:slide id={"session-" + $formId}>
   <Logger bind:logger />
 </div>
