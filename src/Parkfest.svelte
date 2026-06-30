@@ -1,6 +1,7 @@
 <script>
   import Pay from "./funding/cart/Pay.svelte";
   import Checkout from "./funding/checkout/Checkout.svelte";
+  import Customers from "./funding/customers/Customers.svelte";
   import Funding from "./funding/Funding.svelte";
 </script>
 
@@ -78,7 +79,6 @@
 
   <!-- main grid -->
   <div class="grid-2col">
-    <!-- left: event & QR -->
     <div class="card">
       <h2><i class="fas fa-tree"></i> Park · Stage · Music</h2>
       <p style="margin-bottom: 0.5rem; color: #d0efe4;">
@@ -108,7 +108,9 @@
           style="display: flex; flex-direction: column; align-items: center;"
         >
           <h2>become a supporter · invest</h2>
+
           <Funding />
+
           <!-- <div class="qr-placeholder">
             <i class="fas fa-qrcode"></i> SCAN
           </div> -->
@@ -143,7 +145,7 @@
 
         <Pay />
 
-        <!-- <Checkout /> -->
+        <Checkout />
       </div>
 
       <div class="invest-note">
@@ -168,6 +170,9 @@
           transparent
         </span>
       </p>
+
+      <Customers />
+
       <div
         style="background: #0f2b25; border-radius: 18px; padding: 0.8rem 1rem; margin-bottom: 0.8rem;"
       >

@@ -7,22 +7,7 @@
   import { slide } from "svelte/transition";
   import type { LoggerMessage } from "../../logger";
   import Logger from "../../logger/Logger.svelte";
-
-  const {
-    formId,
-    amount,
-    currency,
-    interval,
-    email,
-    purpose,
-  }: {
-    formId: string;
-    amount: number;
-    currency: { code: string; symbol: string } | null;
-    interval: "month" | "one-time";
-    email: string;
-    purpose: string;
-  } = $props();
+  import { amount, currency, email, formId, interval, destination } from "../cart";
 
   onMount(() => {
     document
@@ -44,15 +29,15 @@
 
         const url = new URL(location.href);
         url.searchParams.delete("form_id");
-        url.searchParams.append("form_id", "" + formId);
+        url.searchParams.append("form_id", "" + $formId);
 
         const cartCheckout: Checkout = {
-          amount,
-          currency: currency?.code || "eur",
+          amount: $amount,
+          currency: $currency?.code || "eur",
           domain: url.href,
-          email,
-          purpose,
-          interval,
+          email: $email,
+          purpose: $destination,
+          interval: $interval,
         };
 
         return (

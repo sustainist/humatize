@@ -5,13 +5,12 @@
   import { slide } from "svelte/transition";
   import type { LoggerMessage } from "../../logger";
   import Logger from "../../logger/Logger.svelte";
+  import { formId } from "../cart";
 
   let {
     checkoutSessionId = $bindable(),
-    formId,
   }: {
     checkoutSessionId: string | null;
-    formId: string;
   } = $props();
 
   let logger: LoggerMessage[] = $state([]);
@@ -62,7 +61,7 @@
         })
         .finally(() => {
           setTimeout(() => {
-            document.getElementById(formId)?.scrollIntoView();
+            document.getElementById($formId)?.scrollIntoView();
           }, 1500);
         });
   });

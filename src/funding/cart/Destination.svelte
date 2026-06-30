@@ -1,11 +1,7 @@
 <script lang="ts">
-    let {
-        purpose = $bindable(),
-    }: {
-        purpose: string;
-    } = $props();
+    import { destination } from ".";
 </script>
 
 <div>
-    <textarea bind:value={purpose}></textarea>
+    <textarea bind:value={$destination}></textarea>
 </div>

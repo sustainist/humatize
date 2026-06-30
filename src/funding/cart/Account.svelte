@@ -6,8 +6,6 @@
     import Logger from "../../logger/Logger.svelte";
     import SignedIn from "../../account/signedIn/SignedIn.svelte";
 
-    let { email = $bindable() }: { email: string } = $props();
-
     let emailSource: "email" | "account" = $state("email");
 </script>
 
@@ -37,7 +35,7 @@
 </div>
 <div>
     {#if emailSource === "email"}
-        <Email bind:email />
+        <Email />
     {:else if emailSource === "account"}
         <div style:margin="0.25em 0">
             <Logger bind:logger={$logger} />

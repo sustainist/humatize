@@ -1,9 +1,5 @@
 <script lang="ts">
-    let {
-        email = $bindable(),
-    }: {
-        email: string;
-    } = $props();
+    import { email } from ".";
 </script>
 
 <div class="input-group">
@@ -13,7 +9,7 @@
             title="Email for managing your investments"
             placeholder="Email address"
             required
-            bind:value={email}
+            bind:value={$email}
         />
     </label>
 </div>

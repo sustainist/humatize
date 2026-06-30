@@ -7,47 +7,32 @@
     import Email from "./Email.svelte";
     import Destination from "./Destination.svelte";
     import Account from "./Account.svelte";
-
-    let {
-        formId,
-        purpose = $bindable(),
-        currency = $bindable(),
-        amount = $bindable(),
-        interval = $bindable(),
-        email = $bindable(),
-    }: {
-        formId: string;
-        amount: number;
-        currency: { code: string; symbol: string } | null;
-        interval: "month" | "one-time";
-        email: string;
-        purpose: string;
-    } = $props();
+    import { formId } from ".";
 </script>
 
 <!-- {#if $showCart} -->
-<form class="input-group"
+<form
+    class="input-group"
     onsubmit={(e) => {
         e.preventDefault();
-        $showFormCheckout = $showFormCheckout !== formId ? formId : null;
     }}
-    >
+>
     <div>
-        <h4>Account</h4>
-        <Account bind:email />
+        <h4>Value</h4>
+        <Destination />
     </div>
     <div>
-        <h4>Destination</h4>
-        <Destination bind:purpose />
+        <h4>Account</h4>
+        <Account />
     </div>
     <div>
         <h4>Amount</h4>
-        <Currency bind:currency {formId} />
-        <Amount bind:amount {formId} />
+        <Currency />
+        <Amount />
     </div>
     <div>
         <h4>Recurring</h4>
-        <Interval bind:interval {formId} />
+        <Interval />
     </div>
     <!--  <div>
                 <Pay {formId} />

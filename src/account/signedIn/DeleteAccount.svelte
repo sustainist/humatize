@@ -168,7 +168,8 @@
 <div>
   <form onsubmit={handleDelete}>
     {#if $user?.email}
-      <h5>
+      <h5>Delete Account</h5>
+      <div class="inline-options">
         <label>
           <input
             name="delete-account-agree"
@@ -176,14 +177,14 @@
             type="checkbox"
           /> Delete account
         </label>
-      </h5>
+      </div>
     {/if}
     {#if agree && $user?.providerData[0].providerId === "password"}
       {#if localStorage.getItem("signed in with link")}
         {@render deleteMessage($user.email)}
         <div>
           <input type="hidden" name="type" value="email-link" />
-          <button disabled={isDeleting} type="submit" name="go"
+          <button class="btn-primary" type="submit" name="go"
             >{#if isDeleting}<Loading
                 delay={0}
                 text="Sending link"
@@ -198,7 +199,11 @@
             <input type="password" name="password" placeholder="password" />
           </label>
           <input type="hidden" name="type" value="email-and-password" />
-          <button disabled={isDeleting} type="submit" name="go"
+          <button
+            class="btn-primary"
+            disabled={isDeleting}
+            type="submit"
+            name="go"
             >{#if isDeleting}<Loading
                 delay={0}
                 text="Deleting account"
@@ -210,7 +215,11 @@
       {@render deleteMessage($user.email)}
       <div>
         <input type="hidden" name="type" value="provider-google" />
-        <button disabled={isDeleting} type="submit" name="go"
+        <button
+          class="btn-primary"
+          disabled={isDeleting}
+          type="submit"
+          name="go"
           >{#if isDeleting}<Loading
               delay={0}
               text="Deleting account"

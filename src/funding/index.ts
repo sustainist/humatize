@@ -1,11 +1,6 @@
 import { writable } from "svelte/store";
 import { user } from "../firebase";
 
-export const makeId = (() => {
-  let id = 1;
-  return () => id++;
-})();
-
 export function jsonParse<T>(json: any, defaultValue: T): [unknown, T] {
   try {
     return [null, JSON.parse(json || "" + defaultValue) as T];

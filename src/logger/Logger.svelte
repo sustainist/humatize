@@ -9,16 +9,19 @@
   } = $props();
 </script>
 
-{#each logger as {message: log, type, cb}, i}
+{#each logger as { message: log, type, cb }, i}
   <div class={type} transition:slide>
     <button
+      title="close"
       type="button"
       onpointerdown={() => {
         logger.splice(i, 1);
         logger = logger;
         cb?.();
-      }}>&times;</button
+      }}
     >
+      <i class="fa-solid fa-xmark"></i>
+    </button>
     {log}
   </div>
 {/each}
@@ -26,13 +29,19 @@
 <style>
   button {
     padding: 0.5ch 1ch;
-    font-size: xx-small;
-    vertical-align: middle;
+    border: none;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+    &:hover {
+      color: white;
+    }
   }
   .error {
-    color: red;
+    color: lightcoral;
   }
   .info {
-    color: green;
+    color: lightgreen;
   }
 </style>

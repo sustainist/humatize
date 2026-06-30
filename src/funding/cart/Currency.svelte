@@ -3,14 +3,7 @@
   import { httpsCallable } from "firebase/functions";
   import { functions } from "../../firebase";
   import { currencies, formatCurrency, showFormCheckout } from "..";
-
-  let {
-    currency = $bindable(),
-    formId,
-  }: {
-    currency: { code: string; symbol: string } | null;
-    formId: string;
-  } = $props();
+  import { currency, formId } from ".";
 
   function updateCurrency() {
     if (selectedCurrency) {
@@ -18,12 +11,12 @@
         (c) => c.code === selectedCurrency,
       )?.symbol;
       if (symbol)
-        return (currency = {
+        return ($currency = {
           code: selectedCurrency,
           symbol,
         });
     }
-    currency = null;
+    $currency = null;
   }
 
   const mostTradedCurrenciesApril2025 = [
@@ -210,7 +203,7 @@
     ),
   );
 
-  let selectedCurrency: string | null = $derived(currency?.code || null);
+  let selectedCurrency: string | null = $derived($currency?.code || null);
 
   /* currencies.subscribe((value) => {
   const item = {
@@ -293,7 +286,7 @@
 {#if $currencies.length}
   <div>
     {#if search !== null}
-      <span>
+      <span style="display: flex; gap: 0.25em; align-items: center;">
         <label>
           <input
             oninput={() => {
@@ -308,15 +301,20 @@
               e.stopPropagation();
             }}
             type="text"
-            name="{formId}-currency-search"
+            name="{$formId}-currency-search"
             placeholder="Search currency..."
             style:width="15ch"
             bind:value={search}
           />
         </label>
-        <button type="button" onpointerdown={() => (search = null)}
-          >&times;</button
+        <button
+          title="close"
+          style="background: none; border: none; cursor: pointer;"
+          type="button"
+          onpointerdown={() => (search = null)}
         >
+          <i class="fas fa-times"></i>
+        </button>
       </span>
     {/if}
     {#if filteredCurrencies.length}
@@ -351,7 +349,7 @@
 <style>
   div {
     display: flex;
-    gap: 0.25em;
+    gap: 0.5em;
     flex-direction: column;
   }
 </style>

@@ -1,21 +1,15 @@
 <script lang="ts">
-  let {
-    interval = $bindable(),
-    formId,
-  }: {
-    interval: "month" | "one-time";
-    formId: string;
-  } = $props();
+  import { formId, interval } from ".";
 </script>
 
 <div class="inline-options">
   {#each [{ value: "month", label: "Monthly" }, { value: "one-time", label: "One-time" }] as { value, label }}
     <label>
       <input
-        name="{formId}-interval"
+        name="{$formId}-interval"
         type="radio"
         {value}
-        bind:group={interval}
+        bind:group={$interval}
       /><span>{label}</span>
     </label>
   {/each}

@@ -42,7 +42,7 @@
 <div>
   <h5>Name</h5>
   <form onsubmit={handleUpdate}>
-    <label>
+    <label style="margin:0.5em 0">
       <input
         disabled={!$user?.email}
         placeholder="Name"
@@ -53,6 +53,11 @@
         name="displayName"
       />
     </label>
-    <button disabled={!$user?.email} type="submit" name="update">Update</button>
+    <button
+      class="btn-primary"
+      disabled={!$user?.email}
+      type="submit"
+      name="update">Update name</button
+    >
   </form>
 </div>

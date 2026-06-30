@@ -44,11 +44,12 @@
     {$user?.email || ""}
     {#if $user?.providerData[0].providerId === "password"}
       {#if !emailVerified}
-        <button type="button" onclick={handleSendEmailVerification}
+        <button class="btn-primary" type="button" onclick={handleSendEmailVerification}
           >Verify</button
         >
         {#if showRefreshForVerifiedEmail}
           <button
+            class="btn-primary"
             type="button"
             onclick={() =>
               $user?.reload().then(() => {

@@ -3,22 +3,7 @@
   import { showFormCheckout } from "..";
   import Request from "./Request.svelte";
   import Return from "./Return.svelte";
-
-  const {
-    formId,
-    amount,
-    currency,
-    interval,
-    email,
-    purpose,
-  }: {
-    formId: string;
-    amount: number;
-    currency: { code: string; symbol: string } | null;
-    interval: "month" | "one-time";
-    email: string;
-    purpose: string;
-  } = $props();
+  import { formId } from "../cart";
 
   // checkout return
   let paramFormId: string | null = $state(null);
@@ -39,10 +24,10 @@
   });
 </script>
 
-{#if $showFormCheckout === formId}
-  <Request {formId} {amount} {currency} {interval} {email} {purpose} />
+{#if $showFormCheckout === $formId}
+  <Request />
 {/if}
 
-{#if paramCheckoutSessionId !== null && paramFormId === formId}
-  <Return bind:checkoutSessionId={paramCheckoutSessionId} {formId} />
+{#if paramCheckoutSessionId !== null && paramFormId === $formId}
+  <Return bind:checkoutSessionId={paramCheckoutSessionId} />
 {/if}
