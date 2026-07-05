@@ -14,7 +14,7 @@
   import type { LoggerMessage } from "../../logger";
   import Logger from "../../logger/Logger.svelte";
   import { showYourContributions } from ".";
-    import Account from "./Account.svelte";
+  import Account from "./Account.svelte";
 
   const handleCancelSubscription = (id: string) => {
     loadingCancelSubscription = true;
@@ -155,7 +155,10 @@
                   <span>
                     {formatDate(customer.created * 1000)}
                   </span>
-                  <span class="inline-options" style="display:inline-flex;gap:0.25rem">One-time</span>
+                  <span
+                    class="inline-options"
+                    style="display:inline-flex;gap:0.25rem">One-time</span
+                  >
                 </div>
               </td>
             {:else}
@@ -179,15 +182,26 @@
                     <span>
                       {formatDate(customer.canceled_at * 1000)}
                     </span>
-                    <span class="inline-options" style="display:inline-flex;gap:0.25rem">Monthly (Canceled)</span>
+                    <span
+                      class="inline-options"
+                      style="display:inline-flex;gap:0.25rem"
+                      >Monthly (Canceled)</span
+                    >
                   {:else if canceledSubscription?.id === customer.id && canceledSubscription?.canceled_at}
                     <span>-</span>
                     <span>
                       {formatDate(canceledSubscription.canceled_at * 1000)}
                     </span>
-                    <span class="inline-options" style="display:inline-flex;gap:0.25rem">Monthly (Canceled)</span>
+                    <span
+                      class="inline-options"
+                      style="display:inline-flex;gap:0.25rem"
+                      >Monthly (Canceled)</span
+                    >
                   {:else}
-                    <span class="inline-options" style="display:inline-flex;gap:0.25rem">
+                    <span
+                      class="inline-options"
+                      style="display:inline-flex;gap:0.25rem"
+                    >
                       <label>
                         <input
                           name="toggle-cancel-subscription-button"
@@ -258,7 +272,6 @@
 </div>
 
 <style>
-
   input {
     vertical-align: middle;
     &[name="toggle-cancel-subscription-button"] {

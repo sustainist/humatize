@@ -7,17 +7,21 @@
     let showAccount = $state(false);
 </script>
 
-<h5>Account <DisplayName /></h5>
-
-<div class="inline-options" style="display:inline-flex;margin-bottom:1rem;">
-    <label
-        ><input
-            name="show account"
-            type="checkbox"
-            bind:checked={showAccount}
-        /> Account options</label
+<h5>
+    Account <DisplayName />
+    <span
+        class="inline-options"
+        style="display:inline-flex;margin-bottom:1rem;"
     >
-</div>
+        <label
+            ><input
+                name="show account"
+                type="checkbox"
+                bind:checked={showAccount}
+            /> Settings</label
+        >
+    </span>
+</h5>
 
 {#if showAccount}
     <div class="input-group">
