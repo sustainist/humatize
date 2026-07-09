@@ -9,12 +9,15 @@ export function jsonParse<T>(json: any, defaultValue: T): [unknown, T] {
   }
 }
 
-export const customers = writable<Customer[] | null>(null);
+export const accountCustomers = writable<Customer[] | null>(null);
 user.subscribe((user) => {
   if (!user) {
-    customers.set(null);
+    accountCustomers.set(null);
   }
 });
+
+export const allCustomers = writable<Customer[] | null>(null);
+
 
 export const showFormCheckout = writable<string | null>(null);
 

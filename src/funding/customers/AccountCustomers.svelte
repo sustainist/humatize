@@ -1,7 +1,7 @@
 <script lang="ts">
   import { httpsCallable } from "firebase/functions";
   import { slide } from "svelte/transition";
-  import { customers, formatCurrency, formatDate } from "..";
+  import { accountCustomers, formatCurrency, formatDate } from "..";
   import Loading from "../../Loading.svelte";
   import { db, functions, user } from "../../firebase";
   import {
@@ -71,7 +71,7 @@
   let unsubscribeOnSnapshotCustomers = () => {};
   $effect(() => {
     if ($user?.email) {
-      if ($customers === null) {
+      if ($accountCustomers === null) {
         db &&
           (unsubscribeOnSnapshotCustomers = onSnapshot(
             query(
@@ -80,7 +80,7 @@
               orderBy("timestamp", "desc"),
             ),
             (snapshot) => {
-              $customers = snapshot.docs.map((doc) => doc.data() as Customer);
+              $accountCustomers = snapshot.docs.map((doc) => doc.data() as Customer);
             },
             (error) => {
               logger = [
@@ -95,7 +95,7 @@
       }
     } else {
       unsubscribeOnSnapshotCustomers();
-      $customers = null;
+      $accountCustomers = null;
     }
   });
 </script>
@@ -125,14 +125,14 @@
         </caption> -->
     <thead>
       <tr>
-        <th>Value</th>
+        <th>Project</th>
         <th>Amount</th>
-        <th>Recurring</th>
+        <th>Time</th>
       </tr>
     </thead>
     <tbody>
-      {#if $customers}
-        {#each $customers as customer (customer.id)}
+      {#if $accountCustomers}
+        {#each $accountCustomers as customer (customer.id)}
           <tr>
             <td>
               <div class="purpose">
@@ -155,10 +155,10 @@
                   <span>
                     {formatDate(customer.created * 1000)}
                   </span>
-                  <span
+                  <!-- <span
                     class="inline-options"
                     style="display:inline-flex;gap:0.25rem">One-time</span
-                  >
+                  > -->
                 </div>
               </td>
             {:else}
@@ -179,23 +179,23 @@
                   </span>
                   {#if typeof customer.canceled_at === "number"}
                     <span>-</span>
-                    <span>
+                    <span style="white-space:nowrap">
                       {formatDate(customer.canceled_at * 1000)}
                     </span>
                     <span
                       class="inline-options"
                       style="display:inline-flex;gap:0.25rem"
-                      >Monthly (Canceled)</span
+                      >Recurred Monthly</span
                     >
                   {:else if canceledSubscription?.id === customer.id && canceledSubscription?.canceled_at}
                     <span>-</span>
-                    <span>
+                    <span style="white-space:nowrap">
                       {formatDate(canceledSubscription.canceled_at * 1000)}
                     </span>
                     <span
                       class="inline-options"
                       style="display:inline-flex;gap:0.25rem"
-                      >Monthly (Canceled)</span
+                      >Recurred Monthly</span
                     >
                   {:else}
                     <span
@@ -220,7 +220,7 @@
                               ];
                             }
                           }}
-                        />Monthly</label
+                        />Recurring Monthly</label
                       >
                     </span>
                     {#if activeSubscriptions.includes(customer.id)}

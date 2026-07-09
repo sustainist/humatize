@@ -2,7 +2,7 @@
   import { currencies, jsonParse, showFormCheckout } from ".";
   import { user } from "../firebase";
   import Cart from "./cart/Cart.svelte";
-  import Customers from "./customers/Customers.svelte";
+  import Customers from "./customers/AccountCustomers.svelte";
   import Checkout from "./checkout/Checkout.svelte";
   import { onMount } from "svelte";
   import { destination, formId, makeId } from "./cart";

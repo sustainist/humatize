@@ -18,7 +18,7 @@
     }}
 >
     <div>
-        <h4>Value</h4>
+        <h4>Project</h4>
         <Destination />
     </div>
     <div>

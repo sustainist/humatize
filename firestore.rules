@@ -3,7 +3,10 @@ rules_version='2'
 service cloud.firestore {
   match /databases/{database}/documents {
     match /customers/{customerId} {
-      allow read: if request.auth != null && request.auth.token.email == resource.data.email;
+      allow read;
+      allow update: if request.auth != null
+        && request.auth.uid == customerId
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['displayName']);
     }
   }
 }

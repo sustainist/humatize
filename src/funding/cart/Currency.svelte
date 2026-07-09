@@ -303,7 +303,6 @@
             type="text"
             name="{$formId}-currency-search"
             placeholder="Search currency..."
-            style:width="15ch"
             bind:value={search}
           />
         </label>

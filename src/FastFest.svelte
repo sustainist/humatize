@@ -1,34 +1,37 @@
 <script>
+  import { addShares, getReferencePoint } from "./evaluation";
+  import Evaluation from "./evaluation/Evaluation.svelte";
   import Pay from "./funding/cart/Pay.svelte";
   import Checkout from "./funding/checkout/Checkout.svelte";
-    import Session from "./funding/checkout/Session.svelte";
-  import Customers from "./funding/customers/Customers.svelte";
+  import Session from "./funding/checkout/Session.svelte";
+  import Customers from "./funding/customers/AccountCustomers.svelte";
+  import AllCustomers from "./funding/customers/AllCustomers.svelte";
   import Funding from "./funding/Funding.svelte";
 </script>
 
 <svelte:head>
-  <title>🌍 Park Fest · Future Invest</title>
+  <title>🌍 FastFest · Future Invest</title>
   <meta
     name="description"
-    content="Join the Park Fest co-investment model: transparent profit-sharing, public participant list, and sustainable event support."
+    content="Join the FastFest co-investment model: transparent profit-sharing, public participant list, and sustainable event support."
   />
   <meta
     name="keywords"
-    content="Park Fest, co-investment, sustainable investments, public list, profit sharing, future economy"
+    content="FastFest, co-investment, sustainable investments, public list, profit sharing, future economy"
   />
   <meta name="author" content="Future Invest DAO" />
-  <meta property="og:title" content="🌍 Future Invest · Park Fest" />
+  <meta property="og:title" content="🌍 Future Invest · FastFest" />
   <meta
     property="og:description"
-    content="Join the Park Fest co-investment model: transparent profit-sharing, public participant list, and sustainable event support."
+    content="Join the FastFest co-investment model: transparent profit-sharing, public participant list, and sustainable event support."
   />
   <meta property="og:image" content="/images/concert.jpg" />
   <meta property="og:url" content="https://futureinvest.org/parkfest" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="🌍 Future Invest · Park Fest" />
+  <meta name="twitter:title" content="🌍 Future Invest · FastFest" />
   <meta
     name="twitter:description"
-    content="Join the Park Fest co-investment model: transparent profit-sharing, public participant list, and sustainable event support."
+    content="Join the FastFest co-investment model: transparent profit-sharing, public participant list, and sustainable event support."
   />
   <meta name="twitter:image" content="/images/concert.jpg" />
   <!-- Font & Icons -->
@@ -44,7 +47,7 @@
   />
   <link
     rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
   />
 </svelte:head>
 
@@ -52,36 +55,37 @@
   <!-- future badge -->
   <div class="future-badge">
     <i class="fas fa-leaf"></i>
-    <span>✦ future economy · sustainable finance</span>
+    <span>✦ humatize the sustainable finance network</span>
     <i class="fas fa-seedling" style="margin-left: 0.3rem;"></i>
   </div>
 
-  <h1>
-    🌳 Parkfest
-    <span style="white-space: nowrap; font-size: 0.7em;">
-      <span style="background: none; -webkit-text-fill-color: #bef5e2;">
-        · supporter</span
-      >
-      <span style="background: none; -webkit-text-fill-color: #bef5e2;">
-        · investor</span
-      >
-    </span>
+  <h1 style="font-size: 1.5rem;">
+    <!-- <i class="fas fa-rocket" style="color: #7bc3b0;"></i> -->
+    <i class="fas fa-music"></i> FastFest | The shortest route from dream to reality
   </h1>
-  <div class="subhead">
-    <i class="fas fa-music" style="color: #7bc3b0; margin-right: 10px;"></i>
 
-    <span class="highlight">A new way of investing</span> — transparent,
-    participatory, and planet‑forward.
+  <p>
+    FastFest puts into practice the community concept: within a community,
+    people make better decisions, progress faster, are more inspired, and build
+    relationships that support long-term wellbeing. Research shows that
+    communities accelerate learning, productivity, and success.
+  </p>
 
-    <span class="highlight">This is a MVP of the new investment model. </span>
-    <br />
-    Work in progress stay tuned...
-  </div>
+  <p>
+    FastFest uses the The fast track method: master the smallest to move forward
+    the fastest. A composer writes the simplest, catchiest song. Musicians learn
+    it quickly. They meet, play together, and experience the power of
+    community—inspired to create more, learn faster, and live their dreams
+    sooner.
+  </p>
 
   <!-- main grid -->
   <div class="grid-2col">
     <div class="card">
-      <h2><i class="fas fa-tree"></i> Park · Stage · Music</h2>
+      <h2>
+        <!-- <i class="fas fa-tree"></i> --> <i class="fas fa-rocket"></i>
+        <!-- <i class="fa-solid fa-hand-holding-hand"></i> --> project
+      </h2>
       <p style="margin-bottom: 0.5rem; color: #d0efe4;">
         <i class="fas fa-location-dot" style="color: #6fc0ab;"></i>
         <a
@@ -104,6 +108,65 @@
         >
       </div>
 
+      <div class="qr-block">
+        <div class="table-container">
+          <table class="list-table">
+            <caption>FastFest Investment Structure</caption>
+            <thead>
+              <tr>
+                <th><a href="/#oas">Order & Size</a></th>
+                <th>Participant</th>
+                <th>Compensation</th>
+                <!-- <th>Curve</th> -->
+              </tr>
+            </thead>
+            <tbody style="text-align: left;">
+              <tr>
+                <td>1. 30%</td>
+                <td> · Artists </td>
+                <td> · €100 </td>
+                <!-- <td> 30% </td> -->
+              </tr>
+              <tr>
+                <td>1.1. 25%</td>
+                <td> · · Performers </td>
+                <td> · · €100 </td>
+                <!-- <td> -- 30% </td> -->
+              </tr>
+              <tr>
+                <td>1.2. 20%</td>
+                <td> · · Composers </td>
+                <td> · · €100 </td>
+                <!-- <td> -- 30% </td> -->
+              </tr>
+              <tr>
+                <td>1. 15%</td>
+                <td> · Organizers </td>
+                <td> · €100 </td>
+                <!-- <td> 30% </td> -->
+              </tr>
+              <tr>
+                <td>1. 10%</td>
+                <td> · Scene </td>
+                <td> · €100 </td>
+                <!-- <td> 20% </td> -->
+              </tr>
+              <tr>
+                <td>1. 8%</td>
+                <td> · Sounding </td>
+                <td> · €100 </td>
+                <!-- <td> 20% </td> -->
+              </tr>
+              <tr>
+                <td>1. 5%</td>
+                <td> · Platform </td>
+                <td> · €100 </td>
+                <!-- <td> 20% </td> -->
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
       <div class="qr-block">
         <div
           style="display: flex; flex-direction: column; align-items: center;"
@@ -147,7 +210,6 @@
         <Pay />
 
         <Checkout />
-
       </div>
 
       <div class="invest-note">
@@ -161,7 +223,7 @@
     <!-- right: investor / supporter view -->
     <div class="card">
       <h2>
-        <i class="fas fa-chart-simple"></i> supporter view · your investments
+        <i class="fas fa-chart-simple"></i> backers
       </h2>
       <p style="color: #c5e6db; margin-bottom: 1.2rem;">
         See the final participant list &amp; profit shares. <br />
@@ -176,6 +238,8 @@
       <Session />
 
       <Customers />
+
+      <AllCustomers />
 
       <div
         style="background: #0f2b25; border-radius: 18px; padding: 0.8rem 1rem; margin-bottom: 0.8rem;"
@@ -328,6 +392,53 @@
       </span>
     </div>
   </div>
+
+  <h3>Sustainable distribution</h3>
+
+  <h4>Example 0</h4>
+
+  <Evaluation example={0} />
+
+  <h4>Example 1</h4>
+
+  <Evaluation example={1} />
+
+  {addShares({
+    profit: 2000,
+    startPosition: 1,
+    endPosition: 100,
+    participants: 1000,
+  })}
+
+  {addShares({
+    profit: 2000,
+    startPosition: 101,
+    endPosition: 1000,
+    participants: 1000,
+  })}
+
+  <h4>Example 2</h4>
+
+  <Evaluation example={2} />
+
+  <hr />
+
+  <h2 style="font-size: 1.2rem; ">Humatize - Humanize to Monetize</h2>
+
+  <div class="subhead">
+    <!-- <i class="fas fa-rocket"></i>  -->
+    <!-- <i class="fas fa-music" style="color: #7bc3b0; margin-right: 10px;"></i> -->
+    <i class="fas fa-tree"></i>
+    <!-- 🌳 -->
+    Humatize wants for every human contribution to be acknowledged (humanize) so
+    fair compensation becomes possible (monetize).
+  </div>
+
+  <h1>📄 Manifest</h1>
+
+  <h2>Sustainable Finance</h2>
+
+  <p id="oas">Order & Size</p>
 
   <!-- ========== COMMON INPUTS SECTION ========== -->
   <div style="margin: 3rem 0 2rem;">
