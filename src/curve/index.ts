@@ -256,12 +256,20 @@ curveOrientation.subscribe((value) =>
 export type EvaluationExample = {
   profit: number;
   position?: number;
+  participantName: 'Creator' | 'Backer'
   participants: ({
     id: number;
     text: string;
     parent: number;
+    showCheckmark?: boolean;
+    pledge?: string;
+    timestamp?: string
+    person?: boolean
   } | null)[];
   editOrder?: boolean;
+  showCompensation?: boolean;
+  showPledge?: boolean;
+  showTimeline?: boolean
 } & (
     | { showOrder: boolean; showSize?: never }
     | { showOrder?: never; showSize: boolean }

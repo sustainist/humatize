@@ -1,22 +1,61 @@
 :root {
-    color-scheme: light dark;
+  color-scheme: light dark;
 }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+.humatize-manifest {
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #0b1a1a;
-      background-image: radial-gradient(circle at 20% 30%, #1d3b3b 0%, #0a1414 90%);
-      color: #d4e9e9;
-      line-height: 1.5;
-      min-height: 100vh;
-      padding: 2rem 1.5rem;
-    }
+  h1 {
+    font-size: 2em;
+    /* ~32px */
+    font-weight: bold;
+  }
+
+  h2 {
+    font-size: 1.5em;
+    /* ~24px */
+    font-weight: bold;
+  }
+
+  h3 {
+    font-size: 1.17em;
+    /* ~18.72px */
+    font-weight: bold;
+  }
+
+  h4 {
+    font-size: 1em;
+    /* 16px */
+    font-weight: bold;
+  }
+
+  h5 {
+    font-size: 0.83em;
+    /* ~13.28px */
+    font-weight: bold;
+  }
+
+  h6 {
+    font-size: 0.67em;
+    /* ~10.72px */
+    font-weight: bold;
+  }
+}
+
+/* * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #0b1a1a;
+  background-image: radial-gradient(circle at 20% 30%, #1d3b3b 0%, #0a1414 90%);
+  color: #d4e9e9;
+  line-height: 1.5;
+  min-height: 100vh;
+  padding: 2rem 1.5rem;
+} */
 
 /* fieldset {
   width: fit-content;
@@ -51,9 +90,10 @@ table {
   }
 }
 */
+
 .icon {
   width: 1em;
   height: 1em;
   vertical-align: middle;
   margin-top: -0.25em;
-} 
+}
