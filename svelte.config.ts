@@ -172,9 +172,11 @@ export default {
                                 const values = line.split(": ");
                                 if (values[0] === 'title') {
                                     const value = values[1].trim()
-                                    const splits = value.split("-")
+
+                                    const regex = /[-|]/;
+                                    const splits = value.split(regex)
                                     const title = splits[0].trim()
-                                    const tagline = splits.length > 1 ? ('<small>-</small><small>' + splits[1].trim() + '</small>') : '';
+                                    const tagline = splits.length > 1 ? (`<small>${value.match(regex)?.[0] || ''}</small><small>` + splits[1].trim() + '</small>') : '';
                                     header += `<h1 style="font-size:clamp(0.83rem,4vw,2rem);text-align:center;font-weight:normal;text-transform:uppercase;letter-spacing:2px"><a style="color:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:0.5ch" href="/">${title}${tagline}</a></h1>`
                                 } else if (values[0] === 'subtitle') {
                                     const value = values[1].trim()
