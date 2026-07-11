@@ -77,12 +77,12 @@
   :global {
     .container-toc-and-content {
       display: grid;
-      grid-template-columns: minmax(0, 400px) minmax(0, 1fr);
-      gap: 2.5rem;
+      grid-template-columns: minmax(0, 400px) minmax(0, 1200px);
+      gap: 1.25rem;
       margin: 2.5rem 0 3rem;
     }
 
-    @media (max-width: 800px) {
+    @media (max-width: 1200px) {
       .container-toc-and-content {
         grid-template-columns: 1fr;
       }
@@ -100,14 +100,13 @@
         gap: 0.5rem;
         display: inline-flex;
         flex-wrap: wrap;
-          color: #d4e9e9;
 
         .section-link {
           font-size: 1rem;
           text-decoration: none;
-          opacity: 0.5;
+          opacity: 0.75;
           transition: opacity 400ms;
-          
+
           &::before {
             content: "§";
           }

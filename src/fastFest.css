@@ -65,10 +65,11 @@ h1 {
     font-size: 3.2rem;
     font-weight: 700;
     letter-spacing: -0.02em;
-    background: linear-gradient(145deg, #e0faf0, #a0e6d0);
+    /* background: linear-gradient(145deg, #e0faf0, #a0e6d0);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-clip: text;
+    background-clip: text; */
+    color: #cdefe5;
     margin-bottom: 0.75rem;
     line-height: 1.1;
 }
