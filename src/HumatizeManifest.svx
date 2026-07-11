@@ -2,4 +2,28 @@
 title: Humatize Manifest
 ---
 
-# Sustainable Distribution
+<I p="./Toc.svelte" />
+
+# Sustainable Economy
+
+This is the paragraph.
+
+## Order
+
+## Size
+
+# New line
+
+## New line
+
+### New line
+
+#### New line
+
+##### New line
+
+###### New line
+
+# New line
+
+# New line

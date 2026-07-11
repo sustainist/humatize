@@ -133,7 +133,7 @@
                             <!-- <span style="opacity:0.5">|</span> -->
                             <!-- midpoint -->
                             <a href="/#" class="investor-tag"
-                                ><i class="fa-solid fa-scale-balanced"></i> midpoint</a
+                                ><i class="fa-solid fa-scale-balanced"></i> ref</a
                             >
                         {/if}
                     </td>

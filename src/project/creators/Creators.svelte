@@ -14,39 +14,64 @@
             participants: [
                 {
                     id: 1,
-                    text: "A",
+                    text: "Artists",
                     parent: 0,
                 },
                 {
                     id: 2,
-                    text: "B",
-                    parent: 0,
-                },
-                {
-                    id: 3,
-                    text: "A A",
+                    text: "Performers",
                     parent: 1,
                     showCheckmark: true,
                 },
                 {
-                    id: 4,
-                    text: "A B",
+                    id: 3,
+                    text: "Songwriters",
                     parent: 1,
                 },
                 {
+                    id: 4,
+                    text: "Production",
+                    parent: 0,
+                },
+                {
                     id: 5,
-                    text: "A B A",
+                    text: "Sound Engineers",
                     parent: 4,
                 },
                 {
                     id: 6,
-                    text: "A B B",
+                    text: "Stage renters",
                     parent: 4,
                 },
                 {
                     id: 7,
-                    text: "A B B A",
-                    parent: 6,
+                    text: "Live streaming",
+                    parent: 4,
+                },
+                {
+                    id: 8,
+                    text: "Operations",
+                    parent: 0,
+                },
+                {
+                    id: 9,
+                    text: "Organization",
+                    parent: 8,
+                },
+                {
+                    id: 10,
+                    text: "Marketing",
+                    parent: 8,
+                },
+                {
+                    id: 11,
+                    text: "Platform",
+                    parent: 0,
+                },
+                {
+                    id: 12,
+                    text: "humatize.com",
+                    parent: 11,
                 },
             ],
         },

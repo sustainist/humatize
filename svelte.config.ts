@@ -96,6 +96,7 @@ export default {
                     const usedIds: Record<string, number> = {};
                     const buildToc: Heading[] = [];
                     let nodeToc: Tree | null = null;
+                    let nodeScript: Tree | null = null;
                     const containerIndexesToc: number[] = [];
 
 
@@ -105,53 +106,57 @@ export default {
 
                             if (node.type === "heading") {
 
-                                if (nodeToc) {
-                                    let textFromTransformer = "";
-                                    let allFromTransformer = "";
-                                    let textContent = "";
-                                    let textAct = "";
+                                // if (nodeToc) {
+                                let textFromTransformer = "";
+                                let allFromTransformer = "";
+                                let textContent = "";
+                                let textAct = "";
 
-                                    node.children?.forEach((child: Tree) => {
-                                        if (child.type === "text") {
-                                            let value = child.value || "";
-                                            textFromTransformer += value;
-                                            allFromTransformer += value;
-                                        } else if (child.type === "html") {
-                                            if (child.value) {
-                                                allFromTransformer += child.value;
-                                            }
+                                node.children?.forEach((child: Tree) => {
+                                    if (child.type === "text") {
+                                        let value = child.value || "";
+                                        textFromTransformer += value;
+                                        allFromTransformer += value;
+                                    } else if (child.type === "html") {
+                                        if (child.value) {
+                                            allFromTransformer += child.value;
                                         }
+                                    }
+                                });
+
+                                const id = makeId(textFromTransformer);
+
+                                const { current, ancestors: indexesAncestorsToc } =
+                                    setIndexes({
+                                        level: node.depth!,
+                                        containerIndexes: containerIndexesToc,
                                     });
+                                const indexCurrentToc = current;
 
-                                    const id = makeId(textFromTransformer);
+                                fillLevels(indexesAncestorsToc, buildToc).push({
+                                    text: textFromTransformer,
+                                    id,
+                                    index: indexCurrentToc,
+                                    children: [],
+                                });
 
-                                    const { current, ancestors: indexesAncestorsToc } =
-                                        setIndexes({
-                                            level: node.depth!,
-                                            containerIndexes: containerIndexesToc,
-                                        });
-                                    const indexCurrentToc = current;
+                                textContent += `<span class="index">${indexCurrentToc.join(".")}.</span> `;
+                                textAct += `<a href="#${id}" class="section-link" title="Section link"></a>`;
 
-                                    fillLevels(indexesAncestorsToc, buildToc).push({
-                                        text: textFromTransformer,
-                                        id,
-                                        index: indexCurrentToc,
-                                        children: [],
-                                    });
+                                parent.children![parent.children!.indexOf(node)] = {
+                                    type: "html",
+                                    value: `<h${node.depth} id="${id}"><span class="content">${textContent + allFromTransformer}</span><span class="act">${textAct}</span></h${node.depth}>`,
+                                };
 
-                                    textContent += `<span class="index">${indexCurrentToc.join(".")}.</span> `;
-                                    textAct += `<a href="#${id}" class="section-link" title="Section link"></a>`;
-
-                                    parent.children![parent.children!.indexOf(node)] = {
-                                        type: "html",
-                                        value: `<h${node.depth} id="${id}"><span class="content">${textContent + allFromTransformer}</span><span class="act">${textAct}</span></h${node.depth}>`,
-                                    };
-
-                                }
+                                // }
                             } else if (node.type === "html") {
 
                                 if (/<.*Toc.svelte/.test(node.value!)) {
                                     nodeToc = node;
+                                }
+
+                                if (/<script>/.test(node.value!)) {
+                                    nodeScript = node;
                                 }
 
                             } else if (node.type === "yaml") {
@@ -195,10 +200,39 @@ export default {
                         }
 
                         if (nodeToc) {
-                            tree.children![tree.children!.indexOf(nodeToc)] = {
+                            const tocIndex = tree.children!.indexOf(nodeToc);
+                            const tocMarkup = nodeToc.value!.replace(/(\/>)/, ` list='${JSON.stringify(buildToc).replace(/{/g, "&#123").replace(/}/g, "&#125")}'$1`);
+
+                            tree.children!.splice(tocIndex, 1, {
                                 type: "html",
-                                value: nodeToc.value!.replace(/(\/>)/, ` list='${JSON.stringify(buildToc).replace(/{/g, "&#123").replace(/}/g, "&#125")}'$1`),
-                            };
+                                value: `<div class="container-toc-and-content">`,
+                            }, {
+                                type: "html",
+                                value: `<div class="container-toc">${tocMarkup}</div><div class="container-content">`,
+                            });
+
+                            tree.children!.push({
+                                type: "html",
+                                value: `</div></div>`,
+                            });
+                        }
+
+                        if (nodeScript) {
+                            const scriptContent = nodeScript.value || "";
+                            if (!/import\s+I\s+from\s+["']\.\/DynamicComponent\.svelte['"]/.test(scriptContent)) {
+
+                                tree.children![tree.children!.indexOf(nodeScript)] = {
+                                    type: "html",
+                                    value: scriptContent.replace(/<script>/, `<script>\nimport I from './DynamicComponent.svelte';\n`),
+                                };
+                            }
+
+
+                        } else {
+                            tree.children!.splice(0, 0, {
+                                type: "html",
+                                value: `<script>\nimport I from './DynamicComponent.svelte';\n</script>`,
+                            });
                         }
 
                         nodeYaml = null;
