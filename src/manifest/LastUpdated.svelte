@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    const link = `https://github.com/sustainist/humatize/commits/main/src/manifest/HumatizeManifest.svx`;
-    const commit = `https://api.github.com/repos/sustainist/humatize/commits?path=src/manifest/HumatizeManifest.svx&page=1&per_page=1`;
+    const link = `https://github.com/sustainist/humatize/commits/main/src/HumatizeManifest.svx`;
+    const commit = `https://api.github.com/repos/sustainist/humatize/commits?path=src/HumatizeManifest.svx&page=1&per_page=1`;
 
     let date = $state("");
     let errMsg = $state("");

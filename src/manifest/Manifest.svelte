@@ -1,5 +1,5 @@
 <script>
-    import HumatizeManifest from "./HumatizeManifest.svx";
+    import HumatizeManifest from "../HumatizeManifest.svx";
 </script>
 
 <hr />
