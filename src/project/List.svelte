@@ -46,34 +46,13 @@
             {#if items.showOrder}
                 <td>
                     <div class="flex">
-                        <div>
-                            <span style="white-space:nowrap">
-                                {[...depth, i + 1].join(".")}
-                                <span style="opacity:0.5">|</span>
-                                {Math.round(tautochronePercentage * 100)}%
-                                <!-- {#if [...depth, i + 1].join(",") === "1,2"}
-                                    <span style="opacity:0.5">|</span>
-                                    &check;
-                                {/if} -->
-                            </span>
-                        </div>
-
-                        <!-- <div>
-                            <span class="indent">
-                                {#each { length: depth.length } as _}
-                                    <span>&middot;</span>
-                                {/each}
-                            </span>
-
-                        </div> -->
-                    </div>
-                </td>
-                <td>
-                    <div class="flex">
                         <div class="participant">
                             <span class="indent">
-                                {#each { length: depth.length } as _}
-                                    <span>&middot;</span>
+                                {#each { length: depth.length } as _, indexDepth}
+                                    <!-- <span>&middot;</span> -->
+                                    <span
+                                        >&nbsp;&nbsp;&nbsp;{#if indexDepth + 1 === depth.length}└─{/if}</span
+                                    >&nbsp;
                                 {/each}
                             </span>
                             {#if sibling?.person}
@@ -82,7 +61,23 @@
                                 </span>
                             {/if}
                             <span>
-                                {sibling?.text}
+                                {@html sibling?.text}
+                            </span>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="flex">
+                        <div>
+                            <span style="white-space:nowrap">
+                                <!-- {[...depth, i + 1].join(".")}
+                                <span style="opacity:0.5">|</span> -->
+                                {#each { length: depth.length } as _, indexDepth}
+                                    <span
+                                        >&nbsp;&nbsp;&nbsp;{#if indexDepth + 1 === depth.length}└─{/if}</span
+                                    >&nbsp;
+                                {/each}
+                                {Math.round(tautochronePercentage * 100)}%
                             </span>
                         </div>
                     </div>
@@ -120,8 +115,14 @@
                 {#if items.showCompensation}
                     <td style="white-space:nowrap">
                         <span class="indent">
-                            {#each { length: depth.length } as _}
+                            <!-- {#each { length: depth.length } as _}
                                 <span>&middot;</span>
+                            {/each} -->
+                            {#each { length: depth.length } as _, indexDepth}
+                                <!-- <span>&middot;</span> -->
+                                <span
+                                    >&nbsp;&nbsp;&nbsp;{#if indexDepth + 1 === depth.length}└─{/if}</span
+                                >&nbsp;
                             {/each}
                         </span>
 
@@ -217,22 +218,21 @@
             </form>
         </div>
     {/if}
-    <div>
-        Goal: {items.profit}
-    </div>
+
     <div style="overflow-x:auto;width:100%">
         <table>
             <thead>
                 <tr>
                     {#if items.showOrder}
                         <th>
-                            <!-- <IconOrder /> -->
-                            Rank
-                        </th>
-                        <th>
                             <!-- <IconParticipants /> -->
                             <!-- Participants -->
-                            {items.participantName}
+                            <!-- {items.participantName} -->
+                            Participants
+                        </th>
+                        <th>
+                            <!-- <IconOrder /> -->
+                            Sustainable Distribution
                         </th>
                     {/if}
                     {#if items.showSize}
@@ -329,6 +329,9 @@
                                     <span>
                                         <!-- <IconShare /> -->
                                         Compensation
+                                        <span style="display:inline-block"
+                                            >(Goal: {items.profit})</span
+                                        >
                                     </span>
                                 </div>
                             </th>
@@ -362,7 +365,7 @@
         display: flex;
         flex-wrap: wrap;
     }
-    .indent {
+    /*.indent {
         color: gray;
         line-height: 0;
         display: inline-flex;
@@ -372,7 +375,7 @@
         &:empty {
             display: none;
         }
-    }
+    }*/
     .participant {
         display: flex;
         align-items: center;

@@ -11,12 +11,19 @@
     loadingText?: string;
   } & Record<string, any> = $props();
 
-  type ImportPath = "./funding/Funding.svelte" | "./Toc.svelte";
+  type ImportPath =
+    | "./funding/Funding.svelte"
+    | "./Toc.svelte"
+    | "./LastUpdated.svelte";
 
   const i: Map<ImportPath, Promise<{ default: Component<any> }>> = new Map();
 
   i.set("./funding/Funding.svelte", import("./funding/Funding.svelte"));
   i.set("./Toc.svelte", import("./Toc.svelte"));
+  i.set(
+    "./LastUpdated.svelte",
+    import("./manifest/LastUpdated.svelte"),
+  );
 </script>
 
 {#if i.has(p)}

@@ -184,7 +184,7 @@ export default {
                                     // const title = splits[0].trim()
                                     // const tagline = splits.length > 1 ? (`<small>${value.match(regex)?.[0] || ''}</small><small>` + splits[1].trim() + '</small>') : '';
                                     // header += `<h1 id="${id}" style="font-size:clamp(0.83rem,4vw,2rem);text-align:center;font-weight:normal;text-transform:uppercase"><a style="color:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:0.5ch" href="/">${value}</a></h1>`
-                                    header += `<h1 id="${id}" style="font-size:clamp(0.83rem,4vw,2rem);text-align:center;font-weight:normal;text-transform:uppercase"><a style="color:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:0.5ch" href="/#${id}">${value}</a></h1>`
+                                    header += `<h1 id="${id}" style="font-weight:normal;text-transform:uppercase"><a style="color:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:0.5ch" href="/#${id}">${value}</a></h1>`
                                 } else if (values[0] === 'subtitle') {
                                     const value = values[1].trim()
                                     const id = makeId(value);
@@ -192,11 +192,13 @@ export default {
                                 }
                             });
 
-                            if (header) tree.children!.splice(tree.children!.indexOf(nodeYaml) + 1, 0,
-                                {
-                                    type: "html",
-                                    value: `<header>${header}</header>`
-                                })
+                            if (header) {
+                                tree.children!.splice(tree.children!.indexOf(nodeYaml) + 1, 0,
+                                    {
+                                        type: "html",
+                                        value: `<header style="text-align:center">${header}<I p="./LastUpdated.svelte" /></header>`
+                                    })
+                            }
                         }
 
                         if (nodeToc) {
