@@ -1,5 +1,6 @@
 ---
-title: Humatize | Sustainable Crowdfunding
+title: Humatize
+subtitle: Sustainable Crowdfunding
 ---
 
 <center>🚧</center>
