@@ -10,6 +10,7 @@
     import IconParticipants from "../curve/IconParticipants.svelte";
     import IconSize from "../curve/IconSize.svelte";
     import IconShare from "../curve/IconShare.svelte";
+    import { roundedCreators } from ".";
 
     let {
         items,
@@ -46,22 +47,9 @@
             {#if items.showOrder}
                 <td>
                     <div class="flex">
-                        <div class="participant">
-                            <span class="indent">
-                                {#each { length: depth.length } as _, indexDepth}
-                                    <!-- <span>&middot;</span> -->
-                                    <span
-                                        >&nbsp;&nbsp;&nbsp;{#if indexDepth + 1 === depth.length}└─{/if}</span
-                                    >&nbsp;
-                                {/each}
-                            </span>
-                            {#if sibling?.person}
-                                <span>
-                                    <i class="fa-solid fa-user"></i>&nbsp;
-                                </span>
-                            {/if}
-                            <span>
-                                {@html sibling?.text}
+                        <div>
+                            <span style="white-space:nowrap">
+                                {[...depth, i + 1].join(".")}
                             </span>
                         </div>
                     </div>
@@ -77,11 +65,39 @@
                                         >&nbsp;&nbsp;&nbsp;{#if indexDepth + 1 === depth.length}└─{/if}</span
                                     >&nbsp;
                                 {/each}
-                                {Math.round(tautochronePercentage * 100)}%
+                                {#if $roundedCreators}
+                                    {Math.round(tautochronePercentage * 100)}%
+                                {:else}
+                                    {tautochronePercentage * 100}%
+                                {/if}
                             </span>
                         </div>
                     </div>
                 </td>
+                {#if !items.hideParticipants}
+                    <td>
+                        <div class="flex">
+                            <div class="participant">
+                                <span class="indent">
+                                    {#each { length: depth.length } as _, indexDepth}
+                                        <!-- <span>&middot;</span> -->
+                                        <span
+                                            >&nbsp;&nbsp;&nbsp;{#if indexDepth + 1 === depth.length}└─{/if}</span
+                                        >&nbsp;
+                                    {/each}
+                                </span>
+                                {#if sibling?.person}
+                                    <span>
+                                        <i class="fa-solid fa-user"></i>&nbsp;
+                                    </span>
+                                {/if}
+                                <span>
+                                    {@html sibling?.text}
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                {/if}
             {/if}
             {#if items.showSize}
                 <!-- <td style="white-space:nowrap">
@@ -127,14 +143,18 @@
                         </span>
 
                         <b>
-                            {Math.round(tautochroneShare)}
+                            {#if $roundedCreators}
+                                {Math.round(tautochroneShare)}
+                            {:else}
+                                {tautochroneShare}
+                            {/if}
                         </b>
 
                         {#if sibling?.showCheckmark}
                             <!-- <span style="opacity:0.5">|</span> -->
                             <!-- midpoint -->
                             <a href="/#" class="investor-tag"
-                                ><i class="fa-solid fa-scale-balanced"></i> ref</a
+                                ><i class="fa-solid fa-scale-balanced"></i> reference</a
                             >
                         {/if}
                     </td>
@@ -162,7 +182,7 @@
                         <!-- <span style="opacity:0.5">|</span>
                         init -->
                         <a href="/#" class="supporter-tag"
-                            ><i class="fa-solid fa-coins"></i> init</a
+                            ><i class="fa-solid fa-coins"></i> goal</a
                         >
                     {/if}
                 </td>
@@ -179,7 +199,7 @@
         {@render trs(
             items.participants.filter((item) => {
                 if (item === null || sibling === null) return false;
-                return item.parent === sibling.id;
+                return (item.parent || 0) === sibling.id;
             }),
             tautochroneShare,
             [...depth, i + 1],
@@ -224,16 +244,18 @@
             <thead>
                 <tr>
                     {#if items.showOrder}
-                        <th>
-                            <!-- <IconParticipants /> -->
-                            <!-- Participants -->
-                            <!-- {items.participantName} -->
-                            Participants
-                        </th>
-                        <th>
+                        <th colspan="2">
                             <!-- <IconOrder /> -->
                             Sustainable Distribution
                         </th>
+                        {#if !items.hideParticipants}
+                            <th>
+                                <!-- <IconParticipants /> -->
+                                <!-- Participants -->
+                                <!-- {items.participantName} -->
+                                Participants
+                            </th>
+                        {/if}
                     {/if}
                     {#if items.showSize}
                         <!-- <th>
@@ -328,9 +350,13 @@
                                 {/if} -->
                                     <span>
                                         <!-- <IconShare /> -->
-                                        Compensation
+                                        Rewards
                                         <span style="display:inline-block"
-                                            >(Goal: {items.profit})</span
+                                            >(Goal:{#if $roundedCreators}
+                                                {Math.round(items.profit)}
+                                            {:else}
+                                                {items.profit}
+                                            {/if})</span
                                         >
                                     </span>
                                 </div>

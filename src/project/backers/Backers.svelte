@@ -1,6 +1,10 @@
 <script lang="ts">
+    import { goal } from "..";
     import type { EvaluationExample } from "../../curve";
     import List from "../List.svelte";
+    import participants from "./participants.json";
+
+    const parts = participants as EvaluationExample["participants"];
 
     const list: (EvaluationExample | undefined)[] = [
         {
@@ -11,34 +15,15 @@
             showPledge: true,
             participantName: "Backer",
             showTimeline: true,
-            participants: [
-                {
-                    id: 1,
-                    text: "Alin Stan",
-                    parent: 0,
-                    showCheckmark: true,
-                    pledge: "$100",
-                    timestamp: "2026-07-15T12:00:00Z",
-                    person: true
-                },
-                /* {
-                    id: 2,
-                    text: "",
-                    parent: 0,
-                    pledge: "$50",
-                    timestamp: "2023-10-02T10:00:00Z",
-                },
-                {
-                    id: 3,
-                    text: "",
-                    parent: 0,
-                    pledge: "$25",
-                    timestamp: "2023-10-03T10:00:00Z",
-                }, */
-            ],
+            participants: parts.map((participant, i) => {
+                if (i === 0 && participant) participant.pledge = "" + $goal;
+                return participant;
+            }),
         },
     ];
     const index = 0;
+
+    let simulateBackers = $state(false);
 </script>
 
 {#if list[index]}
@@ -47,4 +32,25 @@
     <p style="color:red">
         &lt;List items=&lbrace;{index}&rbrace; /&gt; not found
     </p>
+{/if}
+
+<br />
+
+<div class="inline-options" style="width:fit-content">
+    <label
+        ><input
+            bind:checked={simulateBackers}
+            type="checkbox"
+            name="simulate-backers"
+        /> Simulate Backers Rewards</label
+    >
+</div>
+
+<br />
+
+{#if simulateBackers}
+    <div class="demo-box">
+        
+
+    </div>
 {/if}
