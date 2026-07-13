@@ -4,11 +4,11 @@
     import List from "../List.svelte";
     // simulation
     let simulateCreators = $state(
-        localStorage.getItem("simulateCreators") === "true",
+        /* localStorage.getItem("simulateCreators") === "true", */false
     );
-    $effect(() => {
+    /* $effect(() => {
         localStorage.setItem("simulateCreators", "" + simulateCreators);
-    });
+    }); */
     // amount
     let simulateAmount = $state(+(localStorage.getItem("simulateAmount") || 0));
     $effect(() => {
