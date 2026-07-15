@@ -1,10 +1,27 @@
 [
     {
-        "id": 1,
         "text": "Alin Stan",
         "parent": 0,
-        "showCheckmark": true,
         "timestamp": "2026-07-15T12:00:00Z",
-        "person": true
+        "person": true,
+        "pledge": 100
+    },
+    {
+        "text": "More Dore",
+        "parent": 0,
+        "person": true,
+        "pledge": 1000
+    },
+    {
+        "text": "More Dore",
+        "parent": 0,
+        "person": true,
+        "pledge": 1000
+    },
+    {
+        "text": "More Dore",
+        "parent": 0,
+        "person": true,
+        "pledge": 1000
     }
 ]

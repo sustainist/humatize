@@ -6,13 +6,13 @@
     },
     {
         "id": 2,
-        "text": "<i class=\"fa-solid fa-play\"></i> Performers (band of 5)",
+        "text": "<i class=\"fa-solid fa-play\"></i> Performers (5 people)",
         "parent": 1,
         "showCheckmark": true
     },
     {
         "id": 3,
-        "text": "<i class=\"fa-solid fa-music\"></i> Songwriters (1 or 2)",
+        "text": "<i class=\"fa-solid fa-music\"></i> Songwriters",
         "parent": 1
     },
     {

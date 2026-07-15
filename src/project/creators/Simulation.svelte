@@ -1,10 +1,10 @@
 <script lang="ts">
-    import { roundedCreators } from "..";
+    import { roundNumbersCreators } from "..";
     import { getReferencePoint } from "../../curve";
     import List from "../List.svelte";
     // simulation
     let simulateCreators = $state(
-        /* localStorage.getItem("simulateCreators") === "true", */false
+        /* localStorage.getItem("simulateCreators") === "true", */ false,
     );
     /* $effect(() => {
         localStorage.setItem("simulateCreators", "" + simulateCreators);
@@ -56,7 +56,7 @@
     <div class="demo-box" style="display:flex;flex-direction:column; gap:1rem">
         <div class="input-group">
             <label for="mrp-amount"
-                ><i class="fa-solid fa-scale-balanced"></i> Pay Reference Point</label
+                ><i class="fas fa-coins"></i> Market Reference Point</label
             >
             <input
                 required
@@ -99,21 +99,6 @@
                 bind:value={simulateParticipants}
             />
         </div>
-
-        <div class="inline-options">
-            <label>
-                <input type="checkbox" bind:checked={$roundedCreators} /> Round numbers
-                (list above too)
-            </label>
-        </div>
-    </div>
-
-    <div>
-        <h5>
-            <i class="fa-solid fa-coins"></i> Simulated Goal: {Math.round(
-                estimatedGoal,
-            )}
-        </h5>
     </div>
 
     <div>
@@ -124,6 +109,9 @@
                 showSize: true,
                 editOrder: false,
                 showCompensation: true,
+                sustainableModel: "creators",
+                goal: estimatedGoal,
+                roundNumbers: $roundNumbersCreators,
                 participants: Array.from(
                     { length: simulateParticipants },
                     (_, i) => ({

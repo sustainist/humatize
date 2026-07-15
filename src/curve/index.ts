@@ -257,15 +257,21 @@ export type EvaluationExample = {
   profit: number;
   position?: number;
   participantName?: 'Creator' | 'Backer'
-  hideParticipants?:boolean
+  hideParticipants?: boolean
+  sustainableModel?: 'creators' | 'backers'
+  goal: number
+  roundNumbers?: boolean
   participants: ({
-    id: number;
+    id?: number;
     text?: string;
     parent?: number;
     showCheckmark?: boolean;
-    pledge?: string;
+    pledge?: number;
+    share?: string;
     timestamp?: string
     person?: boolean
+    percentageBacker?: number
+    rewardBacker?: number
   } | null)[];
   editOrder?: boolean;
   showCompensation?: boolean;
@@ -276,7 +282,6 @@ export type EvaluationExample = {
     | { showOrder?: never; showSize?: boolean }
     | { showOrder?: boolean; showSize?: boolean }
   );
-
 
 export const getReferencePoint = ({ share, position, participants }: { share: number, position: number, participants: number }): number => {
   if (!Number.isFinite(share) || share <= 0 || participants <= 0 || position < 1 || position > participants) {

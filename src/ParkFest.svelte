@@ -401,21 +401,21 @@
 
   <h4>Example 1</h4>
 
-  <Evaluation example={1} />
-
+<!--   <Evaluation example={1} /> 
   {addShares({
     profit: 2000,
-    startPosition: 1,
-    endPosition: 100,
+   range: 100,
     participants: 1000,
   })}
+ -->
+<!--  
 
   {addShares({
     profit: 2000,
     startPosition: 101,
     endPosition: 1000,
     participants: 1000,
-  })}
+  })} -->
 
   <h4>Example 2</h4>
 

@@ -1,12 +1,15 @@
 <script lang="ts">
-    import { goal } from "..";
-    import type { EvaluationExample } from "../../curve";
+    import { getBackers } from ".";
+    import { goal, roundNumbersBackers } from "..";
+    import { addShares, getShare, type EvaluationExample } from "../../curve";
     import List from "../List.svelte";
     import participants from "./participants.json";
+    import Simulation from "./Simulation.svelte";
 
     const parts = participants as EvaluationExample["participants"];
-
-    const list: (EvaluationExample | undefined)[] = [
+    // todo: sustainable distribution model for backers
+    // todo: display name for backers
+    const list: (EvaluationExample | undefined)[] = $derived([
         {
             showOrder: true,
             profit: 1000,
@@ -15,19 +18,17 @@
             showPledge: true,
             participantName: "Backer",
             showTimeline: true,
-            participants: parts.map((participant, i) => {
-                if (i === 0 && participant) participant.pledge = "" + $goal;
-                return participant;
-            }),
+            sustainableModel: "backers",
+            goal: $goal,
+            roundNumbers: $roundNumbersBackers,
+            participants: getBackers(parts),
         },
-    ];
+    ]);
     const index = 0;
-
-    let simulateBackers = $state(false);
 </script>
 
 {#if list[index]}
-    <List items={list[index]} tableId="creators" />
+    <List items={list[index]} tableId="backers" />
 {:else}
     <p style="color:red">
         &lt;List items=&lbrace;{index}&rbrace; /&gt; not found
@@ -37,20 +38,9 @@
 <br />
 
 <div class="inline-options" style="width:fit-content">
-    <label
-        ><input
-            bind:checked={simulateBackers}
-            type="checkbox"
-            name="simulate-backers"
-        /> Simulate Backers Rewards</label
-    >
+    <label>
+        <input type="checkbox" bind:checked={$roundNumbersBackers} /> Round numbers
+    </label>
 </div>
 
-<br />
-
-{#if simulateBackers}
-    <div class="demo-box">
-        
-
-    </div>
-{/if}
+<Simulation />

@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import {
+        addShares,
         curveOrientation,
         getShare,
         type EvaluationExample,
@@ -10,7 +11,6 @@
     import IconParticipants from "../curve/IconParticipants.svelte";
     import IconSize from "../curve/IconSize.svelte";
     import IconShare from "../curve/IconShare.svelte";
-    import { roundedCreators } from ".";
 
     let {
         items,
@@ -24,9 +24,13 @@
     let showInputNrOfParticipants = $state(false);
 
     const siblings = $derived(
-        items.participants.filter(
-            (item1) => (item1 || { parent: 0 }).parent === 0,
-        ),
+        items.sustainableModel === "creators"
+            ? items.participants.filter(
+                  (item1) => (item1 || { parent: 0 }).parent === 0,
+              )
+            : items.sustainableModel === "backers"
+              ? items.participants
+              : [],
     );
 </script>
 
@@ -45,48 +49,51 @@
 
         <tr>
             {#if items.showOrder}
-                <td>
-                    <div class="flex">
-                        <div>
-                            <span style="white-space:nowrap">
-                                {[...depth, i + 1].join(".")}
-                            </span>
+                {#if items.sustainableModel === "creators"}
+                    <td>
+                        <div class="flex">
+                            <div>
+                                <span style="white-space:nowrap">
+                                    {[...depth, i + 1].join(".")}
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="flex">
-                        <div>
-                            <span style="white-space:nowrap">
-                                <!-- {[...depth, i + 1].join(".")}
+                    </td>
+                    <td>
+                        <div class="flex">
+                            <div>
+                                <span style="white-space:nowrap">
+                                    <!-- {[...depth, i + 1].join(".")}
                                 <span style="opacity:0.5">|</span> -->
-                                {#each { length: depth.length } as _, indexDepth}
-                                    <span
-                                        >&nbsp;&nbsp;&nbsp;{#if indexDepth + 1 === depth.length}└─{/if}</span
-                                    >&nbsp;
-                                {/each}
-                                {#if $roundedCreators}
-                                    {Math.round(tautochronePercentage * 100)}%
-                                {:else}
-                                    {tautochronePercentage * 100}%
-                                {/if}
-                            </span>
+                                    {#each { length: depth.length } as _, indexDepth}
+                                        <span
+                                            >&nbsp;&nbsp;&nbsp;{#if indexDepth + 1 === depth.length}└─{/if}</span
+                                        >&nbsp;
+                                    {/each}
+                                    {#if items.roundNumbers}
+                                        {Math.round(
+                                            tautochronePercentage * 100,
+                                        )}%
+                                    {:else}
+                                        {tautochronePercentage * 100}%
+                                    {/if}
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                </td>
+                    </td>
+                {/if}
                 {#if !items.hideParticipants}
                     <td>
                         <div class="flex">
                             <div class="participant">
                                 <span class="indent">
                                     {#each { length: depth.length } as _, indexDepth}
-                                        <!-- <span>&middot;</span> -->
                                         <span
                                             >&nbsp;&nbsp;&nbsp;{#if indexDepth + 1 === depth.length}└─{/if}</span
                                         >&nbsp;
                                     {/each}
                                 </span>
-                                {#if sibling?.person}
+                                {#if items.sustainableModel === "backers"}
                                     <span>
                                         <i class="fa-solid fa-user"></i>&nbsp;
                                     </span>
@@ -100,34 +107,6 @@
                 {/if}
             {/if}
             {#if items.showSize}
-                <!-- <td style="white-space:nowrap">
-                    <span class="indent">
-                        {#each { length: depth.length } as _}
-                            <span>&middot;</span>
-                        {/each}
-                    </span>
-                    {#if typeof example.position === "number"}
-                        <label>
-                            <input
-                                class="share"
-                                type="radio"
-                                name="{tableId}-position-{depth.length}"
-                                checked={example.position === i + 1}
-                                oninput={() => {
-                                    example.position = i + 1;
-                                    example = { ...example };
-                                }}
-                                value={i + 1}
-                            />
-                            <span>
-                                {tautochronePercentage * 100}%
-                            </span>
-                        </label>
-                    {:else}
-                        {tautochronePercentage * 100}%
-                    {/if}
-                </td> -->
-
                 {#if items.showCompensation}
                     <td style="white-space:nowrap">
                         <span class="indent">
@@ -143,7 +122,7 @@
                         </span>
 
                         <b>
-                            {#if $roundedCreators}
+                            {#if items.roundNumbers}
                                 {Math.round(tautochroneShare)}
                             {:else}
                                 {tautochroneShare}
@@ -153,8 +132,8 @@
                         {#if sibling?.showCheckmark}
                             <!-- <span style="opacity:0.5">|</span> -->
                             <!-- midpoint -->
-                            <a href="/#" class="investor-tag"
-                                ><i class="fa-solid fa-scale-balanced"></i> reference</a
+                            <a style="white-space:nowrap" href="/#market-reference-point" class="investor-tag"
+                                ><i class="fas fa-coins"></i> Reference</a
                             >
                         {/if}
                     </td>
@@ -163,13 +142,11 @@
 
             {#if items.showTimeline}
                 <td>
-                    {new Date(sibling?.timestamp || "").toLocaleString(
-                        "en-US",
-                        {
+                    {sibling?.timestamp &&
+                        new Date(sibling.timestamp).toLocaleString("en-US", {
                             dateStyle: "short",
                             timeStyle: "short",
-                        },
-                    )}
+                        })}
                 </td>
             {/if}
 
@@ -178,23 +155,23 @@
                     <span>
                         {sibling?.pledge || 0}
                     </span>
-                    {#if sibling?.showCheckmark}
-                        <!-- <span style="opacity:0.5">|</span>
-                        init -->
-                        <a href="/#" class="supporter-tag"
-                            ><i class="fa-solid fa-coins"></i> goal</a
+                    {#if i === 0}
+                        <a style="white-space:nowrap" href="/#market-reference-point" class="supporter-tag"
+                            ><i class="fas fa-coins"></i>
+                            Reference</a
                         >
                     {/if}
                 </td>
+                <td>
+                    {#if items.roundNumbers}
+                        {Math.round(sibling?.rewardBacker || 0)}
+                    {:else}
+                        {sibling?.rewardBacker || 0}
+                    {/if}
+                    {#if i === 0}out of {items.goal} goal
+                    {/if}
+                </td>
             {/if}
-
-            <!-- <td>
-                {getReferencePoint({
-            share: tautochroneShare,
-            position: i + 1,
-            participants: example.participants.length,
-          })}
-            </td> -->
         </tr>
         {@render trs(
             items.participants.filter((item) => {
@@ -244,10 +221,12 @@
             <thead>
                 <tr>
                     {#if items.showOrder}
-                        <th colspan="2">
-                            <!-- <IconOrder /> -->
-                            Sustainable Distribution
-                        </th>
+                        {#if items.sustainableModel === "creators"}
+                            <th colspan="2">
+                                <!-- <IconOrder /> -->
+                                Sustainable Distribution
+                            </th>
+                        {/if}
                         {#if !items.hideParticipants}
                             <th>
                                 <!-- <IconParticipants /> -->
@@ -258,101 +237,14 @@
                         {/if}
                     {/if}
                     {#if items.showSize}
-                        <!-- <th>
-                            <div class="thWithInp">
-                                {#if !example.showOrder}
-                                    <label>
-                                        <input
-                                            bind:checked={
-                                                showInputNrOfParticipants
-                                            }
-                                            type="checkbox"
-                                            name="{tableId}-show-nr-participants"
-                                            title="Edit number of participants"
-                                        />{#if !showInputNrOfParticipants}
-                                            <span
-                                                title="Participants"
-                                                style="font-weight: normal;"
-                                            >
-                                                {example.participants.length}
-                                            </span>
-                                        {/if}
-                                    </label>
-                                    {#if showInputNrOfParticipants}
-                                        <label>
-                                            <input
-                                                name="{tableId}-participants"
-                                                type="number"
-                                                min="0"
-                                                max="1000"
-                                                value={example.participants
-                                                    .length}
-                                                oninput={(e) => {
-                                                    let value =
-                                                        +e.currentTarget.value;
-                                                    if (value > 1000) {
-                                                        value = 1000;
-                                                        e.currentTarget.value =
-                                                            "" + value;
-                                                    }
-                                                    example.participants =
-                                                        Array(value).fill(null);
-                                                    example = { ...example };
-                                                }}
-                                                style="width:8ch"
-                                                title="Participants"
-                                            />
-                                        </label>
-                                    {/if}
-                                {/if}
-                                <span>
-                                    <IconSize />
-                                    Size
-                                </span>
-                            </div>
-                        </th> -->
-
                         {#if items.showCompensation}
                             <th>
                                 <div>
-                                    <!-- <label>
-                                    <input
-                                        bind:checked={showInputProfit}
-                                        type="checkbox"
-                                        name="{tableId}-show-edit-profit"
-                                        title="Edit profit"
-                                    />{#if !showInputProfit}
-                                        <span
-                                            title="Profit"
-                                            style="font-weight:normal"
-                                        >
-                                            {example.profit}
-                                        </span>
-                                    {/if}
-                                </label> -->
-                                    <!-- {#if showInputProfit}
-                                    <label>
-                                        <input
-                                            name="{tableId}-profit"
-                                            class="profit"
-                                            min="0"
-                                            type="number"
-                                            value={example.profit}
-                                            oninput={(e) => {
-                                                example.profit =
-                                                    +e.currentTarget.value;
-                                                example = { ...example };
-                                            }}
-                                            style="width:8ch"
-                                            title="Profit"
-                                        />
-                                    </label>
-                                {/if} -->
                                     <span>
                                         <!-- <IconShare /> -->
                                         Rewards
                                         <span style="display:inline-block"
-                                            >(Goal:{#if $roundedCreators}
+                                            >(Goal:{#if items.roundNumbers}
                                                 {Math.round(items.profit)}
                                             {:else}
                                                 {items.profit}
@@ -374,6 +266,11 @@
                         <th>
                             <div>
                                 <span> Pledge </span>
+                            </div>
+                        </th>
+                        <th>
+                            <div>
+                                <span> Rewards </span>
                             </div>
                         </th>
                     {/if}
