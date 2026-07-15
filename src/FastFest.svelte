@@ -66,7 +66,7 @@
         <i class="fas fa-leaf"></i>
         <span style="white-space: nowrap;">✦ Humatize</span>
         <span>|</span>
-        <span>Sustainable Crowdfunding</span>
+        <a href="/#sustainable-crowdfunding">Sustainable Crowdfunding</a>
         <i class="fas fa-seedling"></i>
     </div>
 

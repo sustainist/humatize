@@ -4,7 +4,7 @@ title: Humatize Manifest
 
 <I p="./Toc.svelte" />
 
-# Sustainable Economy
+# Sustainable Crowdfunding
 
 This is the paragraph. This is the paragraph. This is the paragraph. This is the paragraph. This is the paragraph. This is the paragraph. This is the paragraph. This is the paragraph. This is the paragraph. This is the paragraph. This is the paragraph. This is the paragraph. 
 
