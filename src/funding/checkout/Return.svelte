@@ -42,7 +42,7 @@
                   "Thank you for your pledge. " +
                   ($user?.email
                     ? ""
-                    : "You can see it in the Backer section after signing in."),
+                    : "You can see it in the Backers section."),
                 type: "info",
                 cb: () => {
                   checkoutSessionId = null;
