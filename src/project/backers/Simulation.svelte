@@ -64,7 +64,8 @@
     >
         <div class="input-group">
             <label for="simulated-goal" style="opacity: .5;"
-                ><i class="fa-solid fa-coins"></i> Simulate Market Reference Point</label
+                ><i class="fa-solid fa-coins"></i> Simulate Market Reference Point
+                *</label
             >
             <input
                 disabled
@@ -77,7 +78,7 @@
 
         <div class="input-group">
             <label for="simulated-goal" style="opacity: .5;"
-                ><i class="fa-solid fa-coins"></i> Simulate Goal</label
+                ><i class="fa-solid fa-coins"></i> Simulate Goal *</label
             >
             <input
                 disabled
@@ -86,7 +87,9 @@
                     ? Math.round($simulateGoal)
                     : $simulateGoal}
             />
+            <small> * From Simulate Creators Rewards </small>
         </div>
+
 
         <div class="input-group">
             <label for="simulated-pledge"
