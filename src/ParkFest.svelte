@@ -1,6 +1,6 @@
 <script>
-  import { addShares, getReferencePoint } from "./curve";
-  import Evaluation from "./curve/Evaluation.svelte";
+  import { addShares, getReferencePoint } from "./sustainableDistribution";
+  import Evaluation from "./sustainableDistribution/Evaluation.svelte";
   import Pay from "./funding/cart/Pay.svelte";
   import Checkout from "./funding/checkout/Checkout.svelte";
   import Session from "./funding/checkout/Session.svelte";
@@ -238,8 +238,6 @@
       <Session />
 
       <Customers />
-
-      <AllCustomers />
 
       <div
         style="background: #0f2b25; border-radius: 18px; padding: 0.8rem 1rem; margin-bottom: 0.8rem;"

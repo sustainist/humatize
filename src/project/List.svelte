@@ -4,19 +4,19 @@
         addShares,
         curveOrientation,
         getShare,
-        type EvaluationExample,
-    } from "../curve";
-    import Curve from "../curve/Curve.svelte";
-    import IconOrder from "../curve/IconOrder.svelte";
-    import IconParticipants from "../curve/IconParticipants.svelte";
-    import IconSize from "../curve/IconSize.svelte";
-    import IconShare from "../curve/IconShare.svelte";
+        type Distribution,
+    } from "../sustainableDistribution";
+    import Curve from "../sustainableDistribution/Curve.svelte";
+    import IconOrder from "../sustainableDistribution/IconOrder.svelte";
+    import IconParticipants from "../sustainableDistribution/IconParticipants.svelte";
+    import IconSize from "../sustainableDistribution/IconSize.svelte";
+    import IconShare from "../sustainableDistribution/IconShare.svelte";
 
     let {
         items,
         tableId,
     }: {
-        items: EvaluationExample;
+        items: Distribution;
         tableId: string;
     } = $props();
 
@@ -35,7 +35,7 @@
 </script>
 
 {#snippet trs(
-    siblings: EvaluationExample["participants"],
+    siblings: Distribution["participants"],
     share = 0,
     depth: number[] = [],
 )}
@@ -93,11 +93,11 @@
                                         >&nbsp;
                                     {/each}
                                 </span>
-                                {#if items.sustainableModel === "backers"}
+                                <!-- {#if items.sustainableModel === "backers"}
                                     <span>
                                         <i class="fa-solid fa-user"></i>&nbsp;
                                     </span>
-                                {/if}
+                                {/if} -->
                                 <span>
                                     {@html sibling?.text}
                                 </span>
@@ -105,6 +105,12 @@
                         </div>
                     </td>
                 {/if}
+                <td>
+                    {#if items.participantName === "Creator" && sibling?.nrOfPeople}({sibling?.nrOfPeople}){/if}
+                    {#each { length: sibling?.nrOfPeople || 0 }}
+                        <i class="fa-solid fa-user"></i>
+                    {/each}
+                </td>
             {/if}
             {#if items.showSize}
                 {#if items.showCompensation}
@@ -123,16 +129,20 @@
 
                         <b>
                             {#if items.roundNumbers}
-                                {Math.round(tautochroneShare)}
+                                {Math.round(tautochroneShare) /
+                                    (sibling?.nrOfPeople || 1)}
                             {:else}
-                                {tautochroneShare}
+                                {tautochroneShare / (sibling?.nrOfPeople || 1)}
                             {/if}
                         </b>
 
                         {#if sibling?.showCheckmark}
                             <!-- <span style="opacity:0.5">|</span> -->
                             <!-- midpoint -->
-                            <a style="white-space:nowrap" href="/#market-reference-point" class="investor-tag"
+                            <a
+                                style="white-space:nowrap"
+                                href="/#market-reference-point"
+                                class="investor-tag"
                                 ><i class="fas fa-coins"></i> Reference</a
                             >
                         {/if}
@@ -156,7 +166,10 @@
                         {sibling?.pledge || 0}
                     </span>
                     {#if i === 0}
-                        <a style="white-space:nowrap" href="/#market-reference-point" class="supporter-tag"
+                        <a
+                            style="white-space:nowrap"
+                            href="/#market-reference-point"
+                            class="supporter-tag"
                             ><i class="fas fa-coins"></i>
                             Reference</a
                         >
@@ -168,7 +181,12 @@
                     {:else}
                         {sibling?.rewardBacker || 0}
                     {/if}
-                    {#if i === 0}out of {items.goal} goal
+                    {#if i === 0}out of
+                        {#if items.roundNumbers}
+                            {Math.round(items.goal)}
+                        {:else}
+                            {items.goal}
+                        {/if} goal
                     {/if}
                 </td>
             {/if}
@@ -190,7 +208,7 @@
                 participants={items.participants.length}
                 position={items.position || 1}
                 orientation={$curveOrientation}
-                profit={items.profit}
+                profit={items.goal}
                 onPositionChange={(position) => {
                     if (items && items.position !== position) {
                         items.position = position;
@@ -235,6 +253,7 @@
                                 Participants
                             </th>
                         {/if}
+                        <th> People </th>
                     {/if}
                     {#if items.showSize}
                         {#if items.showCompensation}
@@ -245,9 +264,9 @@
                                         Rewards
                                         <span style="display:inline-block"
                                             >(Goal:{#if items.roundNumbers}
-                                                {Math.round(items.profit)}
+                                                {Math.round(items.goal)}
                                             {:else}
-                                                {items.profit}
+                                                {items.goal}
                                             {/if})</span
                                         >
                                     </span>
@@ -277,7 +296,7 @@
                 </tr>
             </thead>
             <tbody>
-                {@render trs(siblings, items.profit)}
+                {@render trs(siblings, items.goal)}
             </tbody>
         </table>
     </div>

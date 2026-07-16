@@ -1,14 +1,16 @@
 <script lang="ts">
-    import { goal, roundNumbersCreators } from "..";
-    import type { EvaluationExample } from "../../curve";
+    import { goal, mrp, roundNumbersCreators } from "..";
+    import {
+        getReferencePoint,
+        type Distribution,
+    } from "../../sustainableDistribution";
     import List from "../List.svelte";
     import participants from "./participants.json";
     import Simulation from "./Simulation.svelte";
 
-    const list: (EvaluationExample | undefined)[] = $derived([
+    const list: (Distribution | undefined)[] = $derived([
         {
             showOrder: true,
-            profit: $goal,
             showSize: true,
             editOrder: false,
             showCompensation: true,

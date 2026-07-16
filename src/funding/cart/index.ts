@@ -31,15 +31,15 @@ user.subscribe((usr) => {
 });
 
 // destination
-export const destination = writable(
+export const project = writable(
     localStorage.getItem(`selected destination for ${formId}`) ||
     "",
 );
-destination.subscribe((value) => {
+project.subscribe((value) => {
     localStorage.setItem(`selected destination for ${formId}`, value);
     showFormCheckout.set(null);
     if (!value) {
-        destination.set(document.title);
+        project.set(document.title);
     }
 });
 
@@ -70,7 +70,7 @@ currencies.subscribe((value) => {
 
 // amount
 export const amount = writable(
-    +(localStorage.getItem(`selected amount for ${formId}`) || "null") || 8,
+    +(localStorage.getItem(`selected amount for ${formId}`) || "null") || 10,
 );
 amount.subscribe((value) => {
     localStorage.setItem(`selected amount for ${formId}`, "" + value);
@@ -81,7 +81,7 @@ amount.subscribe((value) => {
 export const interval = writable<"month" | "one-time">(
     (<["month", "one-time"]>["month", "one-time"]).find(
         (i) => i === localStorage.getItem(`selected interval for ${formId}`),
-    ) || "month",
+    ) || "one-time",
 );
 interval.subscribe((value) => {
     localStorage.setItem(`selected interval for ${formId}`, value);

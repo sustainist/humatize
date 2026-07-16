@@ -253,8 +253,7 @@ curveOrientation.subscribe((value) =>
   localStorage.setItem("curve orientation", value),
 );
 
-export type EvaluationExample = {
-  profit: number;
+export type Distribution = {
   position?: number;
   participantName?: 'Creator' | 'Backer'
   hideParticipants?: boolean
@@ -268,10 +267,10 @@ export type EvaluationExample = {
     showCheckmark?: boolean;
     pledge?: number;
     share?: string;
-    timestamp?: string
-    person?: boolean
+    timestamp?: string | number
     percentageBacker?: number
     rewardBacker?: number
+    nrOfPeople?: number
   } | null)[];
   editOrder?: boolean;
   showCompensation?: boolean;

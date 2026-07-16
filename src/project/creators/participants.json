@@ -6,14 +6,16 @@
     },
     {
         "id": 2,
-        "text": "<i class=\"fa-solid fa-play\"></i> Performers (5 people)",
+        "text": "<i class=\"fa-solid fa-play\"></i> Performers",
         "parent": 1,
-        "showCheckmark": true
+        "showCheckmark": true,
+        "nrOfPeople": 5
     },
     {
         "id": 3,
         "text": "<i class=\"fa-solid fa-music\"></i> Songwriters",
-        "parent": 1
+        "parent": 1,
+        "nrOfPeople": 2
     },
     {
         "id": 4,
@@ -23,17 +25,20 @@
     {
         "id": 5,
         "text": "<i class=\"fa-solid fa-headphones\"></i> Audio",
-        "parent": 4
+        "parent": 4,
+        "nrOfPeople": 2
     },
     {
         "id": 6,
         "text": "<i class=\"fa-solid fa-store\"></i> Stage",
-        "parent": 4
+        "parent": 4,
+        "nrOfPeople": 1
     },
     {
         "id": 7,
         "text": "<i class=\"fa-solid fa-video\"></i> Live streaming",
-        "parent": 4
+        "parent": 4,
+        "nrOfPeople": 1
     },
     {
         "id": 8,
@@ -43,12 +48,14 @@
     {
         "id": 9,
         "text": "<i class=\"fa-solid fa-building\"></i> Organization",
-        "parent": 8
+        "parent": 8,
+        "nrOfPeople": 1
     },
     {
         "id": 10,
         "text": "<i class=\"fa-solid fa-bullhorn\"></i> Marketing",
-        "parent": 8
+        "parent": 8,
+        "nrOfPeople": 1
     },
     {
         "id": 11,
@@ -58,6 +65,7 @@
     {
         "id": 12,
         "text": "<i class=\"fa-solid fa-globe\"></i> humatize.com",
-        "parent": 11
+        "parent": 11,
+        "nrOfPeople": 1
     }
 ]

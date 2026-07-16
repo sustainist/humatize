@@ -4,7 +4,7 @@
     curveOrientation,
     getReferencePoint,
     getShare,
-    type EvaluationExample,
+    type Distribution,
   } from ".";
   import Curve from "./Curve.svelte";
   import IconOrder from "./IconOrder.svelte";
@@ -16,13 +16,13 @@
     example,
     tableId,
   }: {
-    example: EvaluationExample;
+    example: Distribution;
     tableId: string;
   } = $props();
 
   function getLargestId() {
     return example.participants.reduce(
-      (maxId, item) => Math.max(maxId, item?.id || 0),
+      (maxId, item) => Math.max(maxId, item?.id || -1),
       0,
     );
   }
@@ -71,13 +71,13 @@
         (item) => item?.parent === currentId,
       );
       children.forEach((child) => {
-        if (child) itemsToDelete.push(child.id);
+        if (child) itemsToDelete.push(child.id || -1);
       });
       i++;
     }
     example.participants = [
       ...example.participants.filter(
-        (item) => item && !itemsToDelete.includes(item.id),
+        (item) => item && !itemsToDelete.includes(item.id || -1),
       ),
     ];
     example = { ...example };
@@ -163,7 +163,7 @@
       ) {
         currentItem.parent = prevItem.id;
         example.participants.splice(currentI, 1, currentItem);
-        parent = prevItem.id;
+        parent = prevItem.id || 0;
       }
     } else if (direction === "out") {
       for (let i = 0; i < example.participants.length; i++) {
@@ -195,7 +195,7 @@
         currentItem.parent = prevItem.parent;
         example.participants.splice(currentI, 1);
         example.participants.splice(prevI + 1, 0, currentItem);
-        parent = prevItem.parent;
+        parent = prevItem.parent || 0;
       }
     }
 
@@ -221,7 +221,7 @@
     ),
   );
 
-  let initialParticipants: EvaluationExample["participants"] = $state([]);
+  let initialParticipants: Distribution["participants"] = $state([]);
 
   onMount(() => {
     initialParticipants = [...example.participants];
@@ -229,7 +229,7 @@
 </script>
 
 {#snippet trs(
-  siblings: EvaluationExample["participants"],
+  siblings: Distribution["participants"],
   share = 0,
   depth: number[] = [],
 )}
@@ -250,15 +250,15 @@
             <br />
             <button
               onpointerdown={() => {
-                createNewItem(editing?.above || "", sibling.parent, {
-                  above: sibling.id,
+                createNewItem(editing?.above || "", sibling.parent || 0, {
+                  above: sibling.id || -1,
                 });
               }}>Save</button
             >
             <button
               onpointerdown={() => {
                 editing = {
-                  id: sibling.id,
+                  id: sibling.id || -1,
                 };
               }}>Cancel</button
             >
@@ -291,7 +291,7 @@
                       disabled={typeof editing?.above === "string"}
                       onpointerdown={() => {
                         editing = {
-                          id: sibling.id,
+                          id: sibling.id || -1,
                           above: "",
                         };
                       }}>Above</button
@@ -300,7 +300,7 @@
                       disabled={typeof editing?.bellow === "string"}
                       onpointerdown={() => {
                         editing = {
-                          id: sibling.id,
+                          id: sibling.id || -1,
                           bellow: "",
                         };
                       }}>Bellow</button
@@ -309,7 +309,7 @@
                       disabled={typeof editing?.append === "string"}
                       onpointerdown={() => {
                         editing = {
-                          id: sibling.id,
+                          id: sibling.id || -1,
                           append: "",
                         };
                       }}>Append</button
@@ -322,7 +322,7 @@
                       disabled={typeof editing?.update === "string"}
                       onpointerdown={() => {
                         editing = {
-                          id: sibling.id,
+                          id: sibling.id || -1,
                           update: sibling.text,
                         };
                       }}>Update</button
@@ -335,7 +335,7 @@
                       disabled={editing?.delete}
                       onpointerdown={() => {
                         editing = {
-                          id: sibling.id,
+                          id: sibling.id || -1,
                           delete: true,
                         };
                       }}>Delete</button
@@ -343,14 +343,14 @@
                     {#if editing?.delete}
                       <button
                         onpointerdown={() => {
-                          deleteItem(sibling.id);
+                          deleteItem(sibling.id || -1);
                           editing = null;
                         }}>Yes</button
                       >
                       <button
                         onpointerdown={() => {
                           editing = {
-                            id: sibling.id,
+                            id: sibling.id || -1,
                           };
                         }}>No</button
                       >
@@ -362,25 +362,25 @@
                     <button
                       disabled={!i}
                       onpointerdown={() => {
-                        moveItem(sibling.id, sibling.parent, "up");
+                        moveItem(sibling.id || -1, sibling.parent || 0, "up");
                       }}>Up</button
                     >
                     <button
                       disabled={siblings.length === i + 1}
                       onpointerdown={() => {
-                        moveItem(sibling.id, sibling.parent, "down");
+                        moveItem(sibling.id || -1, sibling.parent || 0, "down");
                       }}>Down</button
                     >
                     <button
                       disabled={i === 0}
                       onpointerdown={() => {
-                        moveItem(sibling.id, sibling.parent, "in");
+                        moveItem(sibling.id || -1, sibling.parent || 0, "in");
                       }}>In</button
                     >
                     <button
                       disabled={sibling.parent === 0}
                       onpointerdown={() => {
-                        moveItem(sibling.id, sibling.parent, "out");
+                        moveItem(sibling.id || -1, sibling.parent || 0, "out");
                       }}>Out</button
                     >
                   </div>
@@ -391,9 +391,10 @@
                     <label>
                       <input
                         type="checkbox"
-                        oninput={() => (editing = editing = { id: sibling.id })}
-                        name="{tableId}-order-{sibling.id}"
-                        placeholder="order id:{sibling.id}"
+                        oninput={() =>
+                          (editing = editing = { id: sibling.id || -1 })}
+                        name="{tableId}-order-{sibling.id || -1}"
+                        placeholder="order id:{sibling.id || -1}"
                       />
                     </label>
                   </div>
@@ -424,14 +425,14 @@
                   <br />
                   <button
                     onpointerdown={() => {
-                      updateItem(sibling.id, editing?.update || "");
+                      updateItem(sibling.id || -1, editing?.update || "");
                       editing = null;
                     }}>Save</button
                   >
                   <button
                     onpointerdown={() => {
                       editing = {
-                        id: sibling.id,
+                        id: sibling.id || -1,
                       };
                     }}>Cancel</button
                   >
@@ -450,14 +451,14 @@
                   <br />
                   <button
                     onpointerdown={() => {
-                      createNewItem(editing?.append || "", sibling.id);
+                      createNewItem(editing?.append || "", sibling.id || -1);
                       editing = null;
                     }}>Save</button
                   >
                   <button
                     onpointerdown={() => {
                       editing = {
-                        id: sibling.id,
+                        id: sibling.id || -1,
                       };
                     }}>Cancel</button
                   >
@@ -534,15 +535,15 @@
             <br />
             <button
               onpointerdown={() => {
-                createNewItem(editing?.bellow || "", sibling.parent, {
-                  bellow: sibling.id,
+                createNewItem(editing?.bellow || "", sibling.parent || 0, {
+                  bellow: sibling.id || -1,
                 });
               }}>Save</button
             >
             <button
               onpointerdown={() => {
                 editing = {
-                  id: sibling.id,
+                  id: sibling.id || -1,
                 };
               }}>Cancel</button
             >

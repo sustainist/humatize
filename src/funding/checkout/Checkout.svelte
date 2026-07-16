@@ -5,5 +5,9 @@
 </script>
 
 {#if $showFormCheckout === $formId}
+  <br />
+
+  <br />
+
   <Request />
 {/if}

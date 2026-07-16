@@ -66,3 +66,5 @@ export function formatDate(isoString?: string | number): string {
   const min = String(d.getMinutes()).padStart(2, "0");
   return `${yy}-${mm}-${dd} ${hh}:${min}`;
 }
+
+export const showBackThisProjectContent = writable(false)

@@ -18,8 +18,8 @@
     "firebase": "^12.16.0",
     "mdsvex": "^0.12.7",
     "svelte": "^5.56.5",
-    "svelte-check": "^4.7.2",
-    "typescript": "~7.0.2",
+    "svelte-check": "^4.7.3",
+    "typescript": "^6.0.3",
     "vite": "^8.1.4"
   },
   "allowScripts": {

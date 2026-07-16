@@ -6,6 +6,7 @@
   import type { LoggerMessage } from "../../logger";
   import Logger from "../../logger/Logger.svelte";
   import { formId } from "../cart";
+  import Loading from "../../Loading.svelte";
 
   let {
     checkoutSessionId = $bindable(),
@@ -38,10 +39,10 @@
             logger = [
               {
                 message:
-                  "Thank you for your contribution. " +
+                  "Thank you for your pledge. " +
                   ($user?.email
                     ? ""
-                    : "To manage your contributions please sign in."),
+                    : "You can see it in the Backer section after signing in."),
                 type: "info",
                 cb: () => {
                   checkoutSessionId = null;
@@ -60,15 +61,28 @@
           logger = [{ message: error.message, type: "error" }, ...logger];
         })
         .finally(() => {
-          setTimeout(() => {
+          /* setTimeout(() => {
             document
               .getElementById("session-" + $formId)
               ?.parentElement?.scrollIntoView();
-          }, 1500);
+          }, 1500); */
         });
   });
 </script>
 
-<div transition:slide id={"session-" + $formId}>
-  <Logger bind:logger />
-</div>
+{#if !logger.length}
+  <div style="width:fit-content;margin-left:auto;margin-right:auto">
+    <Loading />
+  </div>
+{:else}
+  <div transition:slide style="padding-top:0.125rem;padding-bottom:2.5rem;">
+    <div
+      class="card"
+      style="width:fit-content;margin-left:auto;margin-right:auto;"
+    >
+      <div id={"session-" + $formId}>
+        <Logger bind:logger />
+      </div>
+    </div>
+  </div>
+{/if}

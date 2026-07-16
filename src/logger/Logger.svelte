@@ -33,15 +33,15 @@
     background: none;
     color: inherit;
     cursor: pointer;
-    transition: color 0.2s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
     &:hover {
-      color: white;
+      opacity: 0.5;
     }
   }
   .error {
-    color: lightcoral;
+    color: #ff8270;
   }
   .info {
-    color: lightgreen;
+    color: #7bc3b0;
   }
 </style>

@@ -1,11 +1,15 @@
-import { addShares, type EvaluationExample } from "../../curve";
+import { addShares, type Distribution } from "../../sustainableDistribution";
 
-export const getBackers = (participants: EvaluationExample["participants"]) => {
+export const getBackers = (participants: Distribution["participants"], mrp: { nrOfPeople: number, mrp: number, timestamp: string | number }) => {
 
     let sumOfPrevPledges: number = 0;
-    const updatedParticipants: EvaluationExample["participants"] = [];
+    const updatedParticipants: Distribution["participants"] = [];
 
-    participants.forEach((participant, index) => {
+    [{
+        nrOfPeople: mrp.nrOfPeople,
+        pledge: mrp.mrp,
+        timestamp: mrp.timestamp
+    }, ...participants].forEach((participant, index) => {
         if (participant && typeof participant.pledge === "number") {
             const participantClone = {
                 ...participant,
@@ -45,3 +49,16 @@ export const getBackers = (participants: EvaluationExample["participants"]) => {
     });
     return updatedParticipants;
 };
+
+export function customersToBackers(customers: Customer[]): Distribution["participants"] {
+    const participants: Distribution["participants"] = []
+    customers.forEach((customer, i) => {
+        const participant: Distribution['participants'][0] = {
+            pledge: (customer.amount || 0) / 100,
+            nrOfPeople: 1,
+            timestamp: customer.created * 1000
+        }
+        participants.push(participant)
+    })
+    return participants
+}

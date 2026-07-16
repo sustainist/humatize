@@ -42,6 +42,8 @@
         </div>
         {#if $user?.email}
             <SignedIn />
+            <br />
+            <br />
         {:else}
             <SignedOut />
         {/if}

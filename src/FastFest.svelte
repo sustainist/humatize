@@ -1,6 +1,11 @@
 <script>
+    import { slide } from "svelte/transition";
+    import { showBackThisProjectContent } from "./funding";
+    import BackThisProjectButton from "./funding/BackThisProjectButton.svelte";
+    import Funding from "./funding/Funding.svelte";
     import Backers from "./project/backers/Backers.svelte";
     import Creators from "./project/creators/Creators.svelte";
+    import Session from "./funding/checkout/Session.svelte";
 </script>
 
 <svelte:head>
@@ -61,23 +66,51 @@
     />
 </svelte:head>
 
+<Session />
+
+<div class="sticky-header" id="stickyHeader">
+    <div class="sticky-header-inner">
+        <div
+            style="flex:1;white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+        >
+            <span class="brand-icon"><i class="fas fa-tree"></i></span>
+            <span class="brand-text">FastFest</span>
+            <span>|</span>
+            <span class="brand-text"
+                >The Shortest Route from Dream to Reality</span
+            >
+        </div>
+        <div class="sticky-header-right">
+            <BackThisProjectButton />
+        </div>
+    </div>
+    {#if $showBackThisProjectContent}
+        <div transition:slide class="container">
+            <br />
+            <Funding />
+            <br />
+        </div>
+    {/if}
+</div>
+
 <div class="container">
     <div class="future-badge">
         <i class="fas fa-leaf"></i>
-        <span style="white-space: nowrap;">✦ Humatize</span>
+        <a href="/#humatize-manifest" style="white-space: nowrap;">✦ Humatize</a
+        >
         <span>|</span>
         <a href="/#sustainable-crowdfunding">Sustainable Crowdfunding</a>
         <i class="fas fa-seedling"></i>
     </div>
+</div>
 
+<div class="container">
     <h1 class="project-title">
         <i class="fa-solid fa-tree"></i> FastFest
     </h1>
-    <h2 class="project-subtitle">
-        The Shortest Route from Dream to Reality | <i class="fa-solid fa-music"
-        ></i> Music Edition
-    </h2>
+    <h2 class="project-subtitle">The Shortest Route from Dream to Reality</h2>
 </div>
+
 <div class="container">
     <div class="project-description">
         <p>
@@ -98,11 +131,11 @@
 
 <div class="grid-2col">
     <div class="card">
-        <h2><i class="fas fa-leaf"></i> Creators</h2>
+        <h2 id="creators"><i class="fas fa-leaf"></i> Creators</h2>
         <Creators />
     </div>
     <div class="card">
-        <h2><i class="fas fa-seedling"></i> Backers</h2>
+        <h2 class="backers"><i class="fas fa-seedling"></i> Backers</h2>
         <Backers />
     </div>
 </div>

@@ -10,7 +10,6 @@
   <Email />
   <Name />
   <DeleteAccount />
-  <hr />
 </div>
 
 <style>

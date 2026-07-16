@@ -7,7 +7,7 @@
   import { slide } from "svelte/transition";
   import type { LoggerMessage } from "../../logger";
   import Logger from "../../logger/Logger.svelte";
-  import { amount, currency, email, formId, interval, destination } from "../cart";
+  import { amount, currency, email, formId, interval, project } from "../cart";
 
   onMount(() => {
     document
@@ -36,7 +36,7 @@
           currency: $currency?.code || "eur",
           domain: url.href,
           email: $email,
-          purpose: $destination,
+          purpose: $project,
           interval: $interval,
         };
 
@@ -90,10 +90,11 @@
     position: relative;
 
     &:empty {
-      background: linear-gradient(90deg, #fff 25%, whitesmoke 50%, #fff 75%);
+      background: linear-gradient(90deg, #1d3b3b 25%, #384d4d 50%, #1d3b3b 75%);
       background-size: 200% 100%;
       animation: shimmer 3s infinite;
-      padding: 1rem 0;
+      padding: 0.125rem 0;
+      border-radius: 0.125rem;
     }
   }
 

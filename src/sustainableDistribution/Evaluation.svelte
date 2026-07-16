@@ -1,13 +1,14 @@
 <script lang="ts">
-  import { type EvaluationExample } from ".";
+  import { type Distribution } from ".";
   import Table from "./Table.svelte";
 
   const { example }: { example: number } = $props();
 
-  const examples: (EvaluationExample | undefined)[] = [
+  const examples: (Distribution | undefined)[] = [
     {
       showOrder: true,
       profit: 1000,
+      goal: 1000,
       editOrder: true,
       participants: [
         {
@@ -46,12 +47,14 @@
       showSize: true,
       participants: Array(15).fill(null),
       profit: 2000,
+      goal: 2000,
       position: 1,
     },
     {
       showOrder: true,
       showSize: true,
       profit: 1000,
+      goal: 1000,
       editOrder: true,
       participants: [
         {

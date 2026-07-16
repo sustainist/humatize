@@ -5,21 +5,22 @@
   import Customers from "./customers/AccountCustomers.svelte";
   import Checkout from "./checkout/Checkout.svelte";
   import { onMount } from "svelte";
-  import { destination, formId, makeId } from "./cart";
+  import { project, formId, makeId } from "./cart";
+  import Pay from "./cart/Pay.svelte";
 
   onMount(() => {
     $formId = "form-" + makeId();
-    if (!$destination) {
-      $destination = document.title;
+    if (!$project) {
+      $project = document.title;
     }
   });
 </script>
 
 <Cart />
 
-<!-- <Checkout {formId} {interval} {currency} {amount} {email} {destination} /> -->
+<Pay />
 
-<!-- <Customers /> -->
+<Checkout />
 
 <style>
   :global .funding > * {

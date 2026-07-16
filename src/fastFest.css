@@ -717,10 +717,6 @@ dd {
     font-family: 'Inter', sans-serif;
 }
 
-.btn-support i {
-    margin-right: 0.6rem;
-}
-
 .btn-support:hover {
     background: #5cceac;
     transform: scale(1.02);
@@ -872,6 +868,7 @@ dd {
 .input-group input[type="text"],
 .input-group input[type="password"],
 .input-group input[type="number"],
+.input-group input[type="email"],
 .input-group select,
 .input-group textarea {
     width: 100%;
@@ -885,6 +882,11 @@ dd {
     transition: 0.2s ease;
     backdrop-filter: blur(2px);
     outline: none;
+
+    &:disabled {
+        cursor: default;
+        opacity: .5;
+    }
 }
 
 .input-group input[type="text"]:focus,
@@ -1059,4 +1061,75 @@ dd {
     .demo-grid {
         grid-template-columns: 1fr;
     }
+}
+
+.sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    /* background: var(--bg-sticky); */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(100, 200, 170, 0.2);
+    padding: 0.8rem 0;
+    margin: 0 -1.5rem;
+    margin-bottom: 2.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); */
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+    transform: translateY(0);
+    opacity: 1;
+    max-height: 100vh;
+    overflow: auto;
+}
+
+.sticky-header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.8rem 1.5rem;
+}
+
+/* .sticky-header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.sticky-header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+} */
+
+.sticky-header-right .btn-support-sticky {
+    background: #49b394;
+    color: #0b1f1c;
+    font-weight: 700;
+    padding: 0.75rem 1.5rem;
+    border-radius: 60px;
+    transition: all 0.2s ease;
+    border: none;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 0 #2a6e5b;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    white-space: nowrap;
+}
+
+.sticky-header-right .btn-support-sticky:hover {
+    background: #5cceac;
+    transform: scale(1.02);
+    box-shadow: 0 5px 0 #2a6e5b;
+    color: #0b1f1c;
+}
+
+[id] {
+    scroll-margin-top: 2.5em;
 }

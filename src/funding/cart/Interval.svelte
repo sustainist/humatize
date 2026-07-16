@@ -14,14 +14,3 @@
     </label>
   {/each}
 </div>
-
-<style>
-  div {
-    display: flex;
-    gap: 0.25em;
-    flex-wrap: wrap;
-  }
-  label input {
-    margin-left: 0;
-  }
-</style>

@@ -18,5 +18,5 @@
   {/if}
   <!-- <img src={CreditCardIcon} alt="Credit Card Icon" class="icon" />  -->
   <!-- Checkout -->
-  support the event · future invest
+  Checkout
 </button>

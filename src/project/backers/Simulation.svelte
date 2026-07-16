@@ -1,18 +1,24 @@
 <script lang="ts">
     import { getBackers } from ".";
-    import { goal, roundNumbersBackers } from "..";
-    import type { EvaluationExample } from "../../curve";
+    import {
+        initMRP,
+        mrp,
+        roundNumbersBackers,
+        simulateGoal,
+        simulateMRP,
+    } from "..";
+    import type { Distribution } from "../../sustainableDistribution";
     import List from "../List.svelte";
 
     let simulateBackers = $state(
         // localStorage.getItem("simulateBackers") === "true",
-        false
+        false,
     );
     /* $effect(() => {
         localStorage.setItem("simulateBackers", "" + simulateBackers);
     }); */
 
-    let simulatedBackers: EvaluationExample["participants"] = $state(
+    let simulatedBackers: Distribution["participants"] = $state(
         JSON.parse(localStorage.getItem("simulatedBackers") || "[]"),
     );
     $effect(() => {
@@ -23,15 +29,10 @@
     });
 
     let simulatedPledge = $state(
-        +(localStorage.getItem("simulatedPledge") || 100),
+        +(localStorage.getItem("simulatedPledge") || 10),
     );
     $effect(() => {
         localStorage.setItem("simulatedPledge", "" + simulatedPledge);
-    });
-
-    let simulatedGoal = $state(+(localStorage.getItem("simulatedGoal") || 100));
-    $effect(() => {
-        localStorage.setItem("simulatedGoal", "" + simulatedGoal);
     });
 </script>
 
@@ -62,14 +63,28 @@
         style="display:flex;flex-direction:column;gap:1rem"
     >
         <div class="input-group">
-            <label for="simulated-goal"
-                ><i class="fa-solid fa-hand-holding-heart"></i> Simulate Goal</label
+            <label for="simulated-goal" style="opacity: .5;"
+                ><i class="fa-solid fa-coins"></i> Simulate Market Reference Point</label
             >
             <input
-                bind:value={simulatedGoal}
+                disabled
                 type="number"
-                id="simulated-goal"
-                min="1"
+                value={$roundNumbersBackers
+                    ? Math.round($simulateMRP)
+                    : $simulateMRP}
+            />
+        </div>
+
+        <div class="input-group">
+            <label for="simulated-goal" style="opacity: .5;"
+                ><i class="fa-solid fa-coins"></i> Simulate Goal</label
+            >
+            <input
+                disabled
+                type="number"
+                value={$roundNumbersBackers
+                    ? Math.round($simulateGoal)
+                    : $simulateGoal}
             />
         </div>
 
@@ -77,12 +92,7 @@
             <label for="simulated-pledge"
                 ><i class="fa-solid fa-hand-holding-heart"></i> Simulate Pledge Amount</label
             >
-            <input
-                bind:value={simulatedPledge}
-                type="number"
-                id="simulated-pledge"
-                min="1"
-            />
+            <input bind:value={simulatedPledge} type="number" min="1" />
         </div>
 
         <div
@@ -105,22 +115,25 @@
             {/if}
         </div>
     </form>
-    {#if simulatedBackers.length > 0}
-        <List
-            items={{
-                showOrder: true,
-                profit: 1000,
-                showSize: true,
-                editOrder: false,
-                showPledge: true,
-                participantName: "Backer",
-                showTimeline: true,
-                sustainableModel: "backers",
-                participants: getBackers(simulatedBackers),
-                roundNumbers: $roundNumbersBackers,
-                goal: simulatedGoal,
-            }}
-            tableId="simulation-backers"
-        />
-    {/if}
+
+    <List
+        items={{
+            showOrder: true,
+            showSize: true,
+            editOrder: false,
+            showPledge: true,
+            participantName: "Backer",
+            showTimeline: true,
+            sustainableModel: "backers",
+            participants: getBackers(simulatedBackers, {
+                mrp: $simulateMRP,
+                nrOfPeople: 1,
+                timestamp: initMRP.timestamp,
+            }),
+            roundNumbers: $roundNumbersBackers,
+            hideParticipants: true,
+            goal: $simulateGoal,
+        }}
+        tableId="simulation-backers"
+    />
 {/if}

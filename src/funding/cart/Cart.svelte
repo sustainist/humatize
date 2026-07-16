@@ -5,7 +5,7 @@
     import Amount from "./Amount.svelte";
     import Pay from "./Pay.svelte";
     import Email from "./Email.svelte";
-    import Destination from "./Destination.svelte";
+    import Project from "./Project.svelte";
     import Account from "./Account.svelte";
     import { formId } from ".";
 </script>
@@ -17,10 +17,10 @@
         e.preventDefault();
     }}
 >
-    <div>
+    <!-- <div>
         <h4>Project</h4>
-        <Destination />
-    </div>
+        <Project />
+    </div> -->
     <div>
         <h4>Account</h4>
         <Account />
@@ -30,10 +30,10 @@
         <Currency />
         <Amount />
     </div>
-    <div>
+    <!-- <div>
         <h4>Recurring</h4>
         <Interval />
-    </div>
+    </div> -->
     <!--  <div>
                 <Pay {formId} />
             </div> -->

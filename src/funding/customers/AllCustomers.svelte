@@ -4,10 +4,14 @@
         query,
         collection,
         orderBy,
+        limit,
     } from "firebase/firestore";
     import { db } from "../../firebase";
     import { allCustomers, jsonParse } from "..";
     import type { LoggerMessage } from "../../logger";
+    import type { Snippet } from "svelte";
+
+    const { customers }: { customers: Snippet<[Customer[]]> } = $props();
 
     let logger: LoggerMessage[] = $state([]);
 
@@ -16,7 +20,8 @@
             onSnapshot(
                 query(
                     collection(db, "customers"),
-                    orderBy("timestamp", "desc"),
+                    orderBy("timestamp", "asc"),
+                    limit(20),
                 ),
                 (snapshot) => {
                     $allCustomers = snapshot.docs.map(
@@ -36,8 +41,4 @@
     });
 </script>
 
-<pre>
-
-    {JSON.stringify($allCustomers, null, 2)}
-
-</pre>
+{@render customers($allCustomers || [])}
