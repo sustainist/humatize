@@ -5,11 +5,12 @@
     import SignedOut from "../../account/signedOut/SignedOut.svelte";
     import Logger from "../../logger/Logger.svelte";
     import SignedIn from "../../account/signedIn/SignedIn.svelte";
+    import { slide } from "svelte/transition";
 
     let emailSource: "email" | "account" = $state("email");
 </script>
 
-<div class="inline-options" style:margin="0.5em 0">
+<div class="inline-options">
     <label>
         <input
             type="radio"
@@ -35,17 +36,21 @@
 </div>
 <div>
     {#if emailSource === "email"}
-        <Email />
+        <div style="margin-top:1em">
+            <Email />
+        </div>
     {:else if emailSource === "account"}
-        <div style:margin="0.25em 0">
+        <div>
             <Logger bind:logger={$logger} />
         </div>
         {#if $user?.email}
-            <SignedIn />
-            <br />
-            <br />
+            <div>
+                <SignedIn />
+            </div>
         {:else}
-            <SignedOut />
+            <div>
+                <SignedOut />
+            </div>
         {/if}
     {/if}
 </div>

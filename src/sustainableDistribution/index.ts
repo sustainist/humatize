@@ -260,6 +260,7 @@ export type Distribution = {
   sustainableModel?: 'creators' | 'backers'
   goal: number
   roundNumbers?: boolean
+  hidePeople?: boolean
   participants: ({
     id?: number;
     text?: string;
@@ -271,6 +272,9 @@ export type Distribution = {
     percentageBacker?: number
     rewardBacker?: number
     nrOfPeople?: number
+    email?: string | null
+    distributionStart?: number
+    distributionEnd?: number
   } | null)[];
   editOrder?: boolean;
   showCompensation?: boolean;

@@ -27,7 +27,7 @@
     </div>
     <div>
         <h4>Amount</h4>
-        <Currency />
+        <!-- <Currency /> -->
         <Amount />
     </div>
     <!-- <div>

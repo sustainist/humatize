@@ -1,6 +1,7 @@
 <script lang="ts">
   import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
   import { auth, logger } from "../../firebase";
+    import { slide } from "svelte/transition";
 
   const handleSignInWithPopupGoogle = () => {
     $logger = [];
@@ -27,7 +28,7 @@
   };
 </script>
 
-<form>
+<form transition:slide>
   <div>
     <button class="btn-primary" type="button" onpointerdown={handleSignInWithPopupGoogle}
       >Sign in with Google</button

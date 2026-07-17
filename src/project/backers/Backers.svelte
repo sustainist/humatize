@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { customersToBackers, getBackers } from ".";
     import { goal, initMRP, mrp, roundNumbersBackers } from "..";
     import AllCustomers from "../../funding/customers/AllCustomers.svelte";
     import List from "../List.svelte";
+    import Account from "./Account.svelte";
     import Simulation from "./Simulation.svelte";
 </script>
 
@@ -17,14 +17,11 @@
                 participantName: "Backer",
                 showTimeline: true,
                 sustainableModel: "backers",
+                hidePeople: true,
                 goal: $goal,
                 roundNumbers: $roundNumbersBackers,
                 hideParticipants: true,
-                participants: getBackers(customersToBackers(items), {
-                    mrp: $mrp,
-                    nrOfPeople: 1,
-                    timestamp: initMRP.timestamp,
-                }),
+                participants: items,
             }}
             tableId="backers"
         />
@@ -40,3 +37,5 @@
 </div>
 
 <Simulation />
+
+<Account />

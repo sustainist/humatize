@@ -1,9 +1,10 @@
 <script>
-  import SignIn from "./SignIn.svelte";
+  import SignIn from "./SignInProviders.svelte";
   import SignInWithGoogle from "./SignInWithGoogle.svelte";
   import SignInWithLink from "./SignInWithLink.svelte";
   import SignInWithEmailAndPassword from "./SignInWithEmailAndPassword.svelte";
   import { signInWith } from "../../firebase";
+  import { slide } from "svelte/transition";
 </script>
 
 <div class="signed-out">
@@ -18,8 +19,8 @@
 </div>
 
 <style>
-  :global .signed-out form div {
-    margin-top: 0.25em;
-    margin-bottom: 0.25em;
+  .signed-out {
+    padding-top: 0.25em;
+    padding-bottom: 0.25em;
   }
 </style>

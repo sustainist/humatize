@@ -7,10 +7,6 @@
         type Distribution,
     } from "../sustainableDistribution";
     import Curve from "../sustainableDistribution/Curve.svelte";
-    import IconOrder from "../sustainableDistribution/IconOrder.svelte";
-    import IconParticipants from "../sustainableDistribution/IconParticipants.svelte";
-    import IconSize from "../sustainableDistribution/IconSize.svelte";
-    import IconShare from "../sustainableDistribution/IconShare.svelte";
 
     let {
         items,
@@ -81,6 +77,12 @@
                             </div>
                         </div>
                     </td>
+                {:else}
+                    <td colspan="2">
+                        {#if sibling?.distributionStart && sibling?.distributionEnd}
+                            {sibling?.distributionStart}...{sibling?.distributionEnd}
+                        {/if}
+                    </td>
                 {/if}
                 {#if !items.hideParticipants}
                     <td>
@@ -105,12 +107,14 @@
                         </div>
                     </td>
                 {/if}
-                <td>
-                    {#if items.participantName === "Creator" && sibling?.nrOfPeople}({sibling?.nrOfPeople}){/if}
-                    {#each { length: sibling?.nrOfPeople || 0 }}
-                        <i class="fa-solid fa-user"></i>
-                    {/each}
-                </td>
+                {#if !items.hidePeople}
+                    <td>
+                        {#if items.participantName === "Creator" && sibling?.nrOfPeople}({sibling?.nrOfPeople}){/if}
+                        {#each { length: sibling?.nrOfPeople || 0 }}
+                            <i class="fa-solid fa-user"></i>
+                        {/each}
+                    </td>
+                {/if}
             {/if}
             {#if items.showSize}
                 {#if items.showCompensation}
@@ -165,7 +169,7 @@
                     <span>
                         {sibling?.pledge || 0}
                     </span>
-                    {#if i === 0}
+                    {#if !sibling?.email && i === 0}
                         <a
                             style="white-space:nowrap"
                             href="/#market-reference-point"
@@ -181,7 +185,7 @@
                     {:else}
                         {sibling?.rewardBacker || 0}
                     {/if}
-                    {#if i === 0}out of
+                    {#if !sibling?.email && i === 0}out of
                         {#if items.roundNumbers}
                             {Math.round(items.goal)}
                         {:else}
@@ -239,12 +243,10 @@
             <thead>
                 <tr>
                     {#if items.showOrder}
-                        {#if items.sustainableModel === "creators"}
-                            <th colspan="2">
-                                <!-- <IconOrder /> -->
-                                Sustainable Distribution
-                            </th>
-                        {/if}
+                        <th colspan="2">
+                            <!-- <IconOrder /> -->
+                            Sustainable Distribution
+                        </th>
                         {#if !items.hideParticipants}
                             <th>
                                 <!-- <IconParticipants /> -->
@@ -253,7 +255,9 @@
                                 Participants
                             </th>
                         {/if}
-                        <th> People </th>
+                        {#if !items.hidePeople}
+                            <th> People </th>
+                        {/if}
                     {/if}
                     {#if items.showSize}
                         {#if items.showCompensation}

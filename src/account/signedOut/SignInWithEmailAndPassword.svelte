@@ -8,6 +8,7 @@
   import Loading from "../../Loading.svelte";
   import { onMount } from "svelte";
   import { auth, logger } from "../../firebase";
+    import { slide } from "svelte/transition";
 
   let signLoading = $state(false);
   const handleSign = (
@@ -127,7 +128,7 @@
   });
 </script>
 
-<form onsubmit={handleSign} class="margin">
+<form transition:slide onsubmit={handleSign} class="margin">
   <div>
     <select
       bind:value={sign}

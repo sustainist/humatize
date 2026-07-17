@@ -39,13 +39,14 @@
 <br />
 
 <div class="inline-options" style="width:fit-content">
-    <label
-        ><input
+    <label>
+        <input
             bind:checked={simulateBackers}
             type="checkbox"
             name="simulate-backers"
-        /> Simulate Backers Rewards</label
-    >
+        />
+        Simulate Backers Rewards
+    </label>
 </div>
 
 <br />
@@ -63,11 +64,12 @@
         style="display:flex;flex-direction:column;gap:1rem"
     >
         <div class="input-group">
-            <label for="simulated-goal" style="opacity: .5;"
+            <label for="simulated-mrp" style="opacity: .5;"
                 ><i class="fa-solid fa-coins"></i> Simulate Market Reference Point
                 *</label
             >
             <input
+                id="simulated-backers-mrp"
                 disabled
                 type="number"
                 value={$roundNumbersBackers
@@ -77,10 +79,11 @@
         </div>
 
         <div class="input-group">
-            <label for="simulated-goal" style="opacity: .5;"
+            <label for="simulated-backers-goal" style="opacity: .5;"
                 ><i class="fa-solid fa-coins"></i> Simulate Goal *</label
             >
             <input
+                id="simulated-backers-goal"
                 disabled
                 type="number"
                 value={$roundNumbersBackers
@@ -90,12 +93,16 @@
             <small> * From Simulate Creators Rewards </small>
         </div>
 
-
         <div class="input-group">
-            <label for="simulated-pledge"
+            <label for="simulated-backers-pledge"
                 ><i class="fa-solid fa-hand-holding-heart"></i> Simulate Pledge Amount</label
             >
-            <input bind:value={simulatedPledge} type="number" min="1" />
+            <input
+                id="simulated-backers-pledge"
+                bind:value={simulatedPledge}
+                type="number"
+                min="1"
+            />
         </div>
 
         <div
@@ -128,11 +135,14 @@
             participantName: "Backer",
             showTimeline: true,
             sustainableModel: "backers",
-            participants: getBackers(simulatedBackers, {
-                mrp: $simulateMRP,
-                nrOfPeople: 1,
-                timestamp: initMRP.timestamp,
-            }),
+            participants: getBackers([
+                {
+                    pledge: $simulateMRP,
+                    nrOfPeople: 1,
+                    timestamp: initMRP.timestamp,
+                },
+                ...simulatedBackers,
+            ]),
             roundNumbers: $roundNumbersBackers,
             hideParticipants: true,
             goal: $simulateGoal,

@@ -16,6 +16,8 @@
   };
 </script>
 
-<div>
-  <button class="btn-primary" type="button" onpointerdown={handleSignOut}>Sign Out</button>
-</div>
+<span>
+  <button class="btn-primary" type="button" onpointerdown={handleSignOut}
+    >Sign Out</button
+  >
+</span>

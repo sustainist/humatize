@@ -1,15 +1,11 @@
 import { addShares, type Distribution } from "../../sustainableDistribution";
 
-export const getBackers = (participants: Distribution["participants"], mrp: { nrOfPeople: number, mrp: number, timestamp: string | number }) => {
+export const getBackers = (participants: Distribution["participants"]): Distribution['participants'] => {
 
     let sumOfPrevPledges: number = 0;
     const updatedParticipants: Distribution["participants"] = [];
 
-    [{
-        nrOfPeople: mrp.nrOfPeople,
-        pledge: mrp.mrp,
-        timestamp: mrp.timestamp
-    }, ...participants].forEach((participant, index) => {
+    participants.forEach((participant, index) => {
         if (participant && typeof participant.pledge === "number") {
             const participantClone = {
                 ...participant,
@@ -34,6 +30,8 @@ export const getBackers = (participants: Distribution["participants"], mrp: { nr
                     startPosition,
                     endPosition,
                 });
+                updatedParticipants[index1]!.distributionStart = startPosition
+                updatedParticipants[index1]!.distributionEnd = endPosition
 
                 updatedParticipants[index1]!.rewardBacker =
                     (updatedParticipants[index1]!.rewardBacker || 0) +
@@ -47,6 +45,7 @@ export const getBackers = (participants: Distribution["participants"], mrp: { nr
             updatedParticipants.push(participantClone);
         }
     });
+
     return updatedParticipants;
 };
 
@@ -56,7 +55,8 @@ export function customersToBackers(customers: Customer[]): Distribution["partici
         const participant: Distribution['participants'][0] = {
             pledge: (customer.amount || 0) / 100,
             nrOfPeople: 1,
-            timestamp: customer.created * 1000
+            timestamp: customer.created * 1000,
+            email: customer.email
         }
         participants.push(participant)
     })

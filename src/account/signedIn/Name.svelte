@@ -42,7 +42,7 @@
 <div>
   <h5>Name</h5>
   <form onsubmit={handleUpdate}>
-    <label style="margin:0.5em 0">
+    <label style="margin:1em 0">
       <input
         disabled={!$user?.email}
         placeholder="Name"

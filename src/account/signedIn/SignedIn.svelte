@@ -3,23 +3,39 @@
   import DeleteAccount from "./DeleteAccount.svelte";
   import Name from "./Name.svelte";
   import Email from "./Email.svelte";
+  import { slide } from "svelte/transition";
+  import ShowSettings from "./ShowSettings.svelte";
+  import DisplayName from "./DisplayName.svelte";
+
+  let showAccountSettings = $state(false);
 </script>
 
-<div class="signed-in">
-  <SignOut />
-  <Email />
-  <Name />
-  <DeleteAccount />
+<div class="signed-in" style="margin-top:0.5em">
+  <div style="align-items:center;gap:1em">
+    <SignOut />
+    <ShowSettings bind:showAccountSettings />
+  </div>
+  {#if showAccountSettings}
+    <div
+      transition:slide
+      style="flex-direction:column;border-bottom:2px dotted #1f5a4b;padding-bottom:1.5em;margin-bottom:1.5em"
+    >
+      <Email />
+      <Name />
+      <DeleteAccount />
+    </div>
+  {/if}
 </div>
 
 <style>
-  :global .signed-in {
+  div div {
     display: flex;
-    flex-direction: column;
-    gap: 1em;
-
+  }
+  :global .signed-in {
     h5 {
-      font-size: 0.9em;
+      margin-top: 1.5em;
+      margin-bottom: 0;
+      font-size: 1em;
     }
   }
 </style>

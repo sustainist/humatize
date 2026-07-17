@@ -1,6 +1,7 @@
 <script lang="ts">
   import { sendSignInLinkToEmail } from "firebase/auth";
   import { auth, logger, signInWith } from "../../firebase";
+  import { slide } from "svelte/transition";
 
   const handleSign = (
     e: SubmitEvent & {
@@ -49,13 +50,13 @@
   };
 </script>
 
-<form onsubmit={handleSign}>
+<form transition:slide onsubmit={handleSign}>
   <div>
     <label>
       <input type="email" placeholder="Email" name="email" /> - email address</label
     >
   </div>
   <div>
-    <button type="submit" name="send">Send Sign In Link</button>
+    <button class="btn-primary" type="submit" name="send">Send Sign In Link</button>
   </div>
 </form>

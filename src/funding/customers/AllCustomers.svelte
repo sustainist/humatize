@@ -10,8 +10,13 @@
     import { allCustomers, jsonParse } from "..";
     import type { LoggerMessage } from "../../logger";
     import type { Snippet } from "svelte";
+    import type { Distribution } from "../../sustainableDistribution";
+    import { customersToBackers, getBackers } from "../../project/backers";
+    import { initMRP, mrp } from "../../project";
 
-    const { customers }: { customers: Snippet<[Customer[]]> } = $props();
+    const {
+        customers,
+    }: { customers: Snippet<[Distribution["participants"]]> } = $props();
 
     let logger: LoggerMessage[] = $state([]);
 
@@ -41,4 +46,14 @@
     });
 </script>
 
-{@render customers($allCustomers || [])}
+<!-- {@render customers($allCustomers || [])} -->
+{@render customers(
+    getBackers([
+        {
+            pledge: $mrp,
+            nrOfPeople: 1,
+            timestamp: initMRP.timestamp,
+        },
+        ...customersToBackers($allCustomers || []),
+    ]),
+)}

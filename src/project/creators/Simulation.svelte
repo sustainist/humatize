@@ -68,13 +68,14 @@
 <br />
 
 <div class="inline-options" style="width:fit-content">
-    <label
-        ><input
+    <label>
+        <input
             bind:checked={simulateCreators}
             type="checkbox"
             name="simulate-creators"
-        /> Simulate Creators Rewards</label
-    >
+        />
+        Simulate Creators Rewards
+    </label>
 </div>
 
 <br />
