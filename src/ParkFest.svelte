@@ -1,11 +1,9 @@
 <script>
-  import { addShares, getReferencePoint } from "./sustainableDistribution";
   import Evaluation from "./sustainableDistribution/Evaluation.svelte";
   import Pay from "./funding/cart/Pay.svelte";
   import Checkout from "./funding/checkout/Checkout.svelte";
   import Session from "./funding/checkout/Session.svelte";
   import Customers from "./funding/customers/AccountCustomers.svelte";
-  import AllCustomers from "./funding/customers/AllCustomers.svelte";
   import Funding from "./funding/Funding.svelte";
 </script>
 

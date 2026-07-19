@@ -4,7 +4,6 @@
   import SignInWithLink from "./SignInWithLink.svelte";
   import SignInWithEmailAndPassword from "./SignInWithEmailAndPassword.svelte";
   import { signInWith } from "../../firebase";
-  import { slide } from "svelte/transition";
 </script>
 
 <div class="signed-out">

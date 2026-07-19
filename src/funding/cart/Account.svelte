@@ -5,7 +5,6 @@
     import SignedOut from "../../account/signedOut/SignedOut.svelte";
     import Logger from "../../logger/Logger.svelte";
     import SignedIn from "../../account/signedIn/SignedIn.svelte";
-    import { slide } from "svelte/transition";
 
     let emailSource: "email" | "account" = $state("email");
 </script>

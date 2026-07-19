@@ -1,7 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import Return from "./Return.svelte";
-    import { slide } from "svelte/transition";
 
     let paramCheckoutSessionId: string | null = $state(null);
 

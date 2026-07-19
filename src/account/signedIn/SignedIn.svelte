@@ -5,7 +5,6 @@
   import Email from "./Email.svelte";
   import { slide } from "svelte/transition";
   import ShowSettings from "./ShowSettings.svelte";
-  import DisplayName from "./DisplayName.svelte";
 
   let showAccountSettings = $state(false);
 </script>

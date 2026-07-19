@@ -7,7 +7,7 @@
         limit,
     } from "firebase/firestore";
     import { db } from "../../firebase";
-    import { allCustomers, jsonParse } from "..";
+    import { allCustomers } from "..";
     import type { LoggerMessage } from "../../logger";
     import type { Snippet } from "svelte";
     import type { Distribution } from "../../sustainableDistribution";

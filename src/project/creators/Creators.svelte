@@ -1,9 +1,6 @@
 <script lang="ts">
-    import { goal, mrp, roundNumbersCreators } from "..";
-    import {
-        getReferencePoint,
-        type Distribution,
-    } from "../../sustainableDistribution";
+    import { goal, roundNumbersCreators } from "..";
+    import { type Distribution } from "../../sustainableDistribution";
     import List from "../List.svelte";
     import participants from "./participants.json";
     import Simulation from "./Simulation.svelte";

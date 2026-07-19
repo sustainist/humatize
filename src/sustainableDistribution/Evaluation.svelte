@@ -7,7 +7,6 @@
   const examples: (Distribution | undefined)[] = [
     {
       showOrder: true,
-      profit: 1000,
       goal: 1000,
       editOrder: true,
       participants: [
@@ -46,14 +45,12 @@
     {
       showSize: true,
       participants: Array(15).fill(null),
-      profit: 2000,
       goal: 2000,
       position: 1,
     },
     {
       showOrder: true,
       showSize: true,
-      profit: 1000,
       goal: 1000,
       editOrder: true,
       participants: [

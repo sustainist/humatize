@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { goal, initMRP, mrp, roundNumbersBackers } from "..";
+    import { goal, roundNumbersBackers } from "..";
     import AllCustomers from "../../funding/customers/AllCustomers.svelte";
     import List from "../List.svelte";
     import Account from "./Account.svelte";

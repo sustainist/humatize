@@ -560,7 +560,7 @@
         participants={example.participants.length}
         position={example.position || 1}
         orientation={$curveOrientation}
-        profit={example.profit}
+        profit={example.goal}
         onPositionChange={(position) => {
           if (example && example.position !== position) {
             example.position = position;
@@ -654,7 +654,7 @@
                     title="Edit profit"
                   />{#if !showInputProfit}
                     <span title="Profit" style="font-weight:normal">
-                      {example.profit}
+                      {example.goal}
                     </span>
                   {/if}
                 </label>
@@ -665,9 +665,9 @@
                       class="profit"
                       min="0"
                       type="number"
-                      value={example.profit}
+                      value={example.goal}
                       oninput={(e) => {
-                        example.profit = +e.currentTarget.value;
+                        example.goal = +e.currentTarget.value;
                         example = { ...example };
                       }}
                       style="width:8ch"
@@ -687,7 +687,7 @@
       </thead>
       <tbody>
         {#if siblings.length}
-          {@render trs(siblings, example.profit)}
+          {@render trs(siblings, example.goal)}
         {:else if example.editOrder}
           <tr>
             <td

@@ -1,13 +1,6 @@
 <script lang="ts">
-    import { showCart, showFormCheckout } from "..";
-    import Interval from "./Interval.svelte";
-    import Currency from "./Currency.svelte";
     import Amount from "./Amount.svelte";
-    import Pay from "./Pay.svelte";
-    import Email from "./Email.svelte";
-    import Project from "./Project.svelte";
     import Account from "./Account.svelte";
-    import { formId } from ".";
 </script>
 
 <!-- {#if $showCart} -->
