@@ -10,6 +10,6 @@
             id="show-account-settings"
             type="checkbox"
             bind:checked={showAccountSettings}
-        /> Show Account Settings</label
+        />Account Settings</label
     >
 </span>
