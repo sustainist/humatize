@@ -1143,9 +1143,5 @@ dd {
 }
 
 [id] {
-    scroll-margin-top: 2.5em;
-
-    &[id="FastFest"] {
-        scroll-margin-top: 1.5em;
-    }
+    scroll-margin-top: 5rem;
 }
