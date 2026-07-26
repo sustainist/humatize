@@ -308,7 +308,7 @@
         </label>
         <button
           title="close"
-          style="background: none; border: none; cursor: pointer;"
+          style="background: none; border: none; cursor: pointer;color:inherit"
           type="button"
           onpointerdown={() => (search = null)}
         >

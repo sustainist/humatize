@@ -3,7 +3,7 @@
 </script>
 
 <div>
-  <span>€</span>
+  <!-- <span>€</span> -->
   <label>
     <input name="{$formId}-amount" type="number" bind:value={$amount} />
   </label>

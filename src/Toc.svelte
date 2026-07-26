@@ -1,35 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import ScrollToc from "./scroll/ScrollToc.svelte";
   const { list }: { list?: string } = $props();
-
-  /*
-
-  const tocWidth = 400;
-  document.documentElement.style.setProperty("--toc-width", `${tocWidth}px`);
-
-  const marginLeft = parseFloat(
-    window.getComputedStyle(document.body).marginLeft,
-  );
-  document.documentElement.style.setProperty("--marginLeft", `${marginLeft}px`);
-
-  function toggleCssClassLarge() {
-    const isLarge = window.innerWidth > tocWidth * 3 + marginLeft * 2;
-    document.documentElement.classList.toggle("large", isLarge);
-  }
-
-  onMount(() => {
-    toggleCssClassLarge();
-    const onResize = () => {
-      toggleCssClassLarge();
-    };
-
-    window.addEventListener("resize", onResize);
-
-    return () => {
-      window.removeEventListener("resize", onResize);
-    };
-  }); */
 </script>
 
 {#snippet level(items: Heading[])}
@@ -71,8 +41,6 @@
   <p><small style:color="red">Toc list is empty</small></p>
 {/if}
 
-<ScrollToc />
-
 <style>
   :global {
     .container-toc-and-content {
@@ -80,11 +48,20 @@
       grid-template-columns: minmax(0, 400px) minmax(0, 1200px);
       gap: 1.25rem;
       margin: 2.5rem 0 3rem;
+
+      nav.toc {
+        position: sticky;
+        top: 5rem;
+      }
     }
 
     @media (max-width: 1200px) {
       .container-toc-and-content {
         grid-template-columns: 1fr;
+
+        nav.toc {
+          position: initial;
+        }
       }
     }
 

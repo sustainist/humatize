@@ -1,5 +1,5 @@
 ---
-title: Humatize Manifest
+title: ✦ Humatize Manifest
 ---
 
 <I p="./Toc.svelte" />

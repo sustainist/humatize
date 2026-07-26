@@ -73,12 +73,15 @@
         <div
             style="flex:1;white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
         >
-            <span class="brand-icon"><i class="fas fa-tree"></i></span>
-            <span class="brand-text">FastFest</span>
-            <span>|</span>
-            <span class="brand-text"
-                >The Shortest Route from Dream to Reality</span
-            >
+            <a href="/#humatize-manifest">✦</a>
+            <a href="/#FastFest">
+                <span class="brand-icon"><i class="fas fa-tree"></i></span>
+                <span class="brand-text">FastFest</span>
+                <span>|</span>
+                <span class="brand-text"
+                    >The Shortest Route from Dream to Reality</span
+                >
+            </a>
         </div>
         <div class="sticky-header-right">
             <BackThisProjectButton />
@@ -105,7 +108,7 @@
 </div>
 
 <div class="container">
-    <h1 class="project-title">
+    <h1 class="project-title" id="FastFest">
         <i class="fa-solid fa-tree"></i> FastFest
     </h1>
     <h2 class="project-subtitle">The Shortest Route from Dream to Reality</h2>

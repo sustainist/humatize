@@ -1,6 +1,7 @@
 <script lang="ts">
     import Amount from "./Amount.svelte";
     import Account from "./Account.svelte";
+    import Currency from "./Currency.svelte";
 </script>
 
 <!-- {#if $showCart} -->

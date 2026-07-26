@@ -21,7 +21,7 @@
 
   const onScrollWindow = () => {
     showScrollToc = isTocInViewport(
-      <HTMLElement | null>document.querySelector("#app>nav.toc>:first-child"),
+      <HTMLElement | null>document.querySelector("nav.toc>:first-child"),
     );
   };
 
@@ -34,13 +34,13 @@
   onMount(() => {
     window.addEventListener("scroll", onScrollWindow);
     document
-      .querySelector("#app>nav.toc")
+      .querySelector("nav.toc")
       ?.addEventListener("scroll", triggerOnScrollWindow);
 
     return () => {
       window.removeEventListener("scroll", onScrollWindow);
       document
-        .querySelector("#app>nav.toc")
+        .querySelector("nav.toc")
         ?.removeEventListener("scroll", triggerOnScrollWindow);
     };
   });
@@ -54,9 +54,13 @@
       title="Jump to the top of the table of contents"
       type="button"
       onpointerdown={() => {
-        document
-          .querySelector("#app>nav.toc>:first-child")
-          ?.scrollIntoView({ block: "start" });
+        // document
+        //   .querySelector("nav.toc>:first-child")
+        //   ?.scrollIntoView({ block: "start" });
+        const a = document.querySelector(
+          '[href="/#humatize-manifest"]',
+        ) as HTMLAnchorElement | null;
+        if (a) a.click();
       }}
     >
       <span class="symbol">&#x203A;</span>
