@@ -68,7 +68,7 @@ export const webhook = onRequest(async (req, res) => {
                     firestoreData.id,
                   );
                   firestoreData.interval =
-                    subscription.items.data[0].price.recurring?.interval;
+                    subscription.items.data[0].price.recurring?.interval as Customer["interval"];
                   firestoreData.created = subscription.created;
                   firestoreData.amount =
                     subscription.items.data[0].price.unit_amount || 0;
