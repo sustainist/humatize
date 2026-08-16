@@ -64,7 +64,8 @@ export const calculateGoal = (mrpValue: number): number => {
 };
 
 export const mrp = writable(initMRP.mrp);
-export const goal = writable(calculateGoal(initMRP.mrp));
+// export const goal = writable(calculateGoal(initMRP.mrp));
+export const goal = writable(2000);
 
 export const roundNumbersCreators = writable(/* localStorage.getItem("rounded creators") !== "false" */true)
 /* roundedCreators.subscribe((value) => {
@@ -78,3 +79,17 @@ export const roundNumbersBackers = writable(/* localStorage.getItem("rounded bac
 
 export const simulateMRP = writable(initMRP.mrp);
 export const simulateGoal = writable(buildGoalLevel0(initMRP.mrp));
+
+export function harmonicSplit(n = 20): {position: number,percent: number}[] {
+    let H = 0;
+    for (let i = 1; i <= n; i++) H += 1 / i;
+    const table: {position: number,percent: number}[] = [];
+    for (let i = 1; i <= n; i++) {
+        const percent = (1 / i) / H;
+        table.push({
+            position: i,
+            percent: percent
+        });
+    }
+    return table;
+}

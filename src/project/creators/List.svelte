@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { harmonicSplit } from "..";
     import { getShare, type Distribution } from "../../sustainableDistribution";
 
     let {
@@ -16,11 +17,17 @@
     );
 </script>
 
-{#snippet trs(
-    siblings: Distribution["participants"],
+{#snippet trs({
+    siblings,
     share = 0,
-    depth: number[] = [],
-)}
+    depth = [],
+    percentages,
+}: {
+    siblings: Distribution["participants"];
+    share: number;
+    depth: number[];
+    percentages: { position: number; percent: number }[];
+})}
     {#each siblings as sibling, i}
         {#if sibling}
             {@const {
@@ -31,6 +38,8 @@
                 position: i + 1,
                 participants: siblings.length,
             })}
+
+            {@const fairShare = share * (percentages[i]?.percent || 0)}
 
             <tr>
                 <td>
@@ -52,9 +61,13 @@
                                     >&nbsp;
                                 {/each}
                                 {#if items.roundNumbers}
-                                    {Math.round(tautochronePercentage * 100)}%
+                                    <!-- {Math.round(tautochronePercentage * 100)}% | -->
+                                    {Math.round(
+                                        (percentages[i]?.percent || 0) * 100,
+                                    )}%
                                 {:else}
-                                    {tautochronePercentage * 100}%
+                                    <!-- {tautochronePercentage * 100}% |  -->
+                                    {(percentages[i]?.percent || 0) * 100}
                                 {/if}
                             </span>
                         </div>
@@ -95,11 +108,14 @@
 
                     <b>
                         {#if items.roundNumbers}
-                            {Math.round(
+                            <!-- {Math.round(
                                 tautochroneShare / (sibling.nrOfPeople || 1),
-                            )}
+                            )} | -->
+
+                            {Math.round(fairShare)}
                         {:else}
-                            {tautochroneShare / (sibling.nrOfPeople || 1)}
+                            <!-- {tautochroneShare / (sibling.nrOfPeople || 1)} | -->
+                            {fairShare}
                         {/if}
                     </b>
 
@@ -113,14 +129,16 @@
                     {/if}
                 </td>
             </tr>
-            {@render trs(
-                items.participants.filter((item) => {
-                    if (item === null || sibling === null) return false;
-                    return (item.parent || 0) === sibling.id;
-                }),
-                tautochroneShare,
-                [...depth, i + 1],
-            )}
+            {@const children = items.participants.filter((item) => {
+                if (item === null || sibling === null) return false;
+                return (item.parent || 0) === sibling.id;
+            })}
+            {@render trs({
+                siblings: children,
+                share: tautochroneShare,
+                depth: [...depth, i + 1],
+                percentages: harmonicSplit(children.length),
+            })}
         {/if}
     {/each}
 {/snippet}
@@ -151,7 +169,12 @@
             </tr>
         </thead>
         <tbody>
-            {@render trs(siblings, items.goal)}
+            {@render trs({
+                siblings,
+                share: items.goal,
+                percentages: harmonicSplit(siblings.length),
+                depth: [],
+            })}
         </tbody>
     </table>
 </div>

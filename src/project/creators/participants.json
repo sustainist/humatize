@@ -2,8 +2,7 @@
     {
         "id": 1,
         "text": "<i class=\"fa-solid fa-play\"></i> Performer",
-        "parent": 0,
-        "marketReferencePoint": true
+        "parent": 0
     },
     {
         "id": 30,
@@ -97,7 +96,7 @@
     },
     {
         "id": 12,
-        "text": "<i class=\"fa-solid fa-globe\"></i>Platform IRLance.com",
+        "text": "<i class=\"fa-solid fa-globe\"></i> Platform IRLance.com",
         "parent": 0
     }
 ]
