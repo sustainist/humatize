@@ -1,29 +1,70 @@
 import { writable } from "svelte/store"
 import { getReferencePoint } from "../sustainableDistribution";
+import creatorsParticipants from "./creators/participants.json";
 
-export const initMRP = { nrOfPeople: 5, position: 1, participants: 2, mrp: 100, timestamp: '7/16/26, 12:00 AM' }
+interface ParticipantNode {
+    id: number;
+    text: string;
+    parent: number;
+    marketReferencePoint?: boolean;
+    nrOfPeople?: number;
+}
 
+const mrpNode = (creatorsParticipants as ParticipantNode[]).find(p => p.marketReferencePoint === true) || { parent: 0, nrOfPeople: 1, id: 1, marketReferencePoint: true, text: '' };
 
-// 5 performers
-const buildGoalLevel0 = () => {
-    const ref = getReferencePoint({
-        share: initMRP.mrp * initMRP.nrOfPeople,
+if (!mrpNode) {
+    throw new Error("Market reference point node not found in participants.json");
+}
+
+const parentId = mrpNode.parent;
+const mrpSiblings = (creatorsParticipants as ParticipantNode[]).filter(p => p.parent === parentId);
+const mrpPosition = mrpSiblings.findIndex(s => s.id === mrpNode.id) + 1;
+const mrpParticipantsCount = mrpSiblings.length;
+
+export const initMRP = {
+    nrOfPeople: mrpNode.nrOfPeople || 10,
+    position: mrpPosition,
+    participants: mrpParticipantsCount,
+    mrp: 100,
+    timestamp: '7/16/26, 12:00 AM'
+};
+
+export const buildGoalLevel0 = (mrpValue: number = initMRP.mrp) => {
+    return getReferencePoint({
+        share: mrpValue * initMRP.nrOfPeople,
         position: initMRP.position,
         participants: initMRP.participants,
     });
-    return ref
-}
-const buildGoal = () => {
-    const ref2 = getReferencePoint({
-        share: buildGoalLevel0(),
-        position: 1,
-        participants: 4,
-    });
-    return ref2;
 };
 
-export const mrp = writable(initMRP.mrp)
-export const goal = writable(buildGoal())
+export const calculateGoal = (mrpValue: number): number => {
+    let currentShare = mrpValue * (mrpNode.nrOfPeople || 1);
+    let currentNode: ParticipantNode | undefined = mrpNode;
+
+    while (currentNode) {
+        const curr: ParticipantNode = currentNode;
+        const siblings = (creatorsParticipants as ParticipantNode[]).filter(p => p.parent === curr.parent);
+        const position = siblings.findIndex(s => s.id === curr.id) + 1;
+        const participantsCount = siblings.length;
+
+        currentShare = getReferencePoint({
+            share: currentShare,
+            position,
+            participants: participantsCount
+        });
+
+        if (curr.parent === 0) {
+            break;
+        }
+
+        currentNode = (creatorsParticipants as ParticipantNode[]).find(p => p.id === curr.parent);
+    }
+
+    return currentShare;
+};
+
+export const mrp = writable(initMRP.mrp);
+export const goal = writable(calculateGoal(initMRP.mrp));
 
 export const roundNumbersCreators = writable(/* localStorage.getItem("rounded creators") !== "false" */true)
 /* roundedCreators.subscribe((value) => {
@@ -35,5 +76,5 @@ export const roundNumbersBackers = writable(/* localStorage.getItem("rounded bac
     localStorage.setItem("rounded backers", '' + value)
 }) */
 
-export const simulateMRP = writable(initMRP.mrp)
-export const simulateGoal = writable(buildGoalLevel0())
+export const simulateMRP = writable(initMRP.mrp);
+export const simulateGoal = writable(buildGoalLevel0(initMRP.mrp));

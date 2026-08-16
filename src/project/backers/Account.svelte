@@ -5,7 +5,7 @@
     import SignedOut from "../../account/signedOut/SignedOut.svelte";
     import DisplayName from "../../account/signedIn/DisplayName.svelte";
     import AllCustomers from "../../funding/customers/AllCustomers.svelte";
-    import List from "../List.svelte";
+    import List from "./List.svelte";
     import { goal, roundNumbersBackers } from "..";
 
     let showAccount = $state(false);

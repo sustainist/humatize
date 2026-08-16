@@ -265,7 +265,7 @@ export type Distribution = {
     id?: number;
     text?: string;
     parent?: number;
-    showCheckmark?: boolean;
+    marketReferencePoint?: boolean;
     pledge?: number;
     share?: string;
     timestamp?: string | number

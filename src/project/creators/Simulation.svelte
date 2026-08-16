@@ -6,7 +6,7 @@
         simulateMRP,
     } from "..";
     import { getReferencePoint } from "../../sustainableDistribution";
-    import List from "../List.svelte";
+    import List from "./List.svelte";
 
     // simulation
     let simulateCreators = $state(

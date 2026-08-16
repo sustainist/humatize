@@ -1,7 +1,7 @@
 <script lang="ts">
     import { goal, roundNumbersCreators } from "..";
     import { type Distribution } from "../../sustainableDistribution";
-    import List from "../List.svelte";
+    import List from "./List.svelte";
     import participants from "./participants.json";
     import Simulation from "./Simulation.svelte";
 

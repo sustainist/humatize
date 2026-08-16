@@ -8,7 +8,7 @@
         simulateMRP,
     } from "..";
     import type { Distribution } from "../../sustainableDistribution";
-    import List from "../List.svelte";
+    import List from "./List.svelte";
 
     let simulateBackers = $state(
         // localStorage.getItem("simulateBackers") === "true",

@@ -1,0 +1,77 @@
+[
+    {
+        "id": 1,
+        "text": "<i class=\"fa-solid fa-masks-theater\"></i> Act",
+        "parent": 0
+    },
+    {
+        "id": 2,
+        "text": "<i class=\"fa-solid fa-play\"></i> Performers",
+        "parent": 1,
+        "marketReferencePoint": true,
+        "nrOfPeople": 8
+    },
+    {
+        "id": 16,
+        "text": "<i class=\"fa-solid fa-feather\"></i> Composers (Music, scripts, etc.)",
+        "parent": 1,
+        "nrOfPeople": 3
+    },
+    {
+        "id": 15,
+        "text": "<i class=\"fa-solid fa-theater-masks\"></i> Directors",
+        "parent": 1,
+        "nrOfPeople": 1
+    },
+    {
+        "id": 4,
+        "text": "<i class=\"fa-solid fa-industry\"></i> Production",
+        "parent": 0
+    },
+    {
+        "id": 5,
+        "text": "<i class=\"fa-solid fa-headphones\"></i> Audio",
+        "parent": 4,
+        "nrOfPeople": 4
+    },
+    {
+        "id": 6,
+        "text": "<i class=\"fa-solid fa-store\"></i> Stage",
+        "parent": 4,
+        "nrOfPeople": 1
+    },
+    {
+        "id": 7,
+        "text": "<i class=\"fa-solid fa-video\"></i> Live streaming",
+        "parent": 11,
+        "nrOfPeople": 1
+    },
+    {
+        "id": 8,
+        "text": "<i class=\"fa-solid fa-gears\"></i> Operations",
+        "parent": 0
+    },
+    {
+        "id": 9,
+        "text": "<i class=\"fa-solid fa-building\"></i> Organization",
+        "parent": 8,
+        "nrOfPeople": 2
+    },
+    {
+        "id": 10,
+        "text": "<i class=\"fa-solid fa-bullhorn\"></i> Marketing",
+        "parent": 8,
+        "nrOfPeople": 1
+    },
+    {
+        "id": 11,
+        "text": "<i class=\"fa-solid fa-desktop\"></i> Platform",
+        "parent": 0
+    },
+    {
+        "id": 12,
+        "text": "<i class=\"fa-solid fa-globe\"></i> IRLance.com",
+        "parent": 11,
+        "nrOfPeople": 1
+    }
+]
