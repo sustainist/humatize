@@ -66,7 +66,7 @@
                             <span>
                                 {sibling.pledge || 0}
                             </span>
-                            {#if !sibling.email && i === 0}
+                            <!-- {#if !sibling.email && i === 0}
                                 <a
                                     style="white-space:nowrap"
                                     href="/#market-reference-point"
@@ -74,7 +74,7 @@
                                     ><i class="fas fa-coins"></i>
                                     Reference</a
                                 >
-                            {/if}
+                            {/if} -->
                         </td>
                         <td>
                             {#if items.roundNumbers}

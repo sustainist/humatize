@@ -338,3 +338,9 @@ export const addShares = ({
 
   return total;
 }
+
+
+export const zipfsExponent = writable(+(localStorage.getItem('exponent') || '0.2'));
+zipfsExponent.subscribe(value => {
+  localStorage.setItem('exponent', '' + value)
+})

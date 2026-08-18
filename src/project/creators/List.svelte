@@ -1,6 +1,19 @@
 <script lang="ts">
-    import { harmonicSplit } from "..";
-    import { getShare, type Distribution } from "../../sustainableDistribution";
+    import {
+        getShare,
+        zipfsExponent,
+        type Distribution,
+    } from "../../sustainableDistribution";
+    import { harmonicRuleDistribution } from "../../sustainableDistribution/distributionHarmonicRule";
+    import {
+        calculateDistribution,
+        type DistributionResult,
+    } from "../../sustainableDistribution/distributionLinearDecay";
+    import {
+        type SlotDistribution,
+        type RankingSnapshot,
+        zipfsLaw,
+    } from "../../sustainableDistribution/distributionZipfLaw";
 
     let {
         items,
@@ -21,12 +34,16 @@
     siblings,
     share = 0,
     depth = [],
-    percentages,
+    distributionHarmonicRule,
+    distributionZipfsLaw,
+    distributionLiniarDecay,
 }: {
     siblings: Distribution["participants"];
     share: number;
     depth: number[];
-    percentages: { position: number; percent: number }[];
+    distributionHarmonicRule: { position: number; percent: number }[];
+    distributionZipfsLaw: RankingSnapshot;
+    distributionLiniarDecay: DistributionResult[];
 })}
     {#each siblings as sibling, i}
         {#if sibling}
@@ -38,14 +55,14 @@
                 position: i + 1,
                 participants: siblings.length,
             })}
-
-            {@const fairShare = share * (percentages[i]?.percent || 0)}
+            {@const shareHarmonicRule =
+                share * (distributionHarmonicRule[i]?.percent || 0)}
 
             <tr>
                 <td>
                     <div class="flex">
                         <div>
-                            <span style="white-space:nowrap">
+                            <span>
                                 {[...depth, i + 1].join(".")}
                             </span>
                         </div>
@@ -54,20 +71,41 @@
                 <td>
                     <div class="flex">
                         <div>
-                            <span style="white-space:nowrap">
+                            <span>
                                 {#each { length: depth.length } as _, indexDepth}
                                     <span
                                         >&nbsp;&nbsp;&nbsp;{#if indexDepth + 1 === depth.length}└─{/if}</span
                                     >&nbsp;
                                 {/each}
                                 {#if items.roundNumbers}
-                                    <!-- {Math.round(tautochronePercentage * 100)}% | -->
-                                    {Math.round(
-                                        (percentages[i]?.percent || 0) * 100,
+                                    <!-- T: {Math.round(
+                                        tautochronePercentage * 100,
+                                    )}%
+                                    <br />
+                                    H: {Math.round(
+                                        (distributionHarmonicRule[i]?.percent ||
+                                            0) * 100,
+                                    )}%
+                                    <br />
+                                    L: {Math.round(
+                                        distributionLiniarDecay[i]
+                                            ?.percentage || 0,
+                                    )}%
+                                    <br />
+                                    Z:  -->{Math.round(
+                                        distributionZipfsLaw.distributions[i]
+                                            .percentage,
                                     )}%
                                 {:else}
-                                    <!-- {tautochronePercentage * 100}% |  -->
-                                    {(percentages[i]?.percent || 0) * 100}
+                                    <!-- T: {tautochronePercentage * 100}%
+                                    <br />
+                                    H: {(distributionHarmonicRule[i]?.percent ||
+                                        0) * 100}%
+                                    <br />
+                                    L:{distributionLiniarDecay[i].percentage}%
+                                    <br />
+                                    Z:  -->{distributionZipfsLaw
+                                        .distributions[i].percentage}%
                                 {/if}
                             </span>
                         </div>
@@ -97,7 +135,7 @@
                         <i class="fa-solid fa-user"></i>
                     {/each}
                 </td>
-                <td style="white-space:nowrap">
+                <td>
                     <span class="indent">
                         {#each { length: depth.length } as _, indexDepth}
                             <span
@@ -108,22 +146,27 @@
 
                     <b>
                         {#if items.roundNumbers}
-                            <!-- {Math.round(
+                            <!-- T: {Math.round(
                                 tautochroneShare / (sibling.nrOfPeople || 1),
-                            )} | -->
-
-                            {Math.round(fairShare)}
+                            )} <br />
+                            H: {Math.round(shareHarmonicRule)} <br />
+                            L: {Math.round(distributionLiniarDecay[i].payout)} <br />
+                            Z: -->{Math.round(
+                                distributionZipfsLaw.distributions[i].payout,
+                            )}
                         {:else}
-                            <!-- {tautochroneShare / (sibling.nrOfPeople || 1)} | -->
-                            {fairShare}
+                            <!-- T: {tautochroneShare / (sibling.nrOfPeople || 1)}
+                            <br />
+                            H: {shareHarmonicRule}
+                            <br />
+                            L: {distributionLiniarDecay[i].payout} <br />
+                            Z:  -->{distributionZipfsLaw
+                                .distributions[i].payout}
                         {/if}
                     </b>
 
                     {#if sibling.marketReferencePoint}
-                        <a
-                            style="white-space:nowrap"
-                            href="/#market-reference-point"
-                            class="investor-tag"
+                        <a href="/#market-reference-point" class="investor-tag"
                             ><i class="fas fa-coins"></i> Reference</a
                         >
                     {/if}
@@ -137,7 +180,20 @@
                 siblings: children,
                 share: tautochroneShare,
                 depth: [...depth, i + 1],
-                percentages: harmonicSplit(children.length),
+                distributionHarmonicRule: harmonicRuleDistribution(
+                    children.length,
+                ),
+                distributionZipfsLaw: zipfsLaw({
+                    participants: children.length,
+                    profit: share,
+                    exponent: $zipfsExponent,
+                }),
+                distributionLiniarDecay: children.length
+                    ? calculateDistribution({
+                          totalProfit: share,
+                          participants: children.length,
+                      }).results
+                    : [],
             })}
         {/if}
     {/each}
@@ -172,8 +228,22 @@
             {@render trs({
                 siblings,
                 share: items.goal,
-                percentages: harmonicSplit(siblings.length),
+                distributionHarmonicRule: harmonicRuleDistribution(
+                    siblings.length,
+                ),
                 depth: [],
+                distributionZipfsLaw: zipfsLaw({
+                    participants: siblings.length,
+                    profit: items.goal,
+                    exponent: $zipfsExponent,
+                }),
+                distributionLiniarDecay:
+                    siblings.length > 1
+                        ? calculateDistribution({
+                              totalProfit: items.goal,
+                              participants: siblings.length,
+                          }).results
+                        : [],
             })}
         </tbody>
     </table>

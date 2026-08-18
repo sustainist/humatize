@@ -50,7 +50,7 @@
 {@render customers(
     getBackers([
         {
-            pledge: $mrp,
+            pledge: 151,
             nrOfPeople: 1,
             timestamp: initMRP.timestamp,
         },

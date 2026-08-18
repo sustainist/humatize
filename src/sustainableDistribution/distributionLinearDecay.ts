@@ -538,95 +538,96 @@ export function findRatioForTopPercent(
 // USAGE EXAMPLES
 // ============================================
 
-// Example 1: Default distribution
-console.log('=== Default Distribution ===');
-const defaultResult = calculateDistribution({ totalProfit: 2000 });
-console.log('Metadata:', defaultResult.metadata);
-/* console.log('\nFirst 5 participants:');
-console.table(defaultResult.results.slice(0, 5));
-console.log('\nLast 5 participants:');
-console.table(defaultResult.results.slice(-5)); */
-console.table(defaultResult.results);
+// // Example 1: Default distribution
+// console.log('=== Default Distribution ===');
+// const defaultResult = calculateDistribution({ totalProfit: 2000, participants: 20 });
+// console.log('Metadata:', defaultResult.metadata);
+// console.log('\nFirst 5 participants:');
+// console.table(defaultResult.results.slice(0, 5));
+// console.log('\nLast 5 participants:');
+// console.table(defaultResult.results.slice(-5));
+// console.log('\nall participants:');
+// console.table(defaultResult.results);
 
-// Example 2: Custom configuration
-console.log('\n=== Custom Configuration ===');
-const customResult = calculateDistribution({
-    participants: 15,
-    curve: 'steep',
-    totalProfit: 250000,
-    currencySymbol: '€',
-    decimals: 3
-});
-console.log('Metadata:', customResult.metadata);
-console.table(customResult.results);
+// // Example 2: Custom configuration
+// console.log('\n=== Custom Configuration ===');
+// const customResult = calculateDistribution({
+//     participants: 15,
+//     curve: 'steep',
+//     totalProfit: 250000,
+//     currencySymbol: '€',
+//     decimals: 3
+// });
+// console.log('Metadata:', customResult.metadata);
+// console.table(customResult.results);
 
-// Example 3: Exact ratio control
-console.log('\n=== Exact Ratio Control ===');
-const exactResult = calculateDistribution({
-    participants: 20,
-    topBottomRatio: 3.0,
-    totalProfit: 100000
-});
-console.log(`Top: ${exactResult.metadata.topPercentage}%, Bottom: ${exactResult.metadata.bottomPercentage}%`);
-console.log(`Ratio: ${(exactResult.metadata.topPercentage / exactResult.metadata.bottomPercentage).toFixed(2)}x`);
+// // Example 3: Exact ratio control
+// console.log('\n=== Exact Ratio Control ===');
+// const exactResult = calculateDistribution({
+//     participants: 20,
+//     topBottomRatio: 3.0,
+//     totalProfit: 100000
+// });
+// console.log(`Top: ${exactResult.metadata.topPercentage}%, Bottom: ${exactResult.metadata.bottomPercentage}%`);
+// console.log(`Ratio: ${(exactResult.metadata.topPercentage / exactResult.metadata.bottomPercentage).toFixed(2)}x`);
 
-// Example 4: Compare curves
-console.log('\n=== Curve Comparison (20 people) ===');
-const comparison = compareCurves(20);
-console.table(comparison);
+// // Example 4: Compare curves
+// console.log('\n=== Curve Comparison (20 people) ===');
+// const comparison = compareCurves(20);
+// console.table(comparison);
 
-// Example 5: Simple distribution
-console.log('\n=== Simple Distribution ===');
-console.table(simpleDistribution(10, 'flat', 50000));
+// // Example 5: Simple distribution
+// console.log('\n=== Simple Distribution ===');
+// console.table(simpleDistribution(10, 'flat', 50000));
 
-// Example 6: Find ratio for target bottom percentage
-console.log('\n=== Find Ratio for 3% Bottom ===');
-const ratioFor3Percent = findRatioForBottomPercent(20, 3.0);
-console.log(`Ratio needed for 3% bottom: ${ratioFor3Percent.toFixed(2)}x`);
-const testResult = calculateDistribution({
-    participants: 20,
-    topBottomRatio: ratioFor3Percent
-});
-console.log(`Actual bottom: ${testResult.metadata.bottomPercentage}%`);
+// // Example 6: Find ratio for target bottom percentage
+// console.log('\n=== Find Ratio for 3% Bottom ===');
+// const ratioFor3Percent = findRatioForBottomPercent(20, 3.0);
+// console.log(`Ratio needed for 3% bottom: ${ratioFor3Percent.toFixed(2)}x`);
+// const testResult = calculateDistribution({
+//     participants: 20,
+//     topBottomRatio: ratioFor3Percent
+// });
+// console.log(`Actual bottom: ${testResult.metadata.bottomPercentage}%`);
 
-// Example 7: Error handling
-try {
-    const invalid = calculateDistribution({ participants: 1 });
-} catch (error) {
-    if (error instanceof Error) {
-        console.log('\n✅ Caught expected error:', error.message);
-    }
-}
+// // Example 7: Error handling
+// try {
+//     const invalid = calculateDistribution({ participants: 1 });
+// } catch (error) {
+//     if (error instanceof Error) {
+//         console.log('\n✅ Caught expected error:', error.message);
+//     }
+// }
 
-// Example 8: Async usage pattern
-async function demonstrateAsyncUsage(): Promise<void> {
-    const configs: DistributionOptions[] = [
-        { participants: 10, curve: 'flat' },
-        { participants: 15, curve: 'moderate' },
-        { participants: 20, curve: 'steep' },
-        { participants: 25, curve: 'extreme' }
-    ];
+// // Example 8: Async usage pattern
+// async function demonstrateAsyncUsage(): Promise<void> {
+//     const configs: DistributionOptions[] = [
+//         { participants: 10, curve: 'flat' },
+//         { participants: 15, curve: 'moderate' },
+//         { participants: 20, curve: 'steep' },
+//         { participants: 25, curve: 'extreme' }
+//     ];
 
-    const promises = configs.map((config) =>
-        Promise.resolve(calculateDistribution(config))
-    );
+//     const promises = configs.map((config) =>
+//         Promise.resolve(calculateDistribution(config))
+//     );
 
-    const results = await Promise.all(promises);
+//     const results = await Promise.all(promises);
 
-    results.forEach((result, index) => {
-        const { metadata } = result;
-        console.log(
-            `Config ${index + 1}: ${metadata.participants} participants, ${metadata.curve} curve`
-        );
-        console.log(
-            `  Top: ${metadata.topPercentage}%, Bottom: ${metadata.bottomPercentage}%`
-        );
-        console.log(`  Ratio: ${metadata.topBottomRatio}x`);
-    });
-}
+//     results.forEach((result, index) => {
+//         const { metadata } = result;
+//         console.log(
+//             `Config ${index + 1}: ${metadata.participants} participants, ${metadata.curve} curve`
+//         );
+//         console.log(
+//             `  Top: ${metadata.topPercentage}%, Bottom: ${metadata.bottomPercentage}%`
+//         );
+//         console.log(`  Ratio: ${metadata.topBottomRatio}x`);
+//     });
+// }
 
-// Uncomment to run:
-// demonstrateAsyncUsage();
+// // Uncomment to run:
+// // demonstrateAsyncUsage();
 
 // ============================================
 // EXPORTS
