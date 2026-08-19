@@ -5,8 +5,8 @@
     getReferencePoint,
     getShare,
     type Distribution,
-  } from ".";
-  import Curve from "./Curve.svelte";
+  } from "./distributionTautochroneCurve";
+  import Curve from "./TautochroneCurve.svelte";
   import IconOrder from "./IconOrder.svelte";
   import IconParticipants from "./IconParticipants.svelte";
   import IconShare from "./IconShare.svelte";

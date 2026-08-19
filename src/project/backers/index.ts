@@ -1,17 +1,21 @@
-import { addShares, type Distribution } from "../../sustainableDistribution";
+import { type Distribution } from "../../sustainableDistribution/distributionTautochroneCurve";
+import { addShares } from "../../sustainableDistribution/distributionZipfLaw";
 
-export const getBackers = (participants: Distribution["participants"]): Distribution['participants'] => {
+export const getBackers = (participants: Distribution["participants"], exponent: number): Distribution['participants'] => {
 
     let sumOfPrevPledges: number = 0;
     const updatedParticipants: Distribution["participants"] = [];
 
     participants.forEach((participant, index) => {
         if (participant && typeof participant.pledge === "number") {
+            const currentPledgeToShare = participant.pledge || 0;
             const participantClone = {
                 ...participant,
                 rewardBacker: 0,
+                percentageBacker: 0,
+                distributionStart: sumOfPrevPledges + 1,
+                distributionEnd: sumOfPrevPledges + currentPledgeToShare,
             };
-            const currentPledgeToShare = participantClone.pledge || 0;
 
             let prevSum = 0;
             for (
@@ -24,11 +28,12 @@ export const getBackers = (participants: Distribution["participants"]): Distribu
                 const startPosition = prevSum + 1;
                 const endPosition = prevSum + pledge1;
 
-                const sharesForPrevSum = addShares({
+                const { share: sharesForPrevSum, percentage: percentageForPrevSum } = addShares({
                     profit: currentPledgeToShare,
                     participants: sumOfPrevPledges,
                     startPosition,
                     endPosition,
+                    exponent,
                 });
                 updatedParticipants[index1]!.distributionStart = startPosition
                 updatedParticipants[index1]!.distributionEnd = endPosition
@@ -37,14 +42,20 @@ export const getBackers = (participants: Distribution["participants"]): Distribu
                     (updatedParticipants[index1]!.rewardBacker || 0) +
                     sharesForPrevSum;
 
+                updatedParticipants[index1]!.percentageBacker = percentageForPrevSum;
+
                 prevSum += pledge1;
             }
 
-            sumOfPrevPledges += participantClone.pledge || 0;
+            sumOfPrevPledges += currentPledgeToShare;
 
             updatedParticipants.push(participantClone);
         }
     });
+
+    if (updatedParticipants.length === 1 && updatedParticipants[0]) {
+        updatedParticipants[0].percentageBacker = 100;
+    }
 
     return updatedParticipants;
 };

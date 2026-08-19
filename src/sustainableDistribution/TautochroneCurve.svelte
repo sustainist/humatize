@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { drawCurve } from ".";
+  import { drawCurve } from "./distributionTautochroneCurve";
   // import { theme } from "../theme";
 
   let {

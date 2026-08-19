@@ -1,23 +1,19 @@
 <script lang="ts">
     import { getBackers } from ".";
-    import {
-        initMRP,
-        mrp,
-        roundNumbersBackers,
-        simulateGoal,
-        simulateMRP,
-    } from "..";
-    import type { Distribution } from "../../sustainableDistribution";
+    import { initMRP, roundNumbersBackers } from "..";
+    import type { Distribution } from "../../sustainableDistribution/distributionTautochroneCurve";
+    import { zipfsLawExponentLive } from "../../sustainableDistribution/distributionZipfLaw";
     import List from "./List.svelte";
 
+    // Simulate Backers
     let simulateBackers = $state(
-        // localStorage.getItem("simulateBackers") === "true",
-        false,
+        localStorage.getItem("simulateBackers") === "true",
     );
-    /* $effect(() => {
+    $effect(() => {
         localStorage.setItem("simulateBackers", "" + simulateBackers);
-    }); */
+    });
 
+    // simulated backer pledges
     let simulatedBackers: Distribution["participants"] = $state(
         JSON.parse(localStorage.getItem("simulatedBackers") || "[]"),
     );
@@ -28,11 +24,38 @@
         );
     });
 
-    let simulatedPledge = $state(
-        +(localStorage.getItem("simulatedPledge") || 10),
+    // simulated pledge amount
+    let newPledge = $state(+(localStorage.getItem("newPledge") || 10));
+    $effect(() => {
+        localStorage.setItem("newPledge", "" + newPledge);
+    });
+
+    // founder pledge
+    let founderPledge = $state(+(localStorage.getItem("founderPledge") || 10));
+    $effect(() => {
+        localStorage.setItem("founderPledge", "" + founderPledge);
+    });
+
+    // zipfs law exponent simulation
+    let zipfsLawExponentSimulationBackers = $state(
+        +(
+            localStorage.getItem("zipfsLawExponentSimulationBackers") ||
+            zipfsLawExponentLive
+        ),
     );
     $effect(() => {
-        localStorage.setItem("simulatedPledge", "" + simulatedPledge);
+        localStorage.setItem(
+            "zipfsLawExponentSimulationBackers",
+            "" + zipfsLawExponentSimulationBackers,
+        );
+    });
+
+    // goal
+    let simulateGoalBackers = $state(
+        +(localStorage.getItem("simulateGoalBackers") || 1),
+    );
+    $effect(() => {
+        localStorage.setItem("simulateGoalBackers", "" + simulateGoalBackers);
     });
 </script>
 
@@ -40,12 +63,12 @@
 
 <div class="inline-options" style="width:fit-content">
     <label>
+        Simulate Backers Rewards
         <input
             bind:checked={simulateBackers}
             type="checkbox"
             name="simulate-backers"
         />
-        Simulate Backers Rewards
     </label>
 </div>
 
@@ -56,7 +79,7 @@
         onsubmit={(e) => {
             e.preventDefault();
             simulatedBackers.push({
-                pledge: simulatedPledge,
+                pledge: newPledge,
                 timestamp: new Date().toISOString(),
             });
         }}
@@ -64,44 +87,62 @@
         style="display:flex;flex-direction:column;gap:1rem"
     >
         <div class="input-group">
-            <label for="simulated-mrp" style="opacity: .5;"
-                ><i class="fa-solid fa-coins"></i> Simulate Market Reference Point
-                *</label
+            <label for="simulate-goal-backers">
+                <i class="fa-solid fa-bullseye"></i> Goal</label
             >
             <input
-                id="simulated-backers-mrp"
-                disabled
+                required
                 type="number"
-                value={$roundNumbersBackers
-                    ? Math.round($simulateMRP)
-                    : $simulateMRP}
+                placeholder="Goal"
+                id="simulate-goal-backers"
+                name="simulate-goal-backers"
+                bind:value={simulateGoalBackers}
             />
         </div>
 
         <div class="input-group">
-            <label for="simulated-backers-goal" style="opacity: .5;"
-                ><i class="fa-solid fa-coins"></i> Simulate Goal *</label
-            >
+            <label for="initial-pledge">
+                <i class="fa-solid fa-anchor"></i> Founder Pledge
+            </label>
             <input
-                id="simulated-backers-goal"
-                disabled
+                id="initial-pledge"
+                bind:value={founderPledge}
                 type="number"
-                value={$roundNumbersBackers
-                    ? Math.round($simulateGoal)
-                    : $simulateGoal}
+                min="0"
+                name="initial-pledge"
             />
-            <small> * From Simulate Creators Rewards </small>
         </div>
 
         <div class="input-group">
-            <label for="simulated-backers-pledge"
-                ><i class="fa-solid fa-hand-holding-heart"></i> Simulate Pledge Amount</label
+            <label for="new-pledge"
+                ><i class="fa-solid fa-hand-holding-heart"></i> New Pledge</label
             >
             <input
-                id="simulated-backers-pledge"
-                bind:value={simulatedPledge}
+                id="new-pledge"
+                bind:value={newPledge}
                 type="number"
                 min="1"
+            />
+        </div>
+
+        <div class="input-group">
+            <label for="zipfs-law-exponent-simulation-backers">
+                <i class="fa-solid fa-s"></i> Zipfs Exponent {#if zipfsLawExponentLive === zipfsLawExponentSimulationBackers}
+                    (used for this project)
+                {:else if zipfsLawExponentSimulationBackers === 1}
+                    (real world default)
+                {/if}</label
+            >
+            <input
+                required
+                type="number"
+                placeholder="Zipfs Exponent"
+                id="zipfs-law-exponent-simulation-backers"
+                name="zipfs-law-exponent-simulation-backers"
+                step="0.01"
+                min="0"
+                max="100"
+                bind:value={zipfsLawExponentSimulationBackers}
             />
         </div>
 
@@ -135,17 +176,22 @@
             participantName: "Backer",
             showTimeline: true,
             sustainableModel: "backers",
-            participants: getBackers([
-                {
-                    pledge: $simulateMRP,
-                    nrOfPeople: 1,
-                    timestamp: initMRP.timestamp,
-                },
-                ...simulatedBackers,
-            ]),
+            hidePeople: true,
+            participants: getBackers(
+                [
+                    {
+                        pledge: founderPledge,
+                        nrOfPeople: 1,
+                        timestamp: initMRP.timestamp,
+                    },
+                    ...simulatedBackers,
+                ],
+                zipfsLawExponentSimulationBackers,
+            ),
+            zipfsLawExponent: zipfsLawExponentSimulationBackers,
             roundNumbers: $roundNumbersBackers,
             hideParticipants: true,
-            goal: $simulateGoal,
+            goal: simulateGoalBackers || 100,
         }}
         tableId="simulation-backers"
     />

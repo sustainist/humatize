@@ -1,67 +1,44 @@
 <script lang="ts">
-    import {
-        initMRP,
-        roundNumbersCreators,
-        simulateGoal,
-        simulateMRP,
-    } from "..";
-    import { getReferencePoint } from "../../sustainableDistribution";
+    import { roundNumbersCreators } from "..";
+    import { zipfsLawExponentLive } from "../../sustainableDistribution/distributionZipfLaw";
     import List from "./List.svelte";
 
     // simulation
     let simulateCreators = $state(
-        /* localStorage.getItem("simulateCreators") === "true", */ false,
+        localStorage.getItem("simulateCreators") === "true" ? true : false,
     );
-    /* $effect(() => {
+    $effect(() => {
         localStorage.setItem("simulateCreators", "" + simulateCreators);
-    }); */
-
-    // mrp
-    let simulationMRP = $state(
-        +(localStorage.getItem("simulateMRP") || initMRP.mrp),
-    );
-    $effect(() => {
-        localStorage.setItem("simulateMRP", "" + simulationMRP);
-    });
-
-    // position
-    let simulatePosition = $state(
-        +(localStorage.getItem("simulatePosition") || initMRP.position),
-    );
-    $effect(() => {
-        localStorage.setItem("simulatePosition", "" + simulatePosition);
     });
 
     // participants
     let simulateParticipants = $state(
-        +(localStorage.getItem("simulateParticipants") || initMRP.participants),
+        +(localStorage.getItem("simulateParticipants") || 1),
     );
     $effect(() => {
         localStorage.setItem("simulateParticipants", "" + simulateParticipants);
     });
 
-    // people
-    let simulatePeople = $state(
-        +(localStorage.getItem("simulatePeople") || initMRP.nrOfPeople),
+    // goal
+    let simulateGoalCreators = $state(
+        +(localStorage.getItem("simulateGoalCreators") || 1),
     );
     $effect(() => {
-        localStorage.setItem("simulatePeople", "" + simulatePeople);
+        localStorage.setItem("simulateGoalCreators", "" + simulateGoalCreators);
     });
 
-    const simulateRefGoal = $derived(
-        getReferencePoint({
-            share: simulationMRP * simulatePeople,
-            position: simulatePosition,
-            participants: simulateParticipants,
-        }) || 0,
+    // zipfs Law Exponent
+    let zipfsLawExponentSimulationCreators = $state(
+        +(
+            localStorage.getItem("zipfsLawExponentSimulationCreators") ||
+            zipfsLawExponentLive
+        ),
     );
-
     $effect(() => {
-        $simulateGoal = simulateRefGoal;
-    });
-
-    $effect(() => {
-        $simulateMRP = simulationMRP;
+        localStorage.setItem(
+            "zipfsLawExponentSimulationCreators",
+            "" + zipfsLawExponentSimulationCreators,
+        );
     });
 </script>
 
@@ -83,67 +60,53 @@
 {#if simulateCreators}
     <div class="demo-box" style="display:flex;flex-direction:column; gap:1rem">
         <div class="input-group">
-            <label for="mrp-participants"
+            <label for="simulate-goal-creators">
+                <i class="fa-solid fa-bullseye"></i> Goal</label
+            >
+            <input
+                required
+                type="number"
+                placeholder="Goal"
+                id="simulate-goal-creators"
+                name="simulate-goal-creators"
+                bind:value={simulateGoalCreators}
+            />
+        </div>
+
+        <div class="input-group">
+            <label for="simulate-participants"
                 ><i class="fa-solid fa-list-ol"></i> Participants</label
             >
             <input
                 required
                 type="number"
                 placeholder="Participants"
-                id="mrp-participants"
-                name="mrp-participants"
+                id="simulate-participants"
+                name="simulate-participants"
                 min="1"
-                max="100"
+                max="1000"
                 bind:value={simulateParticipants}
-                oninput={() => {
-                    if (simulatePosition > simulateParticipants)
-                        simulatePosition = simulateParticipants;
-                }}
             />
         </div>
 
         <div class="input-group">
-            <label for="mrp-position"
-                ><i class="fa-solid fa-list-ol"></i> Position</label
+            <label for="zipfs-law-exponent-simulation">
+                <i class="fa-solid fa-s"></i> Zipfs Exponent {#if zipfsLawExponentLive === zipfsLawExponentSimulationCreators}
+                    (used for this project)
+                {:else if zipfsLawExponentSimulationCreators === 1}
+                    (real world default)
+                {/if}</label
             >
             <input
                 required
                 type="number"
-                placeholder="Position"
-                id="mrp-position"
-                name="mrp-position"
-                min="1"
-                max={simulateParticipants}
-                bind:value={simulatePosition}
-            />
-        </div>
-
-        <div class="input-group">
-            <label for="mrp-amount"
-                ><i class="fas fa-coins"></i> Market Reference Point</label
-            >
-            <input
-                required
-                type="number"
-                placeholder="Amount"
-                id="mrp-amount"
-                name="mrp-amount"
-                bind:value={simulationMRP}
-            />
-        </div>
-
-        <div class="input-group">
-            <label for="mrp-people">
-                <i class="fa-solid fa-users"></i> People</label
-            >
-            <input
-                required
-                type="number"
-                placeholder="People"
-                id="mrp-people"
-                name="mrp-people"
-                min="1"
-                bind:value={simulatePeople}
+                placeholder="Zipfs Exponent"
+                id="zipfs-law-exponent-simulation"
+                name="zipfs-law-exponent-simulation"
+                step="0.01"
+                min="0"
+                max="100"
+                bind:value={zipfsLawExponentSimulationCreators}
             />
         </div>
     </div>
@@ -156,16 +119,14 @@
                 editOrder: false,
                 showCompensation: true,
                 sustainableModel: "creators",
-                goal: simulateRefGoal,
+                goal: simulateGoalCreators,
                 roundNumbers: $roundNumbersCreators,
-                hideParticipants: true,
                 participantName: "Creator",
+                zipfsLawExponent: zipfsLawExponentSimulationCreators,
                 participants: Array.from(
                     { length: simulateParticipants },
                     (_, i) => ({
-                        showCheckmark: simulatePosition === i + 1,
-                        nrOfPeople:
-                            simulatePosition === i + 1 ? simulatePeople : 1,
+                        nrOfPeople: 1,
                         parent: 0,
                     }),
                 ),

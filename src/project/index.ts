@@ -1,5 +1,5 @@
 import { writable } from "svelte/store"
-import { getReferencePoint } from "../sustainableDistribution";
+import { getReferencePoint } from "../sustainableDistribution/distributionTautochroneCurve";
 import creatorsParticipants from "./creators/participants.json";
 
 interface ParticipantNode {
@@ -67,15 +67,16 @@ export const mrp = writable(initMRP.mrp);
 // export const goal = writable(calculateGoal(initMRP.mrp));
 export const goal = writable(2000);
 
-export const roundNumbersCreators = writable(/* localStorage.getItem("rounded creators") !== "false" */true)
+export const roundNumbersCreators = writable(/* localStorage.getItem("rounded creators") !== "false" */false)
 /* roundedCreators.subscribe((value) => {
     localStorage.setItem("rounded creators", '' + value)
 }) */
 
-export const roundNumbersBackers = writable(/* localStorage.getItem("rounded backers") !== "false" */true)
+export const roundNumbersBackers = writable(/* localStorage.getItem("rounded backers") !== "false" */false)
 /* roundNumbersBackers.subscribe((value) => {
     localStorage.setItem("rounded backers", '' + value)
 }) */
 
 export const simulateMRP = writable(initMRP.mrp);
 export const simulateGoal = writable(buildGoalLevel0(initMRP.mrp));
+

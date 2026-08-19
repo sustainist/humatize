@@ -10,9 +10,10 @@
     import { allCustomers } from "..";
     import type { LoggerMessage } from "../../logger";
     import type { Snippet } from "svelte";
-    import type { Distribution } from "../../sustainableDistribution";
+    import type { Distribution } from "../../sustainableDistribution/distributionTautochroneCurve";
     import { customersToBackers, getBackers } from "../../project/backers";
     import { initMRP, mrp } from "../../project";
+    import { zipfsLawExponentLive } from "../../sustainableDistribution/distributionZipfLaw";
 
     const {
         customers,
@@ -48,12 +49,15 @@
 
 <!-- {@render customers($allCustomers || [])} -->
 {@render customers(
-    getBackers([
-        {
-            pledge: 151,
-            nrOfPeople: 1,
-            timestamp: initMRP.timestamp,
-        },
-        ...customersToBackers($allCustomers || []),
-    ]),
+    getBackers(
+        [
+            {
+                pledge: 150,
+                nrOfPeople: 1,
+                timestamp: initMRP.timestamp,
+            },
+            ...customersToBackers($allCustomers || []),
+        ],
+        zipfsLawExponentLive,
+    ),
 )}

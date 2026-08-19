@@ -4,6 +4,7 @@
     import List from "./List.svelte";
     import Account from "./Account.svelte";
     import Simulation from "./Simulation.svelte";
+    import { zipfsLawExponentLive } from "../../sustainableDistribution/distributionZipfLaw";
 </script>
 
 <AllCustomers>
@@ -19,6 +20,7 @@
                 sustainableModel: "backers",
                 hidePeople: true,
                 goal: $goal,
+                zipfsLawExponent: zipfsLawExponentLive,
                 roundNumbers: $roundNumbersBackers,
                 hideParticipants: true,
                 participants: items,
@@ -28,13 +30,13 @@
     {/snippet}
 </AllCustomers>
 
-<br />
+<!-- <br />
 
 <div class="inline-options" style="width:fit-content">
     <label>
         <input type="checkbox" bind:checked={$roundNumbersBackers} /> Round numbers
     </label>
-</div>
+</div> -->
 
 <Simulation />
 

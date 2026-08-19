@@ -883,14 +883,14 @@ function exampleDifferentExponents() {
 // RUN EXAMPLES
 // ============================================
 
-console.log('═══════════════════════════════════════════════');
-console.log('  HARMONIC RULE DISTRIBUTION SYSTEM');
-console.log('═══════════════════════════════════════════════');
+// console.log('═══════════════════════════════════════════════');
+// console.log('  HARMONIC RULE DISTRIBUTION SYSTEM');
+// console.log('═══════════════════════════════════════════════');
 
-exampleBasicDistribution();
-exampleCompareExponents();
-exampleDynamicRanking();
-exampleDifferentExponents();
+// exampleBasicDistribution();
+// exampleCompareExponents();
+// exampleDynamicRanking();
+// exampleDifferentExponents();
 
 // ============================================
 // COMPATIBILITY EXPORTS
@@ -916,4 +916,4 @@ export function harmonicRuleDistribution(n: number = 20): { position: number; pe
 // ============================================
 // EXPORTS
 // ============================================
-
+

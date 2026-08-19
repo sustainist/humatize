@@ -280,6 +280,7 @@ export type Distribution = {
   showCompensation?: boolean;
   showPledge?: boolean;
   showTimeline?: boolean
+  zipfsLawExponent?: number;
 } & (
     | { showOrder?: boolean; showSize?: never }
     | { showOrder?: never; showSize?: boolean }
@@ -338,9 +339,3 @@ export const addShares = ({
 
   return total;
 }
-
-
-export const zipfsExponent = writable(+(localStorage.getItem('exponent') || '0.2'));
-zipfsExponent.subscribe(value => {
-  localStorage.setItem('exponent', '' + value)
-})

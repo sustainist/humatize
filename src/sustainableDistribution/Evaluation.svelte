@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { type Distribution } from ".";
+  import { type Distribution } from "./distributionTautochroneCurve";
   import Table from "./Table.svelte";
 
   const { example }: { example: number } = $props();

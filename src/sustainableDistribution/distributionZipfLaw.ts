@@ -13,6 +13,8 @@
  * - Export/Import for persistence
  */
 
+import { writable } from "svelte/store";
+
 // ============================================
 // TYPE DEFINITIONS
 // ============================================
@@ -179,15 +181,15 @@ export class ZipfDistribution {
     static calculate(
         totalSlots: number,
         exponent: number = 1.0,
-        minPercentage: number = 0.01
+        minPercentage: number = 0
     ): number[] {
         if (totalSlots < 1) return [];
         if (totalSlots === 1) return [100];
 
         // Validate exponent
-        if (exponent < 0.0 || exponent > 3.0) {
+        if (exponent < 0.0 || exponent > 100.0) {
             throw new RankingError(
-                `Exponent must be between 0.0 and 3.0 (got ${exponent})`,
+                `Exponent must be between 0.0 and 100.0 (got ${exponent})`,
                 'INVALID_EXPONENT'
             );
         }
@@ -283,18 +285,18 @@ export class ZipfDistribution {
      */
     static calculateGini(values: number[]): number {
         if (values.length === 0) return 0;
-        
+
         const sorted = [...values].sort((a, b) => a - b);
         const n = sorted.length;
         const sum = sorted.reduce((s, v) => s + v, 0);
-        
+
         if (sum === 0) return 0;
-        
+
         let numerator = 0;
         for (let i = 0; i < n; i++) {
             numerator += sorted[i] * (i + 1);
         }
-        
+
         const gini = (2 * numerator) / (n * sum) - (n + 1) / n;
         return Math.max(0, Math.min(1, gini));
     }
@@ -311,43 +313,43 @@ export class ZipfDistribution {
         if (participants < 2) {
             throw new RankingError('Participants must be at least 2', 'INVALID_PARTICIPANTS');
         }
-        
+
         if (topPercent <= 0 || topPercent > 100) {
             throw new RankingError('topPercent must be between 0 and 100', 'INVALID_PERCENT');
         }
-        
+
         if (targetShare <= 0 || targetShare > 100) {
             throw new RankingError('targetShare must be between 0 and 100', 'INVALID_SHARE');
         }
-        
+
         let low = 0.0;
-        let high = 3.0;
+        let high = 10.0;
         let iterations = 0;
         const maxIterations = 100;
-        
+
         while (iterations < maxIterations) {
             iterations++;
             const mid = (low + high) / 2;
-            
+
             const percentages = this.calculate(participants, mid);
             const topCount = Math.max(1, Math.floor(participants * (topPercent / 100)));
             let groupShare = 0;
-            
+
             for (let i = 0; i < topCount; i++) {
                 groupShare += percentages[i];
             }
-            
+
             if (Math.abs(groupShare - targetShare) < tolerance) {
                 return Number(mid.toFixed(3));
             }
-            
+
             if (groupShare < targetShare) {
                 low = mid;
             } else {
                 high = mid;
             }
         }
-        
+
         return Number(((low + high) / 2).toFixed(3));
     }
 }
@@ -367,7 +369,7 @@ export class RankingSystem {
     private slotById: Map<string, number> = new Map();
     private config: Required<RankingConfig>;
     private nextId: number = 1;
-    
+
     // Cache
     private distributionCache: RankingSnapshot | null = null;
     private cacheVersion: number = 0;
@@ -375,7 +377,7 @@ export class RankingSystem {
     constructor(config: RankingConfig) {
         this.config = {
             zipfExponent: config.zipfExponent ?? 1.0,
-            minPercentage: config.minPercentage ?? 0.01,
+            minPercentage: config.minPercentage ?? 0,
             totalProfit: config.totalProfit,
             currencySymbol: config.currencySymbol ?? '$',
             decimals: config.decimals ?? 2
@@ -478,12 +480,12 @@ export class RankingSystem {
      */
     getSlotDistribution(slot: number): SlotDistribution | null {
         this.ensureCache();
-        
+
         const index = slot - 1;
         if (index < 0 || index >= (this.distributionCache?.distributions.length || 0)) {
             return null;
         }
-        
+
         return this.distributionCache?.distributions[index] || null;
     }
 
@@ -501,7 +503,7 @@ export class RankingSystem {
      */
     private ensureCache(): void {
         const currentVersion = this.getVersion();
-        
+
         if (currentVersion !== this.cacheVersion || this.distributionCache === null) {
             this.distributionCache = this.createSnapshot();
             this.cacheVersion = currentVersion;
@@ -627,29 +629,29 @@ export class RankingSystem {
     swapSlots(id1: string, id2: string): SwapResult {
         const slot1 = this.slotById.get(id1);
         const slot2 = this.slotById.get(id2);
-        
+
         if (slot1 === undefined || slot2 === undefined) {
             return {
                 success: false,
                 message: 'One or both participants not found'
             };
         }
-        
+
         if (slot1 === slot2) {
             return {
                 success: true,
                 message: 'Participants are already in the same slot'
             };
         }
-        
+
         // Swap in array - O(1)
-        [this.participantsBySlot[slot1], this.participantsBySlot[slot2]] = 
-        [this.participantsBySlot[slot2], this.participantsBySlot[slot1]];
-        
+        [this.participantsBySlot[slot1], this.participantsBySlot[slot2]] =
+            [this.participantsBySlot[slot2], this.participantsBySlot[slot1]];
+
         // Update slot mapping - O(1)
         this.slotById.set(id1, slot2);
         this.slotById.set(id2, slot1);
-        
+
         // Update participant objects
         this.participantsBySlot[slot1].slot = slot1 + 1;
         this.participantsBySlot[slot2].slot = slot2 + 1;
@@ -657,10 +659,10 @@ export class RankingSystem {
         this.participantsBySlot[slot2].version++;
         this.participantsBySlot[slot1].lastNegotiated = new Date();
         this.participantsBySlot[slot2].lastNegotiated = new Date();
-        
+
         // Invalidate cache
         this.invalidateCache();
-        
+
         return {
             success: true,
             message: `Swapped participants at slots ${slot1 + 1} and ${slot2 + 1}`
@@ -679,16 +681,16 @@ export class RankingSystem {
                 affectedParticipants: []
             };
         }
-        
+
         const participant = this.participantsBySlot[slot];
-        
+
         // Remove from array - O(n)
         this.participantsBySlot.splice(slot, 1);
-        
+
         // Remove from maps - O(1)
         this.participantsById.delete(id);
         this.slotById.delete(id);
-        
+
         // Update slot mapping for participants below - O(k)
         const affected: string[] = [];
         for (let i = slot; i < this.participantsBySlot.length; i++) {
@@ -699,10 +701,10 @@ export class RankingSystem {
             p.lastNegotiated = new Date();
             affected.push(p.id);
         }
-        
+
         // Invalidate cache
         this.invalidateCache();
-        
+
         return {
             success: true,
             message: `Removed ${participant.name}`,
@@ -717,12 +719,12 @@ export class RankingSystem {
     updateParticipantName(id: string, newName: string): boolean {
         const participant = this.participantsById.get(id);
         if (!participant) return false;
-        
+
         participant.name = newName;
         participant.version++;
         participant.lastNegotiated = new Date();
         this.invalidateCache();
-        
+
         return true;
     }
 
@@ -732,12 +734,12 @@ export class RankingSystem {
     updateParticipantMetadata(id: string, metadata: Record<string, any>): boolean {
         const participant = this.participantsById.get(id);
         if (!participant) return false;
-        
+
         participant.metadata = { ...participant.metadata, ...metadata };
         participant.version++;
         participant.lastNegotiated = new Date();
         this.invalidateCache();
-        
+
         return true;
     }
 
@@ -783,7 +785,7 @@ export class RankingSystem {
      */
     findByName(searchTerm: string): Participant[] {
         const term = searchTerm.toLowerCase();
-        return this.participantsBySlot.filter(p => 
+        return this.participantsBySlot.filter(p =>
             p.name.toLowerCase().includes(term)
         );
     }
@@ -794,7 +796,7 @@ export class RankingSystem {
     getParticipantsInRange(startSlot: number, endSlot: number): Participant[] {
         const start = Math.max(0, startSlot - 1);
         const end = Math.min(this.participantsBySlot.length, endSlot);
-        
+
         if (start >= end) return [];
         return this.participantsBySlot.slice(start, end);
     }
@@ -822,13 +824,13 @@ export class RankingSystem {
         this.clear();
         this.config = { ...this.config, ...state.config };
         this.nextId = state.nextId;
-        
+
         for (const participant of state.participants) {
             this.participantsById.set(participant.id, participant);
             this.participantsBySlot.push(participant);
             this.slotById.set(participant.id, this.participantsBySlot.length - 1);
         }
-        
+
         this.invalidateCache();
     }
 
@@ -842,7 +844,7 @@ export class RankingSystem {
     private calculateDistribution(): number[] {
         const total = this.participantsBySlot.length;
         if (total === 0) return [];
-        
+
         return ZipfDistribution.calculate(
             total,
             this.config.zipfExponent,
@@ -857,7 +859,7 @@ export class RankingSystem {
         const ordered = this.participantsBySlot;
         const total = ordered.length;
         const { totalProfit, decimals = 2, currencySymbol = '$' } = this.config;
-        
+
         if (total === 0) {
             return {
                 participants: [],
@@ -993,7 +995,7 @@ export function zipfsLaw({
     profit,
     exponent = 1.0,
     decimals = 2,
-    minPercentage = 0.01,
+    minPercentage = 0,
     currencySymbol = '$'
 }: {
     participants: number,
@@ -1007,10 +1009,10 @@ export function zipfsLaw({
         totalProfit: profit,
         zipfExponent: exponent,
         currencySymbol: currencySymbol,
-        decimals: decimals,
-        minPercentage: minPercentage
+        decimals,
+        minPercentage
     });
-    
+
     for (let i = 1; i <= participants; i++) {
         system.addParticipant(`Person ${i}`);
     }
@@ -1233,18 +1235,60 @@ export function exampleFindExponent() {
 // RUN EXAMPLES
 // ============================================
 
-console.log('═══════════════════════════════════════════════════════════════');
-console.log('  ZIPF DISTRIBUTION RANKING SYSTEM WITH EFFICIENT ACCESS');
-console.log('═══════════════════════════════════════════════════════════════\n');
+// console.log('═══════════════════════════════════════════════════════════════');
+// console.log('  ZIPF DISTRIBUTION RANKING SYSTEM WITH EFFICIENT ACCESS');
+// console.log('═══════════════════════════════════════════════════════════════\n');
 
-// Run examples
-exampleBasicUsage();
-console.log('\n' + '='.repeat(60) + '\n');
-exampleNegotiation();
-console.log('\n' + '='.repeat(60) + '\n');
-exampleCompareExponents();
-console.log('\n' + '='.repeat(60) + '\n');
-exampleEfficientAccess();
-console.log('\n' + '='.repeat(60) + '\n');
-exampleFindExponent();
-
+// // Run examples
+// exampleBasicUsage();
+// console.log('\n' + '='.repeat(60) + '\n');
+// exampleNegotiation();
+// console.log('\n' + '='.repeat(60) + '\n');
+// exampleCompareExponents();
+// console.log('\n' + '='.repeat(60) + '\n');
+// exampleEfficientAccess();
+// console.log('\n' + '='.repeat(60) + '\n');
+// exampleFindExponent();
+
+export const zipfsLawExponentLive = 0.2
+
+export const addShares = ({
+    profit,
+    participants,
+    startPosition,
+    endPosition,
+    exponent,
+}: {
+    profit: number;
+    participants: number;
+    startPosition: number;
+    endPosition: number;
+    exponent?: number;
+}): { share: number; percentage: number } => {
+    if (!Number.isFinite(profit) || !Number.isFinite(participants) || participants <= 0) {
+        return { share: 0, percentage: 0 };
+    }
+
+    const start = Math.min(startPosition, endPosition);
+    const end = Math.max(startPosition, endPosition);
+
+    let total = 0;
+    let totalPercentage = 0;
+    const percentages = ZipfDistribution.calculate(participants, exponent);
+
+    for (let position = start; position <= end; position++) {
+        const percentage = percentages[position - 1] || 0;
+        totalPercentage += percentage;
+        total += (percentage / 100) * profit;
+    }
+
+    return { share: total, percentage: totalPercentage };
+}
+
+// console.log("addShares", addShares({
+//     profit: 100,
+//     participants: 10,
+//     startPosition: 1,
+//     endPosition: 2,
+//     decimals: 2
+// }))

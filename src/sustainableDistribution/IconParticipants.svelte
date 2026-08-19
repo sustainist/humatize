@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { curveOrientation } from ".";
+  import { curveOrientation } from "./distributionTautochroneCurve";
 
   const radius = 100;
 
