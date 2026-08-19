@@ -1,6 +1,10 @@
 <script lang="ts">
     import { roundNumbersCreators } from "..";
-    import { zipfsLawExponentLive } from "../../sustainableDistribution/distributionZipfLaw";
+    import {
+        zipfsLawExponentLive,
+        ZipfDistribution,
+    } from "../../sustainableDistribution/distributionZipfLaw";
+    import Graph from "./SimulationGraph.svelte";
     import List from "./List.svelte";
 
     // simulation
@@ -110,6 +114,11 @@
             />
         </div>
     </div>
+
+    <Graph
+        zipfsLawExponent={zipfsLawExponentSimulationCreators}
+        participants={simulateParticipants}
+    />
 
     <div>
         <List
