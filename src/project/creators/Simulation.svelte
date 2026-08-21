@@ -17,7 +17,7 @@
 
     // participants
     let simulateParticipants = $state(
-        +(localStorage.getItem("simulateParticipants") || 1),
+        +(localStorage.getItem("simulateParticipants") || 3),
     );
     $effect(() => {
         localStorage.setItem("simulateParticipants", "" + simulateParticipants);
@@ -25,7 +25,7 @@
 
     // goal
     let simulateGoalCreators = $state(
-        +(localStorage.getItem("simulateGoalCreators") || 1),
+        +(localStorage.getItem("simulateGoalCreators") || 1000),
     );
     $effect(() => {
         localStorage.setItem("simulateGoalCreators", "" + simulateGoalCreators);
@@ -33,10 +33,7 @@
 
     // zipfs Law Exponent
     let zipfsLawExponentSimulationCreators = $state(
-        +(
-            localStorage.getItem("zipfsLawExponentSimulationCreators") ||
-            zipfsLawExponentLive
-        ),
+        +(localStorage.getItem("zipfsLawExponentSimulationCreators") || 1),
     );
     $effect(() => {
         localStorage.setItem(
