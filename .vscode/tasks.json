@@ -14,7 +14,7 @@
         "background": {
           "activeOnStart": true,
           "beginsPattern": "^.*",
-          "endsPattern": "http://.*:5173"
+          "endsPattern": "http://.*:8133"
         }
       }
     },
@@ -124,7 +124,7 @@
     },
     {
       "label": "Open browser",
-      "detail": "http://localhost:5173",
+      "detail": "http://localhost:8133",
       "type": "shell",
       "command": "${input:openBrowser}",
       "problemMatcher": [],
@@ -166,7 +166,7 @@
       "id": "openBrowser",
       "type": "command",
       "command": "simpleBrowser.show",
-      "args": "http://localhost:5173/",
+      "args": "http://localhost:8133/",
     }
   ]
 }
