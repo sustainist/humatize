@@ -11,16 +11,16 @@
     "emulators:start": "firebase emulators:start --only functions,firestore,auth --import ./emulators-data --export-on-exit"
   },
   "devDependencies": {
-    "@stripe/stripe-js": "^9.13.0",
+    "@stripe/stripe-js": "^9.14.0",
     "@sveltejs/vite-plugin-svelte": "^7.3.0",
     "@tsconfig/svelte": "^5.0.8",
     "@types/node": "^26.2.0",
-    "firebase": "^12.17.1",
+    "firebase": "^12.18.0",
     "mdsvex": "^0.12.8",
-    "svelte": "^5.56.9",
-    "svelte-check": "^4.7.5",
+    "svelte": "^5.56.10",
+    "svelte-check": "^4.7.6",
     "typescript": "^6.0.3",
-    "vite": "^8.2.1"
+    "vite": "^8.2.2"
   },
   "allowScripts": {
     "protobufjs@7.6.5": true,
